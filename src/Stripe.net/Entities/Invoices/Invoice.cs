@@ -44,7 +44,10 @@ namespace Stripe
     public class Invoice : StripeEntity<Invoice>, IHasId, IHasMetadata, IHasObject
     {
         /// <summary>
-        /// Unique identifier for the object.
+        /// Unique identifier for the object. This property is always present unless the invoice is
+        /// an upcoming invoice. See <a
+        /// href="https://stripe.com/docs/api/invoices/upcoming">Retrieve an upcoming invoice</a>
+        /// for more details.
         /// </summary>
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -767,7 +770,8 @@ namespace Stripe
 
         /// <summary>
         /// Starting customer balance before the invoice is finalized. If the invoice has not been
-        /// finalized yet, this will be the current customer balance.
+        /// finalized yet, this will be the current customer balance. For revision invoices, this
+        /// also includes any customer balance that was applied to the original invoice.
         /// </summary>
         [JsonProperty("starting_balance")]
         public long StartingBalance { get; set; }

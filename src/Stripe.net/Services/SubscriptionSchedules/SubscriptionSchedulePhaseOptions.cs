@@ -54,8 +54,8 @@ namespace Stripe
         /// Either <c>charge_automatically</c>, or <c>send_invoice</c>. When charging automatically,
         /// Stripe will attempt to pay the underlying subscription at the end of each billing cycle
         /// using the default source attached to the customer. When sending an invoice, Stripe will
-        /// email your customer an invoice with payment instructions. Defaults to
-        /// <c>charge_automatically</c> on creation.
+        /// email your customer an invoice with payment instructions and mark the subscription as
+        /// <c>active</c>. Defaults to <c>charge_automatically</c> on creation.
         /// One of: <c>charge_automatically</c>, or <c>send_invoice</c>.
         /// </summary>
         [JsonProperty("collection_method")]
@@ -143,6 +143,13 @@ namespace Stripe
         /// </summary>
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; set; }
+
+        /// <summary>
+        /// The account on behalf of which to charge, for each of the associated subscription's
+        /// invoices.
+        /// </summary>
+        [JsonProperty("on_behalf_of")]
+        public string OnBehalfOf { get; set; }
 
         /// <summary>
         /// Whether the subscription schedule will create <a

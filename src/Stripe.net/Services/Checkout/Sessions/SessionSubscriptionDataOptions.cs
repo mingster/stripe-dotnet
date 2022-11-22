@@ -43,13 +43,6 @@ namespace Stripe.Checkout
         public string Description { get; set; }
 
         /// <summary>
-        /// A list of items, each with an attached plan, that the customer is subscribing to. Prefer
-        /// using <c>line_items</c>.
-        /// </summary>
-        [JsonProperty("items")]
-        public List<SessionSubscriptionDataItemOptions> Items { get; set; }
-
-        /// <summary>
         /// Set of <a href="https://stripe.com/docs/api/metadata">key-value pairs</a> that you can
         /// attach to an object. This can be useful for storing additional information about the
         /// object in a structured format. Individual keys can be unset by posting an empty value to
@@ -57,6 +50,12 @@ namespace Stripe.Checkout
         /// </summary>
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; set; }
+
+        /// <summary>
+        /// The account on behalf of which to charge, for each of the subscription's invoices.
+        /// </summary>
+        [JsonProperty("on_behalf_of")]
+        public string OnBehalfOf { get; set; }
 
         /// <summary>
         /// If specified, the funds from the subscription's invoices will be transferred to the

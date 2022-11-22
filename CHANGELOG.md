@@ -1,5 +1,70 @@
 # Changelog
 
+## 41.1.0 - 2022-11-17
+* [#2610](https://github.com/stripe/stripe-dotnet/pull/2610) API Updates
+  * Add support for `HostedInstructionsUrl` on `PaymentIntentNextActionWechatPayDisplayQrCode`
+* [#2609](https://github.com/stripe/stripe-dotnet/pull/2609) API Updates
+  * Add support for `CustomText` on `CheckoutSessionCreateOptions`, `CheckoutSession`, `PaymentLinkCreateOptions`, `PaymentLinkUpdateOptions`, and `PaymentLink`
+  * Add support for `HostedInstructionsUrl` on `PaymentIntentNextActionPaynowDisplayQrCode`
+  
+
+## 41.0.0 - 2022-11-16
+
+Breaking changes that arose during code generation of the library that we postponed for the next major version. For changes to the Stripe products, read more at https://stripe.com/docs/upgrades#2022-11-15.
+
+"⚠️" symbol highlights breaking changes.
+
+⚠️ Removed
+- Removed deprecated `Sku` resource (#2588)
+- Removed `LineItem.Product` property that was released by mistake. (#2587)
+- Removed deprecated `SessionSubscriptionDataOptions.Items` property. (#2587)
+- Removed deprecated `Amount`, `Currency`, `Description`, `Images`, `Name` properties from `SessionLineItemOptions` (https://github.com/stripe/stripe-dotnet/pull/2604)
+- Removed `Charges` field on `PaymentIntent` and replace it with `LatestCharge`. (https://github.com/stripe/stripe-dotnet/pull/2604)
+- Removed unused `SessionDisplayItem` class. (#2588)
+- Removed unused `SessionDisplayItemCustom` class. (#2588)
+- Remove support for `TosShownAndAccepted` on `CheckoutSessionPaymentMethodOptionsPaynowOptions`. The property was mistakenly released and never worked. (#2605)
+
+⚠️ Changed
+- `IncrementalAuthorizationSupported` and `OvercaptureSupported` become non-nullable in `ChargePaymentMethodDetailsCardPresent`.
+
+## 40.16.0 - 2022-11-08
+* [#2602](https://github.com/stripe/stripe-dotnet/pull/2602) API Updates
+  * Add support for `ReasonMessage` on `IssuingAuthorizationRequestHistory`
+* [#2598](https://github.com/stripe/stripe-dotnet/pull/2598) Next major release changes
+* [#2599](https://github.com/stripe/stripe-dotnet/pull/2599) Merge master and update generated code
+
+## 40.15.0 - 2022-11-03
+* [#2596](https://github.com/stripe/stripe-dotnet/pull/2596) API Updates
+  * Add support for `OnBehalfOf` on `CheckoutSessionSubscriptionDataOptions`, `SubscriptionCreateOptions`, `SubscriptionScheduleDefaultSettingsOptions`, `SubscriptionScheduleDefaultSettings`, `SubscriptionSchedulePhasesOptions`, `SubscriptionSchedulePhases`, `SubscriptionUpdateOptions`, and `Subscription`
+  * Add support for `TaxBehavior` and `TaxCode` on `InvoiceInvoiceItemsOptions`, `InvoiceItemCreateOptions`, and `InvoiceItemUpdateOptions`
+
+## 40.14.0 - 2022-10-20
+* [#2591](https://github.com/stripe/stripe-dotnet/pull/2591) API Updates
+  * Add support for `Tipping` on `TerminalReaderActionProcessPaymentIntentProcessConfig` and `TerminalReaderProcessConfigOptions`
+
+## 40.13.0 - 2022-10-13
+* [#2589](https://github.com/stripe/stripe-dotnet/pull/2589) API Updates
+  * Add support for `NetworkData` on `IssuingAuthorization`
+* [#2586](https://github.com/stripe/stripe-dotnet/pull/2586) Add request_log_url on StripeError
+
+## 40.12.0 - 2022-10-06
+* [#2584](https://github.com/stripe/stripe-dotnet/pull/2584) API Updates
+  * Add support for `Klarna` on `SetupAttemptPaymentMethodDetails`
+
+## 40.11.0 - 2022-09-29
+* [#2580](https://github.com/stripe/stripe-dotnet/pull/2580) API Updates
+  * Change type of `ChargePaymentMethodDetailsCardPresentIncrementalAuthorizationSupported` and `ChargePaymentMethodDetailsCardPresentOvercaptureSupported` from `nullable(boolean)` to `boolean`
+  * Add support for `Created` on `CheckoutSession`
+  * Add support for `SetupFutureUsage` on `PaymentIntentPaymentMethodOptionsPixOptions` and `PaymentIntentPaymentMethodOptionsPix`
+  * Deprecate `SessionSubscriptionDataOptions.items` (use the `line_items` param instead). This will be removed in the next major version.
+
+## 40.10.0 - 2022-09-22
+* [#2578](https://github.com/stripe/stripe-dotnet/pull/2578) API Updates
+  * Add support for `TermsOfService` on `CheckoutSessionConsentCollectionOptions`, `CheckoutSessionConsentCollection`, `CheckoutSessionConsent`, `PaymentLinkConsentCollectionOptions`, and `PaymentLinkConsentCollection`
+  * ⚠️  Remove support for `Plan` on `CheckoutSessionPaymentMethodOptionsCardInstallmentsOptions`. The property was mistakenly released and never worked.
+  * Add support for `StatementDescriptor` on `PaymentIntentIncrementAuthorizationOptions`
+  
+
 ## 40.9.0 - 2022-09-15
 * [#2577](https://github.com/stripe/stripe-dotnet/pull/2577) API Updates
   * Add support for `Pix` on `ChargePaymentMethodDetails`, `CheckoutSessionPaymentMethodOptionsOptions`, `CheckoutSessionPaymentMethodOptions`, `PaymentIntentPaymentMethodDataOptions`, `PaymentIntentPaymentMethodOptionsOptions`, `PaymentIntentPaymentMethodOptions`, `PaymentMethodCreateOptions`, `PaymentMethod`, and `SetupIntentPaymentMethodDataOptions`

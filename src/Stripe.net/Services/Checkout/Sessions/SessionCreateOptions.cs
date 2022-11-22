@@ -63,6 +63,12 @@ namespace Stripe.Checkout
         public string Currency { get; set; }
 
         /// <summary>
+        /// Display additional text for your customers using custom text.
+        /// </summary>
+        [JsonProperty("custom_text")]
+        public SessionCustomTextOptions CustomText { get; set; }
+
+        /// <summary>
         /// ID of an existing Customer, if one exists. In <c>payment</c> mode, the customer’s most
         /// recent card payment method will be used to prefill the email, name, card details, and
         /// billing address on the Checkout page. In <c>subscription</c> mode, the customer’s <a
@@ -176,8 +182,8 @@ namespace Stripe.Checkout
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
-        /// The mode of the Checkout Session. Required when using prices or <c>setup</c> mode. Pass
-        /// <c>subscription</c> if the Checkout Session includes at least one recurring item.
+        /// The mode of the Checkout Session. Pass <c>subscription</c> if the Checkout Session
+        /// includes at least one recurring item.
         /// One of: <c>payment</c>, <c>setup</c>, or <c>subscription</c>.
         /// </summary>
         [JsonProperty("mode")]

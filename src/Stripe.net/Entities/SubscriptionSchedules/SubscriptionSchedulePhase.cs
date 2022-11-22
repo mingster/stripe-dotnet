@@ -48,7 +48,8 @@ namespace Stripe
         /// Either <c>charge_automatically</c>, or <c>send_invoice</c>. When charging automatically,
         /// Stripe will attempt to pay the underlying subscription at the end of each billing cycle
         /// using the default source attached to the customer. When sending an invoice, Stripe will
-        /// email your customer an invoice with payment instructions.
+        /// email your customer an invoice with payment instructions and mark the subscription as
+        /// <c>active</c>.
         /// One of: <c>charge_automatically</c>, or <c>send_invoice</c>.
         /// </summary>
         [JsonProperty("collection_method")]
@@ -171,6 +172,39 @@ namespace Stripe
         /// </summary>
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; set; }
+
+        #region Expandable OnBehalfOf
+
+        /// <summary>
+        /// (ID of the Account)
+        /// The account (if any) the charge was made on behalf of for charges associated with the
+        /// schedule's subscription. See the Connect documentation for details.
+        /// </summary>
+        [JsonIgnore]
+        public string OnBehalfOfId
+        {
+            get => this.InternalOnBehalfOf?.Id;
+            set => this.InternalOnBehalfOf = SetExpandableFieldId(value, this.InternalOnBehalfOf);
+        }
+
+        /// <summary>
+        /// (Expanded)
+        /// The account (if any) the charge was made on behalf of for charges associated with the
+        /// schedule's subscription. See the Connect documentation for details.
+        ///
+        /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
+        /// </summary>
+        [JsonIgnore]
+        public Account OnBehalfOf
+        {
+            get => this.InternalOnBehalfOf?.ExpandedObject;
+            set => this.InternalOnBehalfOf = SetExpandableFieldObject(value, this.InternalOnBehalfOf);
+        }
+
+        [JsonProperty("on_behalf_of")]
+        [JsonConverter(typeof(ExpandableFieldConverter<Account>))]
+        internal ExpandableField<Account> InternalOnBehalfOf { get; set; }
+        #endregion
 
         /// <summary>
         /// If the subscription schedule will prorate when transitioning to this phase. Possible
