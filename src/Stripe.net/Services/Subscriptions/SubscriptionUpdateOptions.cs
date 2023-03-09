@@ -224,7 +224,7 @@ namespace Stripe
         /// href="https://stripe.com/docs/subscriptions/billing-cycle#prorations">prorations</a>
         /// when the billing cycle changes (e.g., when switching plans, resetting
         /// <c>billing_cycle_anchor=now</c>, or starting a trial), or if an item's <c>quantity</c>
-        /// changes.
+        /// changes. The default value is <c>create_prorations</c>.
         /// One of: <c>always_invoice</c>, <c>create_prorations</c>, or <c>none</c>.
         /// </summary>
         [JsonProperty("proration_behavior")]
@@ -271,5 +271,11 @@ namespace Stripe
         /// </summary>
         [JsonProperty("trial_from_plan")]
         public bool? TrialFromPlan { get; set; }
+
+        /// <summary>
+        /// Settings related to subscription trials.
+        /// </summary>
+        [JsonProperty("trial_settings")]
+        public SubscriptionTrialSettingsOptions TrialSettings { get; set; }
     }
 }

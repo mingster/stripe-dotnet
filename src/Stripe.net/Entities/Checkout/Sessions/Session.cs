@@ -18,7 +18,7 @@ namespace Stripe.Checkout
     /// href="https://stripe.com/docs/api/payment_intents">PaymentIntent</a> or an active <a
     /// href="https://stripe.com/docs/api/subscriptions">Subscription</a>.
     ///
-    /// You can create a Checkout Session on your server and pass its ID to the client to begin
+    /// You can create a Checkout Session on your server and redirect to its URL to begin
     /// Checkout.
     ///
     /// Related guide: <a href="https://stripe.com/docs/checkout/quickstart">Checkout
@@ -27,8 +27,7 @@ namespace Stripe.Checkout
     public class Session : StripeEntity<Session>, IHasId, IHasMetadata, IHasObject
     {
         /// <summary>
-        /// Unique identifier for the object. Used to pass to <c>redirectToCheckout</c> in
-        /// Stripe.js.
+        /// Unique identifier for the object.
         /// </summary>
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -74,8 +73,8 @@ namespace Stripe.Checkout
         public string BillingAddressCollection { get; set; }
 
         /// <summary>
-        /// The URL the customer will be directed to if they decide to cancel payment and return to
-        /// your website.
+        /// If set, Checkout displays a back button and customers will be directed to this URL if
+        /// they decide to cancel payment and return to your website.
         /// </summary>
         [JsonProperty("cancel_url")]
         public string CancelUrl { get; set; }
@@ -114,6 +113,13 @@ namespace Stripe.Checkout
         /// </summary>
         [JsonProperty("currency")]
         public string Currency { get; set; }
+
+        /// <summary>
+        /// Collect additional information from your customer using custom fields. Up to 2 fields
+        /// are supported.
+        /// </summary>
+        [JsonProperty("custom_fields")]
+        public List<SessionCustomField> CustomFields { get; set; }
 
         [JsonProperty("custom_text")]
         public SessionCustomText CustomText { get; set; }
@@ -185,6 +191,43 @@ namespace Stripe.Checkout
         [JsonProperty("expires_at")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime ExpiresAt { get; set; } = Stripe.Infrastructure.DateTimeUtils.UnixEpoch;
+
+        #region Expandable Invoice
+
+        /// <summary>
+        /// (ID of the Invoice)
+        /// ID of the invoice created by the Checkout Session, if it exists.
+        /// </summary>
+        [JsonIgnore]
+        public string InvoiceId
+        {
+            get => this.InternalInvoice?.Id;
+            set => this.InternalInvoice = SetExpandableFieldId(value, this.InternalInvoice);
+        }
+
+        /// <summary>
+        /// (Expanded)
+        /// ID of the invoice created by the Checkout Session, if it exists.
+        ///
+        /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
+        /// </summary>
+        [JsonIgnore]
+        public Invoice Invoice
+        {
+            get => this.InternalInvoice?.ExpandedObject;
+            set => this.InternalInvoice = SetExpandableFieldObject(value, this.InternalInvoice);
+        }
+
+        [JsonProperty("invoice")]
+        [JsonConverter(typeof(ExpandableFieldConverter<Invoice>))]
+        internal ExpandableField<Invoice> InternalInvoice { get; set; }
+        #endregion
+
+        /// <summary>
+        /// Details on the state of invoice creation for the Checkout Session.
+        /// </summary>
+        [JsonProperty("invoice_creation")]
+        public SessionInvoiceCreation InvoiceCreation { get; set; }
 
         /// <summary>
         /// The line items purchased by the customer.

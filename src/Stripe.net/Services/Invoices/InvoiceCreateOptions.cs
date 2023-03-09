@@ -178,6 +178,20 @@ namespace Stripe
         public InvoiceRenderingOptionsOptions RenderingOptions { get; set; }
 
         /// <summary>
+        /// Settings for the cost of shipping for this invoice.
+        /// </summary>
+        [JsonProperty("shipping_cost")]
+        public InvoiceShippingCostOptions ShippingCost { get; set; }
+
+        /// <summary>
+        /// Shipping details for the invoice. The Invoice PDF will use the <c>shipping_details</c>
+        /// value if it is set, otherwise the PDF will render the shipping address from the
+        /// customer.
+        /// </summary>
+        [JsonProperty("shipping_details")]
+        public InvoiceShippingDetailsOptions ShippingDetails { get; set; }
+
+        /// <summary>
         /// Extra information about a charge for the customer's credit card statement. It must
         /// contain at least one letter. If not specified and this invoice is part of a
         /// subscription, the default <c>statement_descriptor</c> will be set to the first
@@ -188,10 +202,8 @@ namespace Stripe
 
         /// <summary>
         /// The ID of the subscription to invoice, if any. If set, the created invoice will only
-        /// include pending invoice items for that subscription and pending invoice items not
-        /// associated with any subscription if <c>pending_invoice_items_behavior</c> is
-        /// <c>include</c>. The subscription's billing cycle and regular subscription events won't
-        /// be affected.
+        /// include pending invoice items for that subscription. The subscription's billing cycle
+        /// and regular subscription events won't be affected.
         /// </summary>
         [JsonProperty("subscription")]
         public string Subscription { get; set; }

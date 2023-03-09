@@ -81,6 +81,14 @@ namespace Stripe.BillingPortal
         public string Customer { get; set; }
 
         /// <summary>
+        /// Information about a specific flow for the customer to go through. See the <a
+        /// href="https://stripe.com/docs/customer-management/portal-deep-links">docs</a> to learn
+        /// more about using customer portal deep links and flows.
+        /// </summary>
+        [JsonProperty("flow")]
+        public SessionFlow Flow { get; set; }
+
+        /// <summary>
         /// Has the value <c>true</c> if the object exists in live mode or the value <c>false</c> if
         /// the object exists in test mode.
         /// </summary>

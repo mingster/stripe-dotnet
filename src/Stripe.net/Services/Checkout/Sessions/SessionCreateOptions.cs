@@ -35,8 +35,8 @@ namespace Stripe.Checkout
         public string BillingAddressCollection { get; set; }
 
         /// <summary>
-        /// The URL the customer will be directed to if they decide to cancel payment and return to
-        /// your website.
+        /// If set, Checkout displays a back button and customers will be directed to this URL if
+        /// they decide to cancel payment and return to your website.
         /// </summary>
         [JsonProperty("cancel_url")]
         public string CancelUrl { get; set; }
@@ -61,6 +61,13 @@ namespace Stripe.Checkout
         /// </summary>
         [JsonProperty("currency")]
         public string Currency { get; set; }
+
+        /// <summary>
+        /// Collect additional information from your customer using custom fields. Up to 2 fields
+        /// are supported.
+        /// </summary>
+        [JsonProperty("custom_fields")]
+        public List<SessionCustomFieldOptions> CustomFields { get; set; }
 
         /// <summary>
         /// Display additional text for your customers using custom text.
@@ -102,8 +109,8 @@ namespace Stripe.Checkout
         /// customer data entered in Checkout with <a
         /// href="https://stripe.com/docs/api/checkout/sessions/object#checkout_session_object-customer_details">customer_details</a>.
         ///
-        /// Sessions that don't create Customers instead create <a
-        /// href="https://support.stripe.com/questions/guest-customer-faq">Guest Customers</a> in
+        /// Sessions that don't create Customers instead are grouped by <a
+        /// href="https://stripe.com/docs/payments/checkout/guest-customers">guest customers</a> in
         /// the Dashboard. Promotion codes limited to first time customers will return invalid for
         /// these Sessions.
         ///
@@ -144,6 +151,12 @@ namespace Stripe.Checkout
         [JsonProperty("expires_at")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime? ExpiresAt { get; set; }
+
+        /// <summary>
+        /// Generate a post-purchase Invoice for one-time payments.
+        /// </summary>
+        [JsonProperty("invoice_creation")]
+        public SessionInvoiceCreationOptions InvoiceCreation { get; set; }
 
         /// <summary>
         /// A list of items the customer is purchasing. Use this parameter to pass one-time or

@@ -1,5 +1,57 @@
 # Changelog
 
+## 41.8.0 - 2023-03-02
+* [#2651](https://github.com/stripe/stripe-dotnet/pull/2651) API Updates
+  * Add support for `ReconciliationStatus` on `Payout`
+* [#2648](https://github.com/stripe/stripe-dotnet/pull/2648) API Updates
+
+
+## 41.7.0 - 2023-02-16
+* [#2643](https://github.com/stripe/stripe-dotnet/pull/2643) API Updates
+  * Add support for `RefundPayment` method on resource `Terminal.Reader`
+  * Add support for `CustomFields` on `CheckoutSessionCreateOptions`, `CheckoutSession`, `PaymentLinkCreateOptions`, `PaymentLinkUpdateOptions`, and `PaymentLink`
+  * Add support for `InteracPresent` on `TestHelpersTerminalReaderPresentPaymentMethodOptions`
+  * Change type of `TerminalReaderTypeOptions` from `literal('card_present')` to `enum('card_present'|'interac_present')`
+  * Add support for `RefundPayment` on `TerminalReaderAction`
+  * Update `ShippingAddress` on `SessionCustomTextOptions` and `PaymentLinkCustomTextOptions` to use `SessionCustomTextShippingAddressOptions` and `PaymentLinkCustomTextShippingAddressOptions` instead of shared `AddressOptions`. This did not work before and did not align with the API definitions (extension of https://github.com/stripe/stripe-dotnet/pull/2644).
+* [#2646](https://github.com/stripe/stripe-dotnet/pull/2646) Add missing parameters to the Upcoming Invoice API
+
+## 41.6.0 - 2023-02-02
+* [#2640](https://github.com/stripe/stripe-dotnet/pull/2640) API Updates
+  * Add support for `Resume` method on resource `Subscription`
+  * Add support for `PaymentLink` on `CheckoutSessionListOptions`
+  * Add support for `TrialSettings` on `CheckoutSessionSubscriptionDataOptions`, `SubscriptionCreateOptions`, `SubscriptionUpdateOptions`, and `Subscription`
+  * Add support for `ShippingCost` on `CreditNoteCreateOptions`, `CreditNotePreviewLinesOptions`, `CreditNotePreviewOptions`, `CreditNote`, `InvoiceCreateOptions`, `InvoiceUpdateOptions`, and `Invoice`
+  * Add support for `AmountShipping` on `CreditNote` and `Invoice`
+  * Add support for `ShippingDetails` on `InvoiceCreateOptions`, `InvoiceUpdateOptions`, and `Invoice`
+  * Add support for `SubscriptionResumeAt` on `InvoiceUpcomingLinesOptions` and `InvoiceUpcomingOptions`
+  * Add support for `InvoiceCreation` on `PaymentLinkCreateOptions`, `PaymentLinkUpdateOptions`, and `PaymentLink`
+
+## 41.5.0 - 2023-01-19
+* [#2633](https://github.com/stripe/stripe-dotnet/pull/2633) API Updates
+  * Add support for `VerificationSession` on `EphemeralKeyCreateOptions`
+* [#2622](https://github.com/stripe/stripe-dotnet/pull/2622) Fix missing IDisposable using
+
+## 41.4.0 - 2023-01-05
+* [#2629](https://github.com/stripe/stripe-dotnet/pull/2629) API Updates
+  * Add support for `CardIssuing` on `IssuingCardholderIndividual`
+
+## 41.3.0 - 2022-12-22
+* [#2626](https://github.com/stripe/stripe-dotnet/pull/2626) API Updates
+  * Add support for `UsingMerchantDefault` on `CashBalanceSettings`
+* [#2625](https://github.com/stripe/stripe-dotnet/pull/2625) Stop `FileService` from mutating its `RequestOptions` argument
+
+
+## 41.2.0 - 2022-12-06
+* [#2614](https://github.com/stripe/stripe-dotnet/pull/2614) API Updates
+  * Add support for `FlowData` on `BillingPortalSessionCreateOptions`
+  * Add support for `Flow` on `BillingPortalSession`
+* [#2613](https://github.com/stripe/stripe-dotnet/pull/2613) API Updates
+  * Add support for `IndiaInternationalPayments` on `AccountCapabilitiesOptions` and `AccountCapabilities`
+  * Add support for `InvoiceCreation` on `CheckoutSessionCreateOptions` and `CheckoutSession`
+  * Add support for `Invoice` on `CheckoutSession`
+  * Add support for `Metadata` on `SubscriptionSchedulePhasesItemsOptions` and `SubscriptionSchedulePhasesItems`
+
 ## 41.1.0 - 2022-11-17
 * [#2610](https://github.com/stripe/stripe-dotnet/pull/2610) API Updates
   * Add support for `HostedInstructionsUrl` on `PaymentIntentNextActionWechatPayDisplayQrCode`

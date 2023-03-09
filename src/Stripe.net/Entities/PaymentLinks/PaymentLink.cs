@@ -86,6 +86,13 @@ namespace Stripe
         [JsonProperty("currency")]
         public string Currency { get; set; }
 
+        /// <summary>
+        /// Collect additional information from your customer using custom fields. Up to 2 fields
+        /// are supported.
+        /// </summary>
+        [JsonProperty("custom_fields")]
+        public List<PaymentLinkCustomField> CustomFields { get; set; }
+
         [JsonProperty("custom_text")]
         public PaymentLinkCustomText CustomText { get; set; }
 
@@ -95,6 +102,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("customer_creation")]
         public string CustomerCreation { get; set; }
+
+        /// <summary>
+        /// Configuration for creating invoice for payment mode payment links.
+        /// </summary>
+        [JsonProperty("invoice_creation")]
+        public PaymentLinkInvoiceCreation InvoiceCreation { get; set; }
 
         /// <summary>
         /// The line items representing what is being sold.
