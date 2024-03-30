@@ -52,9 +52,18 @@ namespace Stripe.FinancialConnections
 
         /// <summary>
         /// Permissions requested for accounts collected during this session.
+        /// One of: <c>balances</c>, <c>ownership</c>, <c>payment_method</c>, or
+        /// <c>transactions</c>.
         /// </summary>
         [JsonProperty("permissions")]
         public List<string> Permissions { get; set; }
+
+        /// <summary>
+        /// Data features requested to be retrieved upon account creation.
+        /// One of: <c>balances</c>, <c>ownership</c>, or <c>transactions</c>.
+        /// </summary>
+        [JsonProperty("prefetch")]
+        public List<string> Prefetch { get; set; }
 
         /// <summary>
         /// For webview integrations only. Upon completing OAuth login in the native browser, the

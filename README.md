@@ -47,10 +47,10 @@ how to use the library.
 
 Stripe authenticates API requests using your account’s secret key, which you can find in the Stripe Dashboard. By default, secret keys can be used to perform any API request without restriction.
 
-Use `Stripe.ApiKey` property to set the secret key.
+Use `StripeConfiguration.ApiKey` property to set the secret key.
 
 ``` C#
-Stripe.ApiKey = "sk_test_...";
+StripeConfiguration.ApiKey = "sk_test_...";
 ```
 
 ### Creating a resource
@@ -252,6 +252,18 @@ This information is passed along when the library makes calls to the Stripe
 API. Note that while `Name` is always required, `Url` and `Version` are
 optional.
 
+### Telemetry
+
+By default, the library sends telemetry to Stripe regarding request latency and feature usage. These
+numbers help Stripe improve the overall latency of its API for all users, and
+improve popular features.
+
+You can disable this behavior if you prefer:
+
+```c#
+StripeConfiguration.EnableTelemetry = false;
+```
+
 ### Beta SDKs
 
 Stripe has features in the beta phase that can be accessed via the beta version of this package.
@@ -267,13 +279,13 @@ dotnet add package Stripe.net --version 40.3.0-beta.1
 
 We highly recommend keeping an eye on when the beta feature you are interested in goes from beta to stable so that you can move from using a beta version of the SDK to the stable version.
 
-If your beta feature requires a `Stripe-Version` header to be sent, use the `StripeConfiguration.ApiVersion` property to set it:
+If your beta feature requires a `Stripe-Version` header to be sent, set the `StripeConfiguration.ApiVersion` property with the `StripeConfiguration.AddBetaVersion` function:
 
 > **Note**
-> The `ApiVersion` can only be set in beta versions of the library. 
+> The `ApiVersion` can only be set in beta versions of the library.
 
 ```csharp
-StripeConfiguration.ApiVersion += "; feature_beta=v3";
+StripeConfiguration.AddBetaVersion("feature_beta", "v3");
 ```
 
 ## Support
@@ -281,6 +293,8 @@ StripeConfiguration.ApiVersion += "; feature_beta=v3";
 New features and bug fixes are released on the latest major version of the Stripe .NET client library. If you are on an older major version, we recommend that you upgrade to the latest in order to use the new features and bug fixes including those for security vulnerabilities. Older major versions of the package will continue to be available for use, but will not be receiving any updates.
 
 ## Development
+
+.NET 8 is required to build and test Stripe.net SDK, you can install it from [get.dot.net](https://get.dot.net/).
 
 The test suite depends on [stripe-mock][stripe-mock], so make sure to fetch
 and run it from a background terminal
@@ -295,19 +309,19 @@ stripe-mock
 Run all tests from the `src/StripeTests` directory:
 
 ```sh
-dotnet test
+dotnet test src
 ```
 
 Run some tests, filtering by name:
 
 ```sh
-dotnet test --filter FullyQualifiedName~InvoiceServiceTest
+dotnet test src --filter FullyQualifiedName~InvoiceServiceTest
 ```
 
 Run tests for a single target framework:
 
 ```sh
-dotnet test --framework netcoreapp2.1
+dotnet test src --framework net8.0
 ```
 
 The library uses [`dotnet-format`][dotnet-format] for code formatting. Code

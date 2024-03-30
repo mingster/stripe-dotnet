@@ -5,9 +5,6 @@ namespace Stripe
 
     public class PaymentLinkCustomField : StripeEntity<PaymentLinkCustomField>
     {
-        /// <summary>
-        /// Configuration for <c>type=dropdown</c> fields.
-        /// </summary>
         [JsonProperty("dropdown")]
         public PaymentLinkCustomFieldDropdown Dropdown { get; set; }
 
@@ -21,12 +18,18 @@ namespace Stripe
         [JsonProperty("label")]
         public PaymentLinkCustomFieldLabel Label { get; set; }
 
+        [JsonProperty("numeric")]
+        public PaymentLinkCustomFieldNumeric Numeric { get; set; }
+
         /// <summary>
         /// Whether the customer is required to complete the field before completing the Checkout
         /// Session. Defaults to <c>false</c>.
         /// </summary>
         [JsonProperty("optional")]
         public bool Optional { get; set; }
+
+        [JsonProperty("text")]
+        public PaymentLinkCustomFieldText Text { get; set; }
 
         /// <summary>
         /// The type of the field.

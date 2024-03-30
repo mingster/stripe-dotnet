@@ -50,7 +50,8 @@ namespace Stripe.Reporting
         /// <summary>
         /// Category of balance transactions to be included in the report run.
         /// One of: <c>advance</c>, <c>advance_funding</c>, <c>anticipation_repayment</c>,
-        /// <c>charge</c>, <c>charge_failure</c>, <c>connect_collection_transfer</c>,
+        /// <c>charge</c>, <c>charge_failure</c>, <c>climate_order_purchase</c>,
+        /// <c>climate_order_refund</c>, <c>connect_collection_transfer</c>,
         /// <c>connect_reserved_funds</c>, <c>contribution</c>, <c>dispute</c>,
         /// <c>dispute_reversal</c>, <c>fee</c>, <c>financing_paydown</c>,
         /// <c>financing_paydown_reversal</c>, <c>financing_payout</c>,
@@ -60,7 +61,8 @@ namespace Stripe.Reporting
         /// <c>partial_capture_reversal</c>, <c>payout</c>, <c>payout_reversal</c>,
         /// <c>platform_earning</c>, <c>platform_earning_refund</c>, <c>refund</c>,
         /// <c>refund_failure</c>, <c>risk_reserved_funds</c>, <c>tax</c>, <c>topup</c>,
-        /// <c>topup_reversal</c>, <c>transfer</c>, or <c>transfer_reversal</c>.
+        /// <c>topup_reversal</c>, <c>transfer</c>, <c>transfer_reversal</c>,
+        /// <c>unreconciled_customer_funds</c>, or <c>obligation</c>.
         /// </summary>
         [JsonProperty("reporting_category")]
         public string ReportingCategory { get; set; }

@@ -17,7 +17,8 @@ namespace Stripe
     ///
     /// If your invoice is configured to be billed through automatic charges, Stripe
     /// automatically finalizes your invoice and attempts payment. Note that finalizing the
-    /// invoice, <a href="https://stripe.com/docs/billing/invoices/workflow/#auto_advance">when
+    /// invoice, <a
+    /// href="https://stripe.com/docs/invoicing/integration/automatic-advancement-collection">when
     /// automatic</a>, does not happen immediately as the invoice is created. Stripe waits until
     /// one hour after the last webhook was successfully sent (or the last webhook timed out
     /// after failing). If you (and the platforms you may have connected to) have no webhooks
@@ -38,8 +39,8 @@ namespace Stripe
     /// More details on the customer's credit balance are <a
     /// href="https://stripe.com/docs/billing/customer/balance">here</a>.
     ///
-    /// Related guide: <a href="https://stripe.com/docs/billing/invoices/sending">Send Invoices
-    /// to Customers</a>.
+    /// Related guide: <a href="https://stripe.com/docs/billing/invoices/sending">Send invoices
+    /// to customers</a>.
     /// </summary>
     public class Invoice : StripeEntity<Invoice>, IHasId, IHasMetadata, IHasObject
     {
@@ -116,13 +117,13 @@ namespace Stripe
         public long AmountDue { get; set; }
 
         /// <summary>
-        /// The amount, in %s, that was paid.
+        /// The amount, in cents (or local equivalent), that was paid.
         /// </summary>
         [JsonProperty("amount_paid")]
         public long AmountPaid { get; set; }
 
         /// <summary>
-        /// The difference between amount_due and amount_paid, in %s.
+        /// The difference between amount_due and amount_paid, in cents (or local equivalent).
         /// </summary>
         [JsonProperty("amount_remaining")]
         public long AmountRemaining { get; set; }
@@ -165,8 +166,8 @@ namespace Stripe
         #endregion
 
         /// <summary>
-        /// The fee in %s that will be applied to the invoice and transferred to the application
-        /// owner's Stripe account when the invoice is paid.
+        /// The fee in cents (or local equivalent) that will be applied to the invoice and
+        /// transferred to the application owner's Stripe account when the invoice is paid.
         /// </summary>
         [JsonProperty("application_fee_amount")]
         public long? ApplicationFeeAmount { get; set; }
@@ -189,9 +190,9 @@ namespace Stripe
         public bool Attempted { get; set; }
 
         /// <summary>
-        /// Controls whether Stripe will perform <a
-        /// href="https://stripe.com/docs/billing/invoices/workflow/#auto_advance">automatic
-        /// collection</a> of the invoice. When <c>false</c>, the invoice's state will not
+        /// Controls whether Stripe performs <a
+        /// href="https://stripe.com/docs/invoicing/integration/automatic-advancement-collection">automatic
+        /// collection</a> of the invoice. If <c>false</c>, the invoice's state doesn't
         /// automatically advance without an explicit action.
         /// </summary>
         [JsonProperty("auto_advance")]
@@ -201,16 +202,16 @@ namespace Stripe
         public InvoiceAutomaticTax AutomaticTax { get; set; }
 
         /// <summary>
-        /// Indicates the reason why the invoice was created. <c>subscription_cycle</c> indicates an
-        /// invoice created by a subscription advancing into a new period.
-        /// <c>subscription_create</c> indicates an invoice created due to creating a subscription.
-        /// <c>subscription_update</c> indicates an invoice created due to updating a subscription.
-        /// <c>subscription</c> is set for all old invoices to indicate either a change to a
-        /// subscription or a period advancement. <c>manual</c> is set for all invoices unrelated to
-        /// a subscription (for example: created via the invoice editor). The <c>upcoming</c> value
-        /// is reserved for simulated invoices per the upcoming invoice endpoint.
-        /// <c>subscription_threshold</c> indicates an invoice created due to a billing threshold
-        /// being reached.
+        /// Indicates the reason why the invoice was created.
+        ///
+        /// * <c>manual</c>: Unrelated to a subscription, for example, created via the invoice
+        /// editor. * <c>subscription</c>: No longer in use. Applies to subscriptions from before
+        /// May 2018 where no distinction was made between updates, cycles, and thresholds. *
+        /// <c>subscription_create</c>: A new subscription was created. * <c>subscription_cycle</c>:
+        /// A subscription advanced into a new period. * <c>subscription_threshold</c>: A
+        /// subscription reached a billing threshold. * <c>subscription_update</c>: A subscription
+        /// was updated. * <c>upcoming</c>: Reserved for simulated invoices, per the upcoming
+        /// invoice endpoint.
         /// One of: <c>automatic_pending_invoice_item_invoice</c>, <c>manual</c>,
         /// <c>quote_accept</c>, <c>subscription</c>, <c>subscription_create</c>,
         /// <c>subscription_cycle</c>, <c>subscription_threshold</c>, <c>subscription_update</c>, or
@@ -506,6 +507,15 @@ namespace Stripe
         public DateTime? DueDate { get; set; }
 
         /// <summary>
+        /// The date when this invoice is in effect. Same as <c>finalized_at</c> unless overwritten.
+        /// When defined, this value replaces the system-generated 'Date of issue' printed on the
+        /// invoice PDF and receipt.
+        /// </summary>
+        [JsonProperty("effective_at")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? EffectiveAt { get; set; }
+
+        /// <summary>
         /// Ending customer balance after the invoice is finalized. Invoices are finalized
         /// approximately an hour after successful webhook delivery or when payment collection is
         /// attempted for the invoice. If the invoice has not been finalized yet, this will be null.
@@ -540,6 +550,9 @@ namespace Stripe
         /// </summary>
         [JsonProperty("invoice_pdf")]
         public string InvoicePdf { get; set; }
+
+        [JsonProperty("issuer")]
+        public InvoiceIssuer Issuer { get; set; }
 
         /// <summary>
         /// The error encountered during the previous attempt to finalize the invoice. This field is
@@ -771,7 +784,16 @@ namespace Stripe
         public string ReceiptNumber { get; set; }
 
         /// <summary>
-        /// Options for invoice PDF rendering.
+        /// The rendering-related settings that control how the invoice is displayed on
+        /// customer-facing surfaces such as PDF and Hosted Invoice Page.
+        /// </summary>
+        [JsonProperty("rendering")]
+        public InvoiceRendering Rendering { get; set; }
+
+        /// <summary>
+        /// This is a legacy field that will be removed soon. For details about
+        /// <c>rendering_options</c>, refer to <c>rendering</c> instead. Options for invoice PDF
+        /// rendering.
         /// </summary>
         [JsonProperty("rendering_options")]
         public InvoiceRenderingOptions RenderingOptions { get; set; }
@@ -809,8 +831,7 @@ namespace Stripe
         /// <c>uncollectible</c>, or <c>void</c>. <a
         /// href="https://stripe.com/docs/billing/invoices/workflow#workflow-overview">Learn
         /// more</a>.
-        /// One of: <c>deleted</c>, <c>draft</c>, <c>open</c>, <c>paid</c>, <c>uncollectible</c>, or
-        /// <c>void</c>.
+        /// One of: <c>draft</c>, <c>open</c>, <c>paid</c>, <c>uncollectible</c>, or <c>void</c>.
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }
@@ -850,6 +871,12 @@ namespace Stripe
         #endregion
 
         /// <summary>
+        /// Details about the subscription that created this invoice.
+        /// </summary>
+        [JsonProperty("subscription_details")]
+        public InvoiceSubscriptionDetails SubscriptionDetails { get; set; }
+
+        /// <summary>
         /// Only set for upcoming invoices that preview prorations. The time used to calculate
         /// prorations.
         /// </summary>
@@ -866,8 +893,9 @@ namespace Stripe
         public long Subtotal { get; set; }
 
         /// <summary>
-        /// The integer amount in %s representing the subtotal of the invoice before any invoice
-        /// level discount or tax is applied. Item discounts are already incorporated.
+        /// The integer amount in cents (or local equivalent) representing the subtotal of the
+        /// invoice before any invoice level discount or tax is applied. Item discounts are already
+        /// incorporated.
         /// </summary>
         [JsonProperty("subtotal_excluding_tax")]
         public long? SubtotalExcludingTax { get; set; }
@@ -926,8 +954,8 @@ namespace Stripe
         public List<InvoiceDiscountAmount> TotalDiscountAmounts { get; set; }
 
         /// <summary>
-        /// The integer amount in %s representing the total amount of the invoice including all
-        /// discounts but excluding all tax.
+        /// The integer amount in cents (or local equivalent) representing the total amount of the
+        /// invoice including all discounts but excluding all tax.
         /// </summary>
         [JsonProperty("total_excluding_tax")]
         public long? TotalExcludingTax { get; set; }

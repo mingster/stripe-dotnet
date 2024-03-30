@@ -8,13 +8,23 @@ namespace Stripe
     {
         /// <summary>
         /// Controls when the funds will be captured from the customer's account.
-        /// One of: <c>automatic</c>, or <c>manual</c>.
+        /// One of: <c>automatic</c>, <c>automatic_async</c>, or <c>manual</c>.
         /// </summary>
         [JsonProperty("capture_method")]
         public string CaptureMethod { get; set; }
 
         [JsonProperty("client_secret")]
         public string ClientSecret { get; set; }
+
+        /// <summary>
+        /// ID of the ConfirmationToken used to confirm this PaymentIntent.
+        ///
+        /// If the provided ConfirmationToken contains properties that are also being provided in
+        /// this request, such as <c>payment_method</c>, then the values in this request will take
+        /// precedence.
+        /// </summary>
+        [JsonProperty("confirmation_token")]
+        public string ConfirmationToken { get; set; }
 
         /// <summary>
         /// Set to <c>true</c> to fail the payment attempt if the PaymentIntent transitions into
@@ -27,7 +37,7 @@ namespace Stripe
         public bool? ErrorOnRequiresAction { get; set; }
 
         /// <summary>
-        /// ID of the mandate to be used for this payment.
+        /// ID of the mandate that's used for this payment.
         /// </summary>
         [JsonProperty("mandate")]
         public string Mandate { get; set; }
@@ -35,6 +45,13 @@ namespace Stripe
         [JsonProperty("mandate_data")]
         public PaymentIntentMandateDataOptions MandateData { get; set; }
 
+        /// <summary>
+        /// Set to <c>true</c> to indicate that the customer isn't in your checkout flow during this
+        /// payment attempt and can't authenticate. Use this parameter in scenarios where you
+        /// collect card details and <a
+        /// href="https://stripe.com/docs/payments/cards/charging-saved-cards">charge them
+        /// later</a>.
+        /// </summary>
         [JsonProperty("off_session")]
         public bool? OffSession { get; set; }
 
@@ -56,7 +73,7 @@ namespace Stripe
         public PaymentIntentPaymentMethodDataOptions PaymentMethodData { get; set; }
 
         /// <summary>
-        /// Payment-method-specific configuration for this PaymentIntent.
+        /// Payment method-specific configuration for this PaymentIntent.
         /// </summary>
         [JsonProperty("payment_method_options")]
         public PaymentIntentPaymentMethodOptionsOptions PaymentMethodOptions { get; set; }
@@ -69,9 +86,8 @@ namespace Stripe
         public List<string> PaymentMethodTypes { get; set; }
 
         /// <summary>
-        /// Options to configure Radar. See <a
-        /// href="https://stripe.com/docs/radar/radar-session">Radar Session</a> for more
-        /// information.
+        /// Options to configure Radar. Learn more about <a
+        /// href="https://stripe.com/docs/radar/radar-session">Radar Sessions</a>.
         /// </summary>
         [JsonProperty("radar_options")]
         public PaymentIntentRadarOptionsOptions RadarOptions { get; set; }
@@ -113,6 +129,7 @@ namespace Stripe
         /// If <c>setup_future_usage</c> is already set and you are performing a request using a
         /// publishable key, you may only update the value from <c>on_session</c> to
         /// <c>off_session</c>.
+        /// One of: <c>off_session</c>, or <c>on_session</c>.
         /// </summary>
         [JsonProperty("setup_future_usage")]
         public string SetupFutureUsage { get; set; }
@@ -124,8 +141,8 @@ namespace Stripe
         public ChargeShippingOptions Shipping { get; set; }
 
         /// <summary>
-        /// Set to <c>true</c> only when using manual confirmation and the iOS or Android SDKs to
-        /// handle additional authentication steps.
+        /// Set to <c>true</c> when confirming server-side and using Stripe.js, iOS, or Android
+        /// client-side SDKs to handle the next actions.
         /// </summary>
         [JsonProperty("use_stripe_sdk")]
         public bool? UseStripeSdk { get; set; }

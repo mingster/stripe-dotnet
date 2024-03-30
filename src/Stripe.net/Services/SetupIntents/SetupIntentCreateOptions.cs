@@ -19,12 +19,29 @@ namespace Stripe
         public bool? AttachToSelf { get; set; }
 
         /// <summary>
+        /// When you enable this parameter, this SetupIntent accepts payment methods that you enable
+        /// in the Dashboard and that are compatible with its other parameters.
+        /// </summary>
+        [JsonProperty("automatic_payment_methods")]
+        public SetupIntentAutomaticPaymentMethodsOptions AutomaticPaymentMethods { get; set; }
+
+        /// <summary>
         /// Set to <c>true</c> to attempt to confirm this SetupIntent immediately. This parameter
-        /// defaults to <c>false</c>. If the payment method attached is a card, a return_url may be
-        /// provided in case additional authentication is required.
+        /// defaults to <c>false</c>. If a card is the attached payment method, you can provide a
+        /// <c>return_url</c> in case further authentication is necessary.
         /// </summary>
         [JsonProperty("confirm")]
         public bool? Confirm { get; set; }
+
+        /// <summary>
+        /// ID of the ConfirmationToken used to confirm this SetupIntent.
+        ///
+        /// If the provided ConfirmationToken contains properties that are also being provided in
+        /// this request, such as <c>payment_method</c>, then the values in this request will take
+        /// precedence.
+        /// </summary>
+        [JsonProperty("confirmation_token")]
+        public string ConfirmationToken { get; set; }
 
         /// <summary>
         /// ID of the Customer this SetupIntent belongs to, if one exists.
@@ -50,12 +67,13 @@ namespace Stripe
         /// funds from. Include <c>outbound</c> if you intend to use the payment method as the
         /// destination to send funds to. You can include both if you intend to use the payment
         /// method for both purposes.
+        /// One of: <c>inbound</c>, or <c>outbound</c>.
         /// </summary>
         [JsonProperty("flow_directions")]
         public List<string> FlowDirections { get; set; }
 
         /// <summary>
-        /// This hash contains details about the Mandate to create. This parameter can only be used
+        /// This hash contains details about the mandate to create. This parameter can only be used
         /// with <a
         /// href="https://stripe.com/docs/api/setup_intents/create#create_setup_intent-confirm"><c>confirm=true</c></a>.
         /// </summary>
@@ -72,7 +90,7 @@ namespace Stripe
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
-        /// The Stripe account ID for which this SetupIntent is created.
+        /// The Stripe account ID created for this SetupIntent.
         /// </summary>
         [JsonProperty("on_behalf_of")]
         public string OnBehalfOf { get; set; }
@@ -85,6 +103,12 @@ namespace Stripe
         public string PaymentMethod { get; set; }
 
         /// <summary>
+        /// The ID of the payment method configuration to use with this SetupIntent.
+        /// </summary>
+        [JsonProperty("payment_method_configuration")]
+        public string PaymentMethodConfiguration { get; set; }
+
+        /// <summary>
         /// When included, this hash creates a PaymentMethod that is set as the <a
         /// href="https://stripe.com/docs/api/setup_intents/object#setup_intent_object-payment_method"><c>payment_method</c></a>
         /// value in the SetupIntent.
@@ -93,31 +117,31 @@ namespace Stripe
         public SetupIntentPaymentMethodDataOptions PaymentMethodData { get; set; }
 
         /// <summary>
-        /// Payment-method-specific configuration for this SetupIntent.
+        /// Payment method-specific configuration for this SetupIntent.
         /// </summary>
         [JsonProperty("payment_method_options")]
         public SetupIntentPaymentMethodOptionsOptions PaymentMethodOptions { get; set; }
 
         /// <summary>
-        /// The list of payment method types (e.g. card) that this SetupIntent is allowed to use. If
-        /// this is not provided, defaults to ["card"].
+        /// The list of payment method types (for example, card) that this SetupIntent can use. If
+        /// you don't provide this, it defaults to ["card"].
         /// </summary>
         [JsonProperty("payment_method_types")]
         public List<string> PaymentMethodTypes { get; set; }
 
         /// <summary>
         /// The URL to redirect your customer back to after they authenticate or cancel their
-        /// payment on the payment method's app or site. If you'd prefer to redirect to a mobile
-        /// application, you can alternatively supply an application URI scheme. This parameter can
-        /// only be used with <a
+        /// payment on the payment method's app or site. To redirect to a mobile application, you
+        /// can alternatively supply an application URI scheme. This parameter can only be used with
+        /// <a
         /// href="https://stripe.com/docs/api/setup_intents/create#create_setup_intent-confirm"><c>confirm=true</c></a>.
         /// </summary>
         [JsonProperty("return_url")]
         public string ReturnUrl { get; set; }
 
         /// <summary>
-        /// If this hash is populated, this SetupIntent will generate a single_use Mandate on
-        /// success.
+        /// If you populate this hash, this SetupIntent generates a <c>single_use</c> mandate after
+        /// successful completion.
         /// </summary>
         [JsonProperty("single_use")]
         public SetupIntentSingleUseOptions SingleUse { get; set; }
@@ -129,5 +153,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("usage")]
         public string Usage { get; set; }
+
+        /// <summary>
+        /// Set to <c>true</c> when confirming server-side and using Stripe.js, iOS, or Android
+        /// client-side SDKs to handle the next actions.
+        /// </summary>
+        [JsonProperty("use_stripe_sdk")]
+        public bool? UseStripeSdk { get; set; }
     }
 }

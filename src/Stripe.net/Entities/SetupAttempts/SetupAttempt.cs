@@ -8,8 +8,8 @@ namespace Stripe
 
     /// <summary>
     /// A SetupAttempt describes one attempted confirmation of a SetupIntent, whether that
-    /// confirmation was successful or unsuccessful. You can use SetupAttempts to inspect
-    /// details of a specific attempt at setting up a payment method using a SetupIntent.
+    /// confirmation is successful or unsuccessful. You can use SetupAttempts to inspect details
+    /// of a specific attempt at setting up a payment method using a SetupIntent.
     /// </summary>
     public class SetupAttempt : StripeEntity<SetupAttempt>, IHasId, IHasObject
     {
@@ -122,6 +122,7 @@ namespace Stripe
         /// funds from. Include <c>outbound</c> if you intend to use the payment method as the
         /// destination to send funds to. You can include both if you intend to use the payment
         /// method for both purposes.
+        /// One of: <c>inbound</c>, or <c>outbound</c>.
         /// </summary>
         [JsonProperty("flow_directions")]
         public List<string> FlowDirections { get; set; }

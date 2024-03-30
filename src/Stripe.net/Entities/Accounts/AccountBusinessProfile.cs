@@ -6,12 +6,28 @@ namespace Stripe
     public class AccountBusinessProfile : StripeEntity<AccountBusinessProfile>
     {
         /// <summary>
+        /// The applicant's gross annual revenue for its preceding fiscal year.
+        /// </summary>
+        [JsonProperty("annual_revenue")]
+        public AccountBusinessProfileAnnualRevenue AnnualRevenue { get; set; }
+
+        /// <summary>
+        /// An estimated upper bound of employees, contractors, vendors, etc. currently working for
+        /// the business.
+        /// </summary>
+        [JsonProperty("estimated_worker_count")]
+        public long? EstimatedWorkerCount { get; set; }
+
+        /// <summary>
         /// <a href="https://stripe.com/docs/connect/setting-mcc">The merchant category code for the
         /// account</a>. MCCs are used to classify businesses based on the goods or services they
         /// provide.
         /// </summary>
         [JsonProperty("mcc")]
         public string Mcc { get; set; }
+
+        [JsonProperty("monthly_estimated_revenue")]
+        public AccountBusinessProfileMonthlyEstimatedRevenue MonthlyEstimatedRevenue { get; set; }
 
         /// <summary>
         /// The customer-facing business name.

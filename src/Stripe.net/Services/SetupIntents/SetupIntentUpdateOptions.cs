@@ -42,6 +42,7 @@ namespace Stripe
         /// funds from. Include <c>outbound</c> if you intend to use the payment method as the
         /// destination to send funds to. You can include both if you intend to use the payment
         /// method for both purposes.
+        /// One of: <c>inbound</c>, or <c>outbound</c>.
         /// </summary>
         [JsonProperty("flow_directions")]
         public List<string> FlowDirections { get; set; }
@@ -63,6 +64,12 @@ namespace Stripe
         public string PaymentMethod { get; set; }
 
         /// <summary>
+        /// The ID of the payment method configuration to use with this SetupIntent.
+        /// </summary>
+        [JsonProperty("payment_method_configuration")]
+        public string PaymentMethodConfiguration { get; set; }
+
+        /// <summary>
         /// When included, this hash creates a PaymentMethod that is set as the <a
         /// href="https://stripe.com/docs/api/setup_intents/object#setup_intent_object-payment_method"><c>payment_method</c></a>
         /// value in the SetupIntent.
@@ -71,14 +78,14 @@ namespace Stripe
         public SetupIntentPaymentMethodDataOptions PaymentMethodData { get; set; }
 
         /// <summary>
-        /// Payment-method-specific configuration for this SetupIntent.
+        /// Payment method-specific configuration for this SetupIntent.
         /// </summary>
         [JsonProperty("payment_method_options")]
         public SetupIntentPaymentMethodOptionsOptions PaymentMethodOptions { get; set; }
 
         /// <summary>
-        /// The list of payment method types (e.g. card) that this SetupIntent is allowed to set up.
-        /// If this is not provided, defaults to ["card"].
+        /// The list of payment method types (for example, card) that this SetupIntent can set up.
+        /// If you don't provide this array, it defaults to ["card"].
         /// </summary>
         [JsonProperty("payment_method_types")]
         public List<string> PaymentMethodTypes { get; set; }

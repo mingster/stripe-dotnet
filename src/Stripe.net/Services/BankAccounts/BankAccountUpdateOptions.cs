@@ -15,6 +15,7 @@ namespace Stripe
         /// <summary>
         /// The type of entity that holds the account. This can be either <c>individual</c> or
         /// <c>company</c>.
+        /// One of: <c>company</c>, or <c>individual</c>.
         /// </summary>
         [JsonProperty("account_holder_type")]
         public string AccountHolderType { get; set; }
@@ -26,6 +27,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("account_type")]
         public string AccountType { get; set; }
+
+        /// <summary>
+        /// Documents that may be submitted to satisfy various informational requests.
+        /// </summary>
+        [JsonProperty("documents")]
+        public BankAccountDocumentsOptions Documents { get; set; }
 
         /// <summary>
         /// Set of <a href="https://stripe.com/docs/api/metadata">key-value pairs</a> that you can

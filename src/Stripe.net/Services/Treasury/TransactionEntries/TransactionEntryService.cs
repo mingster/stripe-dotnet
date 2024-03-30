@@ -1,7 +1,9 @@
 // File generated from our OpenAPI spec
 namespace Stripe.Treasury
 {
+    using System;
     using System.Collections.Generic;
+    using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -10,7 +12,6 @@ namespace Stripe.Treasury
         IRetrievable<TransactionEntry, TransactionEntryGetOptions>
     {
         public TransactionEntryService()
-            : base(null)
         {
         }
 
@@ -19,36 +20,55 @@ namespace Stripe.Treasury
         {
         }
 
+        [Obsolete("This member is deprecated and will be removed in a future release")]
         public override string BasePath => "/v1/treasury/transaction_entries";
 
+        /// <summary>
+        /// <p>Retrieves a TransactionEntry object.</p>.
+        /// </summary>
         public virtual TransactionEntry Get(string id, TransactionEntryGetOptions options = null, RequestOptions requestOptions = null)
         {
-            return this.GetEntity(id, options, requestOptions);
+            return this.Request<TransactionEntry>(HttpMethod.Get, $"/v1/treasury/transaction_entries/{id}", options, requestOptions);
         }
 
+        /// <summary>
+        /// <p>Retrieves a TransactionEntry object.</p>.
+        /// </summary>
         public virtual Task<TransactionEntry> GetAsync(string id, TransactionEntryGetOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.GetEntityAsync(id, options, requestOptions, cancellationToken);
+            return this.RequestAsync<TransactionEntry>(HttpMethod.Get, $"/v1/treasury/transaction_entries/{id}", options, requestOptions, cancellationToken);
         }
 
+        /// <summary>
+        /// <p>Retrieves a list of TransactionEntry objects.</p>.
+        /// </summary>
         public virtual StripeList<TransactionEntry> List(TransactionEntryListOptions options = null, RequestOptions requestOptions = null)
         {
-            return this.ListEntities(options, requestOptions);
+            return this.Request<StripeList<TransactionEntry>>(HttpMethod.Get, $"/v1/treasury/transaction_entries", options, requestOptions);
         }
 
+        /// <summary>
+        /// <p>Retrieves a list of TransactionEntry objects.</p>.
+        /// </summary>
         public virtual Task<StripeList<TransactionEntry>> ListAsync(TransactionEntryListOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListEntitiesAsync(options, requestOptions, cancellationToken);
+            return this.RequestAsync<StripeList<TransactionEntry>>(HttpMethod.Get, $"/v1/treasury/transaction_entries", options, requestOptions, cancellationToken);
         }
 
+        /// <summary>
+        /// <p>Retrieves a list of TransactionEntry objects.</p>.
+        /// </summary>
         public virtual IEnumerable<TransactionEntry> ListAutoPaging(TransactionEntryListOptions options = null, RequestOptions requestOptions = null)
         {
-            return this.ListEntitiesAutoPaging(options, requestOptions);
+            return this.ListRequestAutoPaging<TransactionEntry>($"/v1/treasury/transaction_entries", options, requestOptions);
         }
 
+        /// <summary>
+        /// <p>Retrieves a list of TransactionEntry objects.</p>.
+        /// </summary>
         public virtual IAsyncEnumerable<TransactionEntry> ListAutoPagingAsync(TransactionEntryListOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListEntitiesAutoPagingAsync(options, requestOptions, cancellationToken);
+            return this.ListRequestAutoPagingAsync<TransactionEntry>($"/v1/treasury/transaction_entries", options, requestOptions, cancellationToken);
         }
     }
 }

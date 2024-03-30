@@ -2,6 +2,7 @@
 namespace Stripe.Treasury
 {
     using Newtonsoft.Json;
+    using Stripe.Infrastructure;
 
     public class OutboundTransferDestinationPaymentMethodDetailsUsBankAccount : StripeEntity<OutboundTransferDestinationPaymentMethodDetailsUsBankAccount>
     {
@@ -38,8 +39,41 @@ namespace Stripe.Treasury
         [JsonProperty("last4")]
         public string Last4 { get; set; }
 
+        #region Expandable Mandate
+
         /// <summary>
-        /// The US bank account network used to send funds.
+        /// (ID of the Mandate)
+        /// ID of the mandate used to make this payment.
+        /// </summary>
+        [JsonIgnore]
+        public string MandateId
+        {
+            get => this.InternalMandate?.Id;
+            set => this.InternalMandate = SetExpandableFieldId(value, this.InternalMandate);
+        }
+
+        /// <summary>
+        /// (Expanded)
+        /// ID of the mandate used to make this payment.
+        ///
+        /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
+        /// </summary>
+        [JsonIgnore]
+        public Mandate Mandate
+        {
+            get => this.InternalMandate?.ExpandedObject;
+            set => this.InternalMandate = SetExpandableFieldObject(value, this.InternalMandate);
+        }
+
+        [JsonProperty("mandate")]
+        [JsonConverter(typeof(ExpandableFieldConverter<Mandate>))]
+        internal ExpandableField<Mandate> InternalMandate { get; set; }
+        #endregion
+
+        /// <summary>
+        /// The network rails used. See the <a
+        /// href="https://stripe.com/docs/treasury/money-movement/timelines">docs</a> to learn more
+        /// about money movement timelines for each network type.
         /// One of: <c>ach</c>, or <c>us_domestic_wire</c>.
         /// </summary>
         [JsonProperty("network")]

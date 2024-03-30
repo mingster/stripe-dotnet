@@ -15,6 +15,7 @@ namespace Stripe
         /// <summary>
         /// The type of entity that holds the account. This can be either <c>individual</c> or
         /// <c>company</c>.
+        /// One of: <c>company</c>, or <c>individual</c>.
         /// </summary>
         [JsonProperty("account_holder_type")]
         public string AccountHolderType { get; set; }
@@ -68,6 +69,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("default_for_currency")]
         public bool? DefaultForCurrency { get; set; }
+
+        /// <summary>
+        /// Documents that may be submitted to satisfy various informational requests.
+        /// </summary>
+        [JsonProperty("documents")]
+        public ExternalAccountDocumentsOptions Documents { get; set; }
 
         /// <summary>
         /// Two digit number representing the card’s expiration month.

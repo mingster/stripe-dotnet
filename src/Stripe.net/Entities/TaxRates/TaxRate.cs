@@ -13,7 +13,7 @@ namespace Stripe
     /// href="https://stripe.com/docs/payments/checkout/set-up-a-subscription#tax-rates">Checkout
     /// Sessions</a> to collect tax.
     ///
-    /// Related guide: <a href="https://stripe.com/docs/billing/taxes/tax-rates">Tax Rates</a>.
+    /// Related guide: <a href="https://stripe.com/docs/billing/taxes/tax-rates">Tax rates</a>.
     /// </summary>
     public class TaxRate : StripeEntity<TaxRate>, IHasId, IHasMetadata, IHasObject
     {
@@ -66,6 +66,15 @@ namespace Stripe
         public string DisplayName { get; set; }
 
         /// <summary>
+        /// Actual/effective tax rate percentage out of 100. For tax calculations with
+        /// automatic_tax[enabled]=true, this percentage reflects the rate actually used to
+        /// calculate tax based on the product's taxability and whether the user is registered to
+        /// collect taxes in the corresponding jurisdiction.
+        /// </summary>
+        [JsonProperty("effective_percentage")]
+        public decimal? EffectivePercentage { get; set; }
+
+        /// <summary>
         /// This specifies if the tax rate is inclusive or exclusive.
         /// </summary>
         [JsonProperty("inclusive")]
@@ -77,6 +86,15 @@ namespace Stripe
         /// </summary>
         [JsonProperty("jurisdiction")]
         public string Jurisdiction { get; set; }
+
+        /// <summary>
+        /// The level of the jurisdiction that imposes this tax rate. Will be <c>null</c> for
+        /// manually defined tax rates.
+        /// One of: <c>city</c>, <c>country</c>, <c>county</c>, <c>district</c>, <c>multiple</c>, or
+        /// <c>state</c>.
+        /// </summary>
+        [JsonProperty("jurisdiction_level")]
+        public string JurisdictionLevel { get; set; }
 
         /// <summary>
         /// Has the value <c>true</c> if the object exists in live mode or the value <c>false</c> if
@@ -94,7 +112,8 @@ namespace Stripe
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
-        /// This represents the tax rate percent out of 100.
+        /// Tax rate percentage out of 100. For tax calculations with automatic_tax[enabled]=true,
+        /// this percentage includes the statutory tax rate of non-taxable jurisdictions.
         /// </summary>
         [JsonProperty("percentage")]
         public decimal Percentage { get; set; }
@@ -108,8 +127,9 @@ namespace Stripe
 
         /// <summary>
         /// The high-level tax type, such as <c>vat</c> or <c>sales_tax</c>.
-        /// One of: <c>gst</c>, <c>hst</c>, <c>igst</c>, <c>jct</c>, <c>lease_tax</c>, <c>pst</c>,
-        /// <c>qst</c>, <c>rst</c>, <c>sales_tax</c>, or <c>vat</c>.
+        /// One of: <c>amusement_tax</c>, <c>communications_tax</c>, <c>gst</c>, <c>hst</c>,
+        /// <c>igst</c>, <c>jct</c>, <c>lease_tax</c>, <c>pst</c>, <c>qst</c>, <c>rst</c>,
+        /// <c>sales_tax</c>, <c>vat</c>, or <c>service_tax</c>.
         /// </summary>
         [JsonProperty("tax_type")]
         public string TaxType { get; set; }

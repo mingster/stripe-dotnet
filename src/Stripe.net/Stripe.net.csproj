@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Stripe.net is a sync/async .NET 4.6.1+ client, and a portable class library for the Stripe API.  (Official Library)</Description>
-    <Version>41.8.0</Version>
+    <Version>43.21.0</Version>
     <LangVersion>8</LangVersion>
     <Authors>Stripe, Jayme Davis</Authors>
 	  <TargetFrameworks>net461</TargetFrameworks>
@@ -21,6 +21,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>embedded</DebugType>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion Condition="'$(RunBaselineCheck)' == 'true'">$(Version)</PackageValidationBaselineVersion>
+    <NuGetAudit>false</NuGetAudit>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +34,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <PropertyGroup>
@@ -76,4 +81,5 @@
     <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
     <None Include="icon.png" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
+
 </Project>

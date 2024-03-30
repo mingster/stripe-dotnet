@@ -14,7 +14,7 @@ namespace Stripe
     /// bank accounts or debit cards as well, and are documented in the links above.
     ///
     /// Related guide: <a href="https://stripe.com/docs/payments/bank-debits-transfers">Bank
-    /// Debits and Transfers</a>.
+    /// debits and transfers</a>.
     /// </summary>
     public class BankAccount : StripeEntity<BankAccount>, IHasId, IHasMetadata, IHasObject, IExternalAccount, IPaymentSource
     {
@@ -84,6 +84,7 @@ namespace Stripe
         /// <summary>
         /// A set of available payout methods for this bank account. Only values from this set
         /// should be passed as the <c>method</c> when creating a payout.
+        /// One of: <c>instant</c>, or <c>standard</c>.
         /// </summary>
         [JsonProperty("available_payout_methods")]
         public List<string> AvailablePayoutMethods { get; set; }
@@ -158,6 +159,15 @@ namespace Stripe
         public string Fingerprint { get; set; }
 
         /// <summary>
+        /// Information about the <a
+        /// href="https://stripe.com/docs/connect/custom-accounts/future-requirements">upcoming new
+        /// requirements for the bank account</a>, including what information needs to be collected,
+        /// and by when.
+        /// </summary>
+        [JsonProperty("future_requirements")]
+        public BankAccountFutureRequirements FutureRequirements { get; set; }
+
+        /// <summary>
         /// The last four digits of the bank account number.
         /// </summary>
         [JsonProperty("last4")]
@@ -170,6 +180,13 @@ namespace Stripe
         /// </summary>
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; set; }
+
+        /// <summary>
+        /// Information about the requirements for the bank account, including what information
+        /// needs to be collected.
+        /// </summary>
+        [JsonProperty("requirements")]
+        public BankAccountRequirements Requirements { get; set; }
 
         /// <summary>
         /// The routing transit number for the bank account.
@@ -185,14 +202,19 @@ namespace Stripe
         /// information to know (e.g., for smaller credit unions), and the validation is not always
         /// run. If customer bank account verification has succeeded, the bank account status will
         /// be <c>verified</c>. If the verification failed for any reason, such as microdeposit
-        /// failure, the status will be <c>verification_failed</c>. If a transfer sent to this bank
-        /// account fails, we'll set the status to <c>errored</c> and will not continue to send
-        /// transfers until the bank details are updated.
+        /// failure, the status will be <c>verification_failed</c>. If a payout sent to this bank
+        /// account fails, we'll set the status to <c>errored</c> and will not continue to send <a
+        /// href="https://stripe.com/docs/payouts#payout-schedule">scheduled payouts</a> until the
+        /// bank details are updated.
         ///
-        /// For external accounts, possible values are <c>new</c> and <c>errored</c>. Validations
-        /// aren't run against external accounts because they're only used for payouts. This means
-        /// the other statuses don't apply. If a transfer fails, the status is set to <c>errored</c>
-        /// and transfers are stopped until account details are updated.
+        /// For external accounts, possible values are <c>new</c>, <c>errored</c> and
+        /// <c>verification_failed</c>. If a payout fails, the status is set to <c>errored</c> and
+        /// scheduled payouts are stopped until account details are updated. In the US and India, if
+        /// we can't <a
+        /// href="https://support.stripe.com/questions/bank-account-ownership-verification">verify
+        /// the owner of the bank account</a>, we'll set the status to <c>verification_failed</c>.
+        /// Other validations aren't run against external accounts because they're only used for
+        /// payouts. This means the other statuses don't apply.
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }

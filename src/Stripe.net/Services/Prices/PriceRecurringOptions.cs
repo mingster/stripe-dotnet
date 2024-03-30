@@ -6,12 +6,8 @@ namespace Stripe
     public class PriceRecurringOptions : INestedOptions
     {
         /// <summary>
-        /// Specifies a usage aggregation strategy for prices of <c>usage_type=metered</c>. Allowed
-        /// values are <c>sum</c> for summing up all usage during a period,
-        /// <c>last_during_period</c> for using the last usage record reported within a period,
-        /// <c>last_ever</c> for using the last usage record ever (across period bounds) or
-        /// <c>max</c> which uses the usage record with the maximum reported usage during a period.
-        /// Defaults to <c>sum</c>.
+        /// Specifies a usage aggregation strategy for prices of <c>usage_type=metered</c>. Defaults
+        /// to <c>sum</c>.
         /// One of: <c>last_during_period</c>, <c>last_ever</c>, <c>max</c>, or <c>sum</c>.
         /// </summary>
         [JsonProperty("aggregate_usage")]
@@ -27,11 +23,17 @@ namespace Stripe
 
         /// <summary>
         /// The number of intervals between subscription billings. For example,
-        /// <c>interval=month</c> and <c>interval_count=3</c> bills every 3 months. Maximum of one
-        /// year interval allowed (1 year, 12 months, or 52 weeks).
+        /// <c>interval=month</c> and <c>interval_count=3</c> bills every 3 months. Maximum of three
+        /// years interval allowed (3 years, 36 months, or 156 weeks).
         /// </summary>
         [JsonProperty("interval_count")]
         public long? IntervalCount { get; set; }
+
+        /// <summary>
+        /// The meter tracking the usage of a metered price.
+        /// </summary>
+        [JsonProperty("meter")]
+        public string Meter { get; set; }
 
         /// <summary>
         /// Default number of trial days when subscribing a customer to this price using <a

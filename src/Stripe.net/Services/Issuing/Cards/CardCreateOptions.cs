@@ -32,6 +32,18 @@ namespace Stripe.Issuing
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
+        /// The personalization design object belonging to this card.
+        /// </summary>
+        [JsonProperty("personalization_design")]
+        public string PersonalizationDesign { get; set; }
+
+        /// <summary>
+        /// The desired PIN for this card.
+        /// </summary>
+        [JsonProperty("pin")]
+        public CardPinOptions Pin { get; set; }
+
+        /// <summary>
         /// The card this is meant to be a replacement for (if any).
         /// </summary>
         [JsonProperty("replacement_for")]
@@ -44,6 +56,12 @@ namespace Stripe.Issuing
         /// </summary>
         [JsonProperty("replacement_reason")]
         public string ReplacementReason { get; set; }
+
+        /// <summary>
+        /// The second line to print on the card.
+        /// </summary>
+        [JsonProperty("second_line")]
+        public string SecondLine { get; set; }
 
         /// <summary>
         /// The address where the card will be shipped.

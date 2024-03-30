@@ -57,7 +57,7 @@ namespace Stripe
         public PaymentIntentAmountDetails AmountDetails { get; set; }
 
         /// <summary>
-        /// Amount that was collected by this PaymentIntent.
+        /// Amount that this PaymentIntent collects.
         /// </summary>
         [JsonProperty("amount_received")]
         public long AmountReceived { get; set; }
@@ -131,7 +131,7 @@ namespace Stripe
 
         /// <summary>
         /// Controls when the funds will be captured from the customer's account.
-        /// One of: <c>automatic</c>, or <c>manual</c>.
+        /// One of: <c>automatic</c>, <c>automatic_async</c>, or <c>manual</c>.
         /// </summary>
         [JsonProperty("capture_method")]
         public string CaptureMethod { get; set; }
@@ -151,6 +151,11 @@ namespace Stripe
         [JsonProperty("client_secret")]
         public string ClientSecret { get; set; }
 
+        /// <summary>
+        /// Describes whether we can confirm this PaymentIntent automatically, or if it requires
+        /// customer action to confirm the payment.
+        /// One of: <c>automatic</c>, or <c>manual</c>.
+        /// </summary>
         [JsonProperty("confirmation_method")]
         public string ConfirmationMethod { get; set; }
 
@@ -262,7 +267,7 @@ namespace Stripe
 
         /// <summary>
         /// (ID of the Charge)
-        /// The latest charge created by this payment intent.
+        /// The latest charge created by this PaymentIntent.
         /// </summary>
         [JsonIgnore]
         public string LatestChargeId
@@ -273,7 +278,7 @@ namespace Stripe
 
         /// <summary>
         /// (Expanded)
-        /// The latest charge created by this payment intent.
+        /// The latest charge created by this PaymentIntent.
         ///
         /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
         /// </summary>
@@ -299,8 +304,9 @@ namespace Stripe
         /// <summary>
         /// Set of <a href="https://stripe.com/docs/api/metadata">key-value pairs</a> that you can
         /// attach to an object. This can be useful for storing additional information about the
-        /// object in a structured format. For more information, see the <a
-        /// href="https://stripe.com/docs/payments/payment-intents/creating-payment-intents#storing-information-in-metadata">documentation</a>.
+        /// object in a structured format. Learn more about <a
+        /// href="https://stripe.com/docs/payments/payment-intents/creating-payment-intents#storing-information-in-metadata">storing
+        /// information in metadata</a>.
         /// </summary>
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; set; }
@@ -377,6 +383,12 @@ namespace Stripe
         [JsonConverter(typeof(ExpandableFieldConverter<PaymentMethod>))]
         internal ExpandableField<PaymentMethod> InternalPaymentMethod { get; set; }
         #endregion
+
+        /// <summary>
+        /// Information about the payment method configuration used for this PaymentIntent.
+        /// </summary>
+        [JsonProperty("payment_method_configuration_details")]
+        public PaymentIntentPaymentMethodConfigurationDetails PaymentMethodConfigurationDetails { get; set; }
 
         /// <summary>
         /// Payment-method-specific configuration for this PaymentIntent.
@@ -496,8 +508,10 @@ namespace Stripe
         #endregion
 
         /// <summary>
-        /// For non-card charges, you can use this value as the complete description that appears on
-        /// your customers’ statements. Must contain at least one letter, maximum 22 characters.
+        /// For card charges, use <a
+        /// href="https://stripe.com/docs/payments/account/statement-descriptors#dynamic">statement_descriptor_suffix</a>.
+        /// Otherwise, you can use this value as the complete description of a charge on your
+        /// customers' statements. It must contain at least one letter and be 1–22 characters long.
         /// </summary>
         [JsonProperty("statement_descriptor")]
         public string StatementDescriptor { get; set; }
@@ -525,17 +539,17 @@ namespace Stripe
         public string Status { get; set; }
 
         /// <summary>
-        /// The data with which to automatically create a Transfer when the payment is finalized.
-        /// See the PaymentIntents <a href="https://stripe.com/docs/payments/connected-accounts">use
-        /// case for connected accounts</a> for details.
+        /// The data that automatically creates a Transfer after the payment finalizes. Learn more
+        /// about the <a href="https://stripe.com/docs/payments/connected-accounts">use case for
+        /// connected accounts</a>.
         /// </summary>
         [JsonProperty("transfer_data")]
         public PaymentIntentTransferData TransferData { get; set; }
 
         /// <summary>
-        /// A string that identifies the resulting payment as part of a group. See the
-        /// PaymentIntents <a href="https://stripe.com/docs/payments/connected-accounts">use case
-        /// for connected accounts</a> for details.
+        /// A string that identifies the resulting payment as part of a group. Learn more about the
+        /// <a href="https://stripe.com/docs/connect/separate-charges-and-transfers">use case for
+        /// connected accounts</a>.
         /// </summary>
         [JsonProperty("transfer_group")]
         public string TransferGroup { get; set; }

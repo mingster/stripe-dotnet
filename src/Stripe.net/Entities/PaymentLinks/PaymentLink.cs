@@ -15,8 +15,7 @@ namespace Stripe
     /// href="https://stripe.com/docs/api/events/types#event_types-checkout.session.completed">checkout
     /// session events</a> to track payments through payment links.
     ///
-    /// Related guide: <a href="https://stripe.com/docs/payments/payment-links/api">Payment
-    /// Links API</a>.
+    /// Related guide: <a href="https://stripe.com/docs/payment-links">Payment Links API</a>.
     /// </summary>
     public class PaymentLink : StripeEntity<PaymentLink>, IHasId, IHasMetadata, IHasObject
     {
@@ -48,6 +47,37 @@ namespace Stripe
         [JsonProperty("allow_promotion_codes")]
         public bool AllowPromotionCodes { get; set; }
 
+        #region Expandable Application
+
+        /// <summary>
+        /// (ID of the Application)
+        /// The ID of the Connect application that created the Payment Link.
+        /// </summary>
+        [JsonIgnore]
+        public string ApplicationId
+        {
+            get => this.InternalApplication?.Id;
+            set => this.InternalApplication = SetExpandableFieldId(value, this.InternalApplication);
+        }
+
+        /// <summary>
+        /// (Expanded)
+        /// The ID of the Connect application that created the Payment Link.
+        ///
+        /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
+        /// </summary>
+        [JsonIgnore]
+        public Application Application
+        {
+            get => this.InternalApplication?.ExpandedObject;
+            set => this.InternalApplication = SetExpandableFieldObject(value, this.InternalApplication);
+        }
+
+        [JsonProperty("application")]
+        [JsonConverter(typeof(ExpandableFieldConverter<Application>))]
+        internal ExpandableField<Application> InternalApplication { get; set; }
+        #endregion
+
         /// <summary>
         /// The amount of the application fee (if any) that will be requested to be applied to the
         /// payment and transferred to the application owner's Stripe account.
@@ -56,7 +86,7 @@ namespace Stripe
         public long? ApplicationFeeAmount { get; set; }
 
         /// <summary>
-        /// This represents the percentage of the subscription invoice subtotal that will be
+        /// This represents the percentage of the subscription invoice total that will be
         /// transferred to the application owner's Stripe account.
         /// </summary>
         [JsonProperty("application_fee_percent")]
@@ -66,7 +96,7 @@ namespace Stripe
         public PaymentLinkAutomaticTax AutomaticTax { get; set; }
 
         /// <summary>
-        /// Configuration for collecting the customer's billing address.
+        /// Configuration for collecting the customer's billing address. Defaults to <c>auto</c>.
         /// One of: <c>auto</c>, or <c>required</c>.
         /// </summary>
         [JsonProperty("billing_address_collection")]
@@ -87,7 +117,7 @@ namespace Stripe
         public string Currency { get; set; }
 
         /// <summary>
-        /// Collect additional information from your customer using custom fields. Up to 2 fields
+        /// Collect additional information from your customer using custom fields. Up to 3 fields
         /// are supported.
         /// </summary>
         [JsonProperty("custom_fields")]
@@ -102,6 +132,13 @@ namespace Stripe
         /// </summary>
         [JsonProperty("customer_creation")]
         public string CustomerCreation { get; set; }
+
+        /// <summary>
+        /// The custom message to be displayed to a customer when a payment link is no longer
+        /// active.
+        /// </summary>
+        [JsonProperty("inactive_message")]
+        public string InactiveMessage { get; set; }
 
         /// <summary>
         /// Configuration for creating invoice for payment mode payment links.
@@ -172,7 +209,8 @@ namespace Stripe
         public PaymentLinkPaymentIntentData PaymentIntentData { get; set; }
 
         /// <summary>
-        /// Configuration for collecting a payment method during checkout.
+        /// Configuration for collecting a payment method during checkout. Defaults to
+        /// <c>always</c>.
         /// One of: <c>always</c>, or <c>if_required</c>.
         /// </summary>
         [JsonProperty("payment_method_collection")]
@@ -183,12 +221,24 @@ namespace Stripe
         /// dynamically show relevant payment methods you've enabled in your <a
         /// href="https://dashboard.stripe.com/settings/payment_methods">payment method
         /// settings</a>.
+        /// One of: <c>affirm</c>, <c>afterpay_clearpay</c>, <c>alipay</c>, <c>au_becs_debit</c>,
+        /// <c>bacs_debit</c>, <c>bancontact</c>, <c>blik</c>, <c>boleto</c>, <c>card</c>,
+        /// <c>cashapp</c>, <c>eps</c>, <c>fpx</c>, <c>giropay</c>, <c>grabpay</c>, <c>ideal</c>,
+        /// <c>klarna</c>, <c>konbini</c>, <c>link</c>, <c>oxxo</c>, <c>p24</c>, <c>paynow</c>,
+        /// <c>paypal</c>, <c>pix</c>, <c>promptpay</c>, <c>sepa_debit</c>, <c>sofort</c>,
+        /// <c>swish</c>, <c>us_bank_account</c>, or <c>wechat_pay</c>.
         /// </summary>
         [JsonProperty("payment_method_types")]
         public List<string> PaymentMethodTypes { get; set; }
 
         [JsonProperty("phone_number_collection")]
         public PaymentLinkPhoneNumberCollection PhoneNumberCollection { get; set; }
+
+        /// <summary>
+        /// Settings that restrict the usage of a payment link.
+        /// </summary>
+        [JsonProperty("restrictions")]
+        public PaymentLinkRestrictions Restrictions { get; set; }
 
         /// <summary>
         /// Configuration for collecting the customer's shipping address.

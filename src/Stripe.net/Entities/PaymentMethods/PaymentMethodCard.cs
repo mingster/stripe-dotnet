@@ -6,8 +6,8 @@ namespace Stripe
     public class PaymentMethodCard : StripeEntity<PaymentMethodCard>
     {
         /// <summary>
-        /// Card brand. Can be <c>amex</c>, <c>diners</c>, <c>discover</c>, <c>jcb</c>,
-        /// <c>mastercard</c>, <c>unionpay</c>, <c>visa</c>, or <c>unknown</c>.
+        /// Card brand. Can be <c>amex</c>, <c>diners</c>, <c>discover</c>, <c>eftpos_au</c>,
+        /// <c>jcb</c>, <c>mastercard</c>, <c>unionpay</c>, <c>visa</c>, or <c>unknown</c>.
         /// </summary>
         [JsonProperty("brand")]
         public string Brand { get; set; }
@@ -33,6 +33,16 @@ namespace Stripe
         public string Description { get; set; }
 
         /// <summary>
+        /// The brand to use when displaying the card, this accounts for customer's brand choice on
+        /// dual-branded cards. Can be <c>american_express</c>, <c>cartes_bancaires</c>,
+        /// <c>diners_club</c>, <c>discover</c>, <c>eftpos_australia</c>, <c>interac</c>,
+        /// <c>jcb</c>, <c>mastercard</c>, <c>union_pay</c>, <c>visa</c>, or <c>other</c> and may
+        /// contain more values in the future.
+        /// </summary>
+        [JsonProperty("display_brand")]
+        public string DisplayBrand { get; set; }
+
+        /// <summary>
         /// Two-digit number representing the card's expiration month.
         /// </summary>
         [JsonProperty("exp_month")]
@@ -50,8 +60,8 @@ namespace Stripe
         /// example. For payment methods that tokenize card information (Apple Pay, Google Pay), the
         /// tokenized number might be provided instead of the underlying card number.
         ///
-        /// <em>Starting May 1, 2021, card fingerprint in India for Connect will change to allow two
-        /// fingerprints for the same card --- one for India and one for the rest of the world.</em>.
+        /// <em>As of May 1, 2021, card fingerprint in India for Connect changed to allow two
+        /// fingerprints for the same card---one for India and one for the rest of the world.</em>.
         /// </summary>
         [JsonProperty("fingerprint")]
         public string Fingerprint { get; set; }

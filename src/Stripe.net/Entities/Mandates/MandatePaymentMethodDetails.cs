@@ -14,22 +14,25 @@ namespace Stripe
         [JsonProperty("bacs_debit")]
         public MandatePaymentMethodDetailsBacsDebit BacsDebit { get; set; }
 
-        [JsonProperty("blik")]
-        public MandatePaymentMethodDetailsBlik Blik { get; set; }
-
         [JsonProperty("card")]
         public MandatePaymentMethodDetailsCard Card { get; set; }
 
+        [JsonProperty("cashapp")]
+        public MandatePaymentMethodDetailsCashapp Cashapp { get; set; }
+
         [JsonProperty("link")]
         public MandatePaymentMethodDetailsLink Link { get; set; }
+
+        [JsonProperty("paypal")]
+        public MandatePaymentMethodDetailsPaypal Paypal { get; set; }
 
         [JsonProperty("sepa_debit")]
         public MandatePaymentMethodDetailsSepaDebit SepaDebit { get; set; }
 
         /// <summary>
-        /// The type of the payment method associated with this mandate. An additional hash is
-        /// included on <c>payment_method_details</c> with a name matching this value. It contains
-        /// mandate information specific to the payment method.
+        /// This mandate corresponds with a specific payment method type. The
+        /// <c>payment_method_details</c> includes an additional hash with the same name and
+        /// contains mandate information that's specific to that payment method.
         /// </summary>
         [JsonProperty("type")]
         public string Type { get; set; }

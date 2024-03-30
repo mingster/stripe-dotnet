@@ -14,6 +14,9 @@ namespace Stripe
         [JsonProperty("card_await_notification")]
         public PaymentIntentNextActionCardAwaitNotification CardAwaitNotification { get; set; }
 
+        [JsonProperty("cashapp_handle_redirect_or_display_qr_code")]
+        public PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode CashappHandleRedirectOrDisplayQrCode { get; set; }
+
         [JsonProperty("display_bank_transfer_instructions")]
         public PaymentIntentNextActionDisplayBankTransferInstructions DisplayBankTransferInstructions { get; set; }
 
@@ -35,6 +38,9 @@ namespace Stripe
         [JsonProperty("redirect_to_url")]
         public PaymentIntentNextActionRedirectToUrl RedirectToUrl { get; set; }
 
+        [JsonProperty("swish_handle_redirect_or_display_qr_code")]
+        public PaymentIntentNextActionSwishHandleRedirectOrDisplayQrCode SwishHandleRedirectOrDisplayQrCode { get; set; }
+
         /// <summary>
         /// Type of the next action to perform, one of <c>redirect_to_url</c>,
         /// <c>use_stripe_sdk</c>, <c>alipay_handle_redirect</c>, <c>oxxo_display_details</c>, or
@@ -42,6 +48,14 @@ namespace Stripe
         /// </summary>
         [JsonProperty("type")]
         public string Type { get; set; }
+
+        /// <summary>
+        /// When confirming a PaymentIntent with Stripe.js, Stripe.js depends on the contents of
+        /// this dictionary to invoke authentication flows. The shape of the contents is subject to
+        /// change and is only intended to be used by Stripe.js.
+        /// </summary>
+        [JsonProperty("use_stripe_sdk")]
+        public PaymentIntentNextActionUseStripeSdk UseStripeSdk { get; set; }
 
         [JsonProperty("verify_with_microdeposits")]
         public PaymentIntentNextActionVerifyWithMicrodeposits VerifyWithMicrodeposits { get; set; }

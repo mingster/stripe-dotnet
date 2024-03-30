@@ -7,13 +7,12 @@ namespace Stripe
     using Stripe.Infrastructure;
 
     /// <summary>
-    /// Balance transactions represent funds moving through your Stripe account. They're created
-    /// for every type of transaction that comes into or flows out of your Stripe account
-    /// balance.
+    /// Balance transactions represent funds moving through your Stripe account. Stripe creates
+    /// them for every type of transaction that enters or leaves your Stripe account balance.
     ///
     /// Related guide: <a
-    /// href="https://stripe.com/docs/reports/balance-transaction-types">Balance Transaction
-    /// Types</a>.
+    /// href="https://stripe.com/docs/reports/balance-transaction-types">Balance transaction
+    /// types</a>.
     /// </summary>
     public class BalanceTransaction : StripeEntity<BalanceTransaction>, IHasId, IHasObject
     {
@@ -30,13 +29,15 @@ namespace Stripe
         public string Object { get; set; }
 
         /// <summary>
-        /// Gross amount of the transaction, in %s.
+        /// Gross amount of this transaction (in cents (or local equivalent)). A positive value
+        /// represents funds charged to another party, and a negative value represents funds sent to
+        /// another party.
         /// </summary>
         [JsonProperty("amount")]
         public long Amount { get; set; }
 
         /// <summary>
-        /// The date the transaction's net funds will become available in the Stripe balance.
+        /// The date that the transaction's net funds become available in the Stripe balance.
         /// </summary>
         [JsonProperty("available_on")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
@@ -64,40 +65,43 @@ namespace Stripe
         public string Description { get; set; }
 
         /// <summary>
-        /// The exchange rate used, if applicable, for this transaction. Specifically, if money was
-        /// converted from currency A to currency B, then the <c>amount</c> in currency A, times
-        /// <c>exchange_rate</c>, would be the <c>amount</c> in currency B. For example, suppose you
-        /// charged a customer 10.00 EUR. Then the PaymentIntent's <c>amount</c> would be
-        /// <c>1000</c> and <c>currency</c> would be <c>eur</c>. Suppose this was converted into
-        /// 12.34 USD in your Stripe account. Then the BalanceTransaction's <c>amount</c> would be
-        /// <c>1234</c>, <c>currency</c> would be <c>usd</c>, and <c>exchange_rate</c> would be
-        /// <c>1.234</c>.
+        /// If applicable, this transaction uses an exchange rate. If money converts from currency A
+        /// to currency B, then the <c>amount</c> in currency A, multipled by the
+        /// <c>exchange_rate</c>, equals the <c>amount</c> in currency B. For example, if you charge
+        /// a customer 10.00 EUR, the PaymentIntent's <c>amount</c> is <c>1000</c> and
+        /// <c>currency</c> is <c>eur</c>. If this converts to 12.34 USD in your Stripe account, the
+        /// BalanceTransaction's <c>amount</c> is <c>1234</c>, its <c>currency</c> is <c>usd</c>,
+        /// and the <c>exchange_rate</c> is <c>1.234</c>.
         /// </summary>
         [JsonProperty("exchange_rate")]
         public decimal? ExchangeRate { get; set; }
 
         /// <summary>
-        /// Fees (in %s) paid for this transaction.
+        /// Fees (in cents (or local equivalent)) paid for this transaction. Represented as a
+        /// positive integer when assessed.
         /// </summary>
         [JsonProperty("fee")]
         public long Fee { get; set; }
 
         /// <summary>
-        /// Detailed breakdown of fees (in %s) paid for this transaction.
+        /// Detailed breakdown of fees (in cents (or local equivalent)) paid for this transaction.
         /// </summary>
         [JsonProperty("fee_details")]
         public List<BalanceTransactionFeeDetail> FeeDetails { get; set; }
 
         /// <summary>
-        /// Net amount of the transaction, in %s.
+        /// Net impact to a Stripe balance (in cents (or local equivalent)). A positive value
+        /// represents incrementing a Stripe balance, and a negative value decrementing a Stripe
+        /// balance. You can calculate the net impact of a transaction on a balance by <c>amount</c>
+        /// - <c>fee</c>.
         /// </summary>
         [JsonProperty("net")]
         public long Net { get; set; }
 
         /// <summary>
-        /// <a href="https://stripe.com/docs/reports/reporting-categories">Learn more</a> about how
-        /// reporting categories can help you understand balance transactions from an accounting
-        /// perspective.
+        /// Learn more about how <a
+        /// href="https://stripe.com/docs/reports/reporting-categories">reporting categories</a> can
+        /// help you understand balance transactions from an accounting perspective.
         /// </summary>
         [JsonProperty("reporting_category")]
         public string ReportingCategory { get; set; }
@@ -106,7 +110,7 @@ namespace Stripe
 
         /// <summary>
         /// (ID of the IBalanceTransactionSource)
-        /// The Stripe object to which this transaction is related.
+        /// This transaction relates to the Stripe object.
         /// </summary>
         [JsonIgnore]
         public string SourceId
@@ -117,7 +121,7 @@ namespace Stripe
 
         /// <summary>
         /// (Expanded)
-        /// The Stripe object to which this transaction is related.
+        /// This transaction relates to the Stripe object.
         ///
         /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
         /// </summary>
@@ -134,7 +138,7 @@ namespace Stripe
         #endregion
 
         /// <summary>
-        /// If the transaction's net funds are available in the Stripe balance yet. Either
+        /// The transaction's net funds status in the Stripe balance, which are either
         /// <c>available</c> or <c>pending</c>.
         /// </summary>
         [JsonProperty("status")]
@@ -143,30 +147,36 @@ namespace Stripe
         /// <summary>
         /// Transaction type: <c>adjustment</c>, <c>advance</c>, <c>advance_funding</c>,
         /// <c>anticipation_repayment</c>, <c>application_fee</c>, <c>application_fee_refund</c>,
-        /// <c>charge</c>, <c>connect_collection_transfer</c>, <c>contribution</c>,
+        /// <c>charge</c>, <c>climate_order_purchase</c>, <c>climate_order_refund</c>,
+        /// <c>connect_collection_transfer</c>, <c>contribution</c>,
         /// <c>issuing_authorization_hold</c>, <c>issuing_authorization_release</c>,
-        /// <c>issuing_dispute</c>, <c>issuing_transaction</c>, <c>payment</c>,
-        /// <c>payment_failure_refund</c>, <c>payment_refund</c>, <c>payout</c>,
-        /// <c>payout_cancel</c>, <c>payout_failure</c>, <c>refund</c>, <c>refund_failure</c>,
-        /// <c>reserve_transaction</c>, <c>reserved_funds</c>, <c>stripe_fee</c>,
-        /// <c>stripe_fx_fee</c>, <c>tax_fee</c>, <c>topup</c>, <c>topup_reversal</c>,
-        /// <c>transfer</c>, <c>transfer_cancel</c>, <c>transfer_failure</c>, or
-        /// <c>transfer_refund</c>. <a
-        /// href="https://stripe.com/docs/reports/balance-transaction-types">Learn more</a> about
-        /// balance transaction types and what they represent. If you are looking to classify
-        /// transactions for accounting purposes, you might want to consider
-        /// <c>reporting_category</c> instead.
+        /// <c>issuing_dispute</c>, <c>issuing_transaction</c>, <c>obligation_outbound</c>,
+        /// <c>obligation_reversal_inbound</c>, <c>payment</c>, <c>payment_failure_refund</c>,
+        /// <c>payment_network_reserve_hold</c>, <c>payment_network_reserve_release</c>,
+        /// <c>payment_refund</c>, <c>payment_reversal</c>, <c>payment_unreconciled</c>,
+        /// <c>payout</c>, <c>payout_cancel</c>, <c>payout_failure</c>, <c>refund</c>,
+        /// <c>refund_failure</c>, <c>reserve_transaction</c>, <c>reserved_funds</c>,
+        /// <c>stripe_fee</c>, <c>stripe_fx_fee</c>, <c>tax_fee</c>, <c>topup</c>,
+        /// <c>topup_reversal</c>, <c>transfer</c>, <c>transfer_cancel</c>, <c>transfer_failure</c>,
+        /// or <c>transfer_refund</c>. Learn more about <a
+        /// href="https://stripe.com/docs/reports/balance-transaction-types">balance transaction
+        /// types and what they represent</a>. To classify transactions for accounting purposes,
+        /// consider <c>reporting_category</c> instead.
         /// One of: <c>adjustment</c>, <c>advance</c>, <c>advance_funding</c>,
         /// <c>anticipation_repayment</c>, <c>application_fee</c>, <c>application_fee_refund</c>,
-        /// <c>charge</c>, <c>connect_collection_transfer</c>, <c>contribution</c>,
+        /// <c>charge</c>, <c>climate_order_purchase</c>, <c>climate_order_refund</c>,
+        /// <c>connect_collection_transfer</c>, <c>contribution</c>,
         /// <c>issuing_authorization_hold</c>, <c>issuing_authorization_release</c>,
-        /// <c>issuing_dispute</c>, <c>issuing_transaction</c>, <c>payment</c>,
-        /// <c>payment_failure_refund</c>, <c>payment_refund</c>, <c>payout</c>,
-        /// <c>payout_cancel</c>, <c>payout_failure</c>, <c>refund</c>, <c>refund_failure</c>,
-        /// <c>reserve_transaction</c>, <c>reserved_funds</c>, <c>stripe_fee</c>,
-        /// <c>stripe_fx_fee</c>, <c>tax_fee</c>, <c>topup</c>, <c>topup_reversal</c>,
-        /// <c>transfer</c>, <c>transfer_cancel</c>, <c>transfer_failure</c>, or
-        /// <c>transfer_refund</c>.
+        /// <c>issuing_dispute</c>, <c>issuing_transaction</c>, <c>obligation_outbound</c>,
+        /// <c>obligation_reversal_inbound</c>, <c>payment</c>, <c>payment_failure_refund</c>,
+        /// <c>payment_network_reserve_hold</c>, <c>payment_network_reserve_release</c>,
+        /// <c>payment_refund</c>, <c>payment_reversal</c>, <c>payment_unreconciled</c>,
+        /// <c>payout</c>, <c>payout_cancel</c>, <c>payout_failure</c>, <c>refund</c>,
+        /// <c>refund_failure</c>, <c>reserve_transaction</c>, <c>reserved_funds</c>,
+        /// <c>stripe_fee</c>, <c>stripe_fx_fee</c>, <c>tax_fee</c>, <c>topup</c>,
+        /// <c>topup_reversal</c>, <c>transfer</c>, <c>transfer_cancel</c>, <c>transfer_failure</c>,
+        /// <c>transfer_refund</c>, <c>obligation_inbound</c>, <c>obligation_payout</c>,
+        /// <c>obligation_payout_failure</c>, or <c>obligation_reversal_outbound</c>.
         /// </summary>
         [JsonProperty("type")]
         public string Type { get; set; }

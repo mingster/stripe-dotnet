@@ -44,6 +44,9 @@ namespace Stripe
         [JsonProperty("card_present")]
         public ChargePaymentMethodDetailsCardPresent CardPresent { get; set; }
 
+        [JsonProperty("cashapp")]
+        public ChargePaymentMethodDetailsCashapp Cashapp { get; set; }
+
         [JsonProperty("customer_balance")]
         public ChargePaymentMethodDetailsCustomerBalance CustomerBalance { get; set; }
 
@@ -74,6 +77,9 @@ namespace Stripe
         [JsonProperty("link")]
         public ChargePaymentMethodDetailsLink Link { get; set; }
 
+        [JsonProperty("mobilepay")]
+        public ChargePaymentMethodDetailsMobilepay Mobilepay { get; set; }
+
         [JsonProperty("multibanco")]
         public ChargePaymentMethodDetailsMultibanco Multibanco { get; set; }
 
@@ -86,11 +92,17 @@ namespace Stripe
         [JsonProperty("paynow")]
         public ChargePaymentMethodDetailsPaynow Paynow { get; set; }
 
+        [JsonProperty("paypal")]
+        public ChargePaymentMethodDetailsPaypal Paypal { get; set; }
+
         [JsonProperty("pix")]
         public ChargePaymentMethodDetailsPix Pix { get; set; }
 
         [JsonProperty("promptpay")]
         public ChargePaymentMethodDetailsPromptpay Promptpay { get; set; }
+
+        [JsonProperty("revolut_pay")]
+        public ChargePaymentMethodDetailsRevolutPay RevolutPay { get; set; }
 
         [JsonProperty("sepa_debit")]
         public ChargePaymentMethodDetailsSepaDebit SepaDebit { get; set; }
@@ -100,6 +112,9 @@ namespace Stripe
 
         [JsonProperty("stripe_account")]
         public ChargePaymentMethodDetailsStripeAccount StripeAccount { get; set; }
+
+        [JsonProperty("swish")]
+        public ChargePaymentMethodDetailsSwish Swish { get; set; }
 
         /// <summary>
         /// The type of transaction-specific details of the payment method used in the payment, one
@@ -121,5 +136,8 @@ namespace Stripe
 
         [JsonProperty("wechat_pay")]
         public ChargePaymentMethodDetailsWechatPay WechatPay { get; set; }
+
+        [JsonProperty("zip")]
+        public ChargePaymentMethodDetailsZip Zip { get; set; }
     }
 }

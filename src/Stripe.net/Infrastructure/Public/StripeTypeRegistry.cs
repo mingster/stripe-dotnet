@@ -17,6 +17,7 @@ namespace Stripe
             {
                 { "account", typeof(Account) },
                 { "account_link", typeof(AccountLink) },
+                { "account_session", typeof(AccountSession) },
                 { "apple_pay_domain", typeof(ApplePayDomain) },
                 { "application", typeof(Application) },
                 { "application_fee", typeof(ApplicationFee) },
@@ -24,6 +25,16 @@ namespace Stripe
                 { "balance", typeof(Balance) },
                 { "balance_transaction", typeof(BalanceTransaction) },
                 { "bank_account", typeof(BankAccount) },
+                { "billing.meter", typeof(Billing.Meter) },
+                { "billing.meter_event", typeof(Billing.MeterEvent) },
+                {
+                    "billing.meter_event_adjustment", typeof(
+                        Billing.MeterEventAdjustment)
+                },
+                {
+                    "billing.meter_event_summary", typeof(
+                        Billing.MeterEventSummary)
+                },
                 {
                     "billing_portal.configuration", typeof(
                         BillingPortal.Configuration)
@@ -34,6 +45,14 @@ namespace Stripe
                 { "cash_balance", typeof(CashBalance) },
                 { "charge", typeof(Charge) },
                 { "checkout.session", typeof(Checkout.Session) },
+                { "climate.order", typeof(Climate.Order) },
+                { "climate.product", typeof(Climate.Product) },
+                { "climate.supplier", typeof(Climate.Supplier) },
+                { "confirmation_token", typeof(ConfirmationToken) },
+                {
+                    "connect_collection_transfer", typeof(
+                        ConnectCollectionTransfer)
+                },
                 { "country_spec", typeof(CountrySpec) },
                 { "coupon", typeof(Coupon) },
                 { "credit_note", typeof(CreditNote) },
@@ -47,6 +66,7 @@ namespace Stripe
                     "customer_cash_balance_transaction", typeof(
                         CustomerCashBalanceTransaction)
                 },
+                { "customer_session", typeof(CustomerSession) },
                 { "discount", typeof(Discount) },
                 { "dispute", typeof(Dispute) },
                 { "ephemeral_key", typeof(EphemeralKey) },
@@ -70,6 +90,11 @@ namespace Stripe
                     "financial_connections.session", typeof(
                         FinancialConnections.Session)
                 },
+                {
+                    "financial_connections.transaction", typeof(
+                        FinancialConnections.Transaction)
+                },
+                { "forwarding.request", typeof(Forwarding.Request) },
                 { "funding_instructions", typeof(FundingInstructions) },
                 {
                     "identity.verification_report", typeof(
@@ -85,6 +110,12 @@ namespace Stripe
                 { "issuing.card", typeof(Issuing.Card) },
                 { "issuing.cardholder", typeof(Issuing.Cardholder) },
                 { "issuing.dispute", typeof(Issuing.Dispute) },
+                {
+                    "issuing.personalization_design", typeof(
+                        Issuing.PersonalizationDesign)
+                },
+                { "issuing.physical_bundle", typeof(Issuing.PhysicalBundle) },
+                { "issuing.token", typeof(Issuing.Token) },
                 { "issuing.transaction", typeof(Issuing.Transaction) },
                 { "item", typeof(LineItem) },
                 { "line_item", typeof(InvoiceLineItem) },
@@ -93,9 +124,15 @@ namespace Stripe
                 { "payment_intent", typeof(PaymentIntent) },
                 { "payment_link", typeof(PaymentLink) },
                 { "payment_method", typeof(PaymentMethod) },
+                {
+                    "payment_method_configuration", typeof(
+                        PaymentMethodConfiguration)
+                },
+                { "payment_method_domain", typeof(PaymentMethodDomain) },
                 { "payout", typeof(Payout) },
                 { "person", typeof(Person) },
                 { "plan", typeof(Plan) },
+                { "platform_tax_fee", typeof(PlatformTaxFee) },
                 { "price", typeof(Price) },
                 { "product", typeof(Product) },
                 { "promotion_code", typeof(PromotionCode) },
@@ -108,6 +145,7 @@ namespace Stripe
                 { "refund", typeof(Refund) },
                 { "reporting.report_run", typeof(Reporting.ReportRun) },
                 { "reporting.report_type", typeof(Reporting.ReportType) },
+                { "reserve_transaction", typeof(ReserveTransaction) },
                 { "review", typeof(Review) },
                 { "scheduled_query_run", typeof(Sigma.ScheduledQueryRun) },
                 { "setup_attempt", typeof(SetupAttempt) },
@@ -122,7 +160,18 @@ namespace Stripe
                 { "subscription", typeof(Subscription) },
                 { "subscription_item", typeof(SubscriptionItem) },
                 { "subscription_schedule", typeof(SubscriptionSchedule) },
+                { "tax.calculation", typeof(Tax.Calculation) },
+                {
+                    "tax.calculation_line_item", typeof(Tax.CalculationLineItem)
+                },
+                { "tax.registration", typeof(Tax.Registration) },
+                { "tax.settings", typeof(Tax.Settings) },
+                { "tax.transaction", typeof(Tax.Transaction) },
+                {
+                    "tax.transaction_line_item", typeof(Tax.TransactionLineItem)
+                },
                 { "tax_code", typeof(TaxCode) },
+                { "tax_deducted_at_source", typeof(TaxDeductedAtSource) },
                 { "tax_id", typeof(TaxId) },
                 { "tax_rate", typeof(TaxRate) },
                 { "terminal.configuration", typeof(Terminal.Configuration) },

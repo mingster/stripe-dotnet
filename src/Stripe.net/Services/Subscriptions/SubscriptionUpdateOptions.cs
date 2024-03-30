@@ -17,9 +17,9 @@ namespace Stripe
 
         /// <summary>
         /// A non-negative decimal between 0 and 100, with at most two decimal places. This
-        /// represents the percentage of the subscription invoice subtotal that will be transferred
-        /// to the application owner's Stripe account. The request must be made by a platform
-        /// account on a connected account in order to set an application fee percentage. For more
+        /// represents the percentage of the subscription invoice total that will be transferred to
+        /// the application owner's Stripe account. The request must be made by a platform account
+        /// on a connected account in order to set an application fee percentage. For more
         /// information, see the application fees <a
         /// href="https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions">documentation</a>.
         /// </summary>
@@ -66,6 +66,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("cancel_at_period_end")]
         public bool? CancelAtPeriodEnd { get; set; }
+
+        /// <summary>
+        /// Details about why this subscription was cancelled.
+        /// </summary>
+        [JsonProperty("cancellation_details")]
+        public SubscriptionCancellationDetailsOptions CancellationDetails { get; set; }
 
         /// <summary>
         /// Either <c>charge_automatically</c>, or <c>send_invoice</c>. When charging automatically,
@@ -126,10 +132,17 @@ namespace Stripe
 
         /// <summary>
         /// The subscription's description, meant to be displayable to the customer. Use this field
-        /// to optionally store an explanation of the subscription for rendering in Stripe surfaces.
+        /// to optionally store an explanation of the subscription for rendering in Stripe surfaces
+        /// and certain local payment methods UIs.
         /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
+
+        /// <summary>
+        /// All invoices will be billed using the specified settings.
+        /// </summary>
+        [JsonProperty("invoice_settings")]
+        public SubscriptionInvoiceSettingsOptions InvoiceSettings { get; set; }
 
         /// <summary>
         /// A list of up to 20 subscription items, each with an attached price.
@@ -159,7 +172,10 @@ namespace Stripe
         public string OnBehalfOf { get; set; }
 
         /// <summary>
-        /// If specified, payment collection for this subscription will be paused.
+        /// If specified, payment collection for this subscription will be paused. Note that the
+        /// subscription status will be unchanged and will not be updated to <c>paused</c>. Learn
+        /// more about <a href="https://stripe.com/billing/subscriptions/pause-payment">pausing
+        /// collection</a>.
         /// </summary>
         [JsonProperty("pause_collection")]
         public SubscriptionPauseCollectionOptions PauseCollection { get; set; }
@@ -221,8 +237,8 @@ namespace Stripe
 
         /// <summary>
         /// Determines how to handle <a
-        /// href="https://stripe.com/docs/subscriptions/billing-cycle#prorations">prorations</a>
-        /// when the billing cycle changes (e.g., when switching plans, resetting
+        /// href="https://stripe.com/docs/billing/subscriptions/prorations">prorations</a> when the
+        /// billing cycle changes (e.g., when switching plans, resetting
         /// <c>billing_cycle_anchor=now</c>, or starting a trial), or if an item's <c>quantity</c>
         /// changes. The default value is <c>create_prorations</c>.
         /// One of: <c>always_invoice</c>, <c>create_prorations</c>, or <c>none</c>.
@@ -233,10 +249,9 @@ namespace Stripe
         /// <summary>
         /// If set, the proration will be calculated as though the subscription was updated at the
         /// given time. This can be used to apply exactly the same proration that was previewed with
-        /// <a href="https://stripe.com/docs/api#retrieve_customer_invoice">upcoming invoice</a>
-        /// endpoint. It can also be used to implement custom proration logic, such as prorating by
-        /// day instead of by second, by providing the time that you wish to use for proration
-        /// calculations.
+        /// <a href="https://stripe.com/docs/api#upcoming_invoice">upcoming invoice</a> endpoint. It
+        /// can also be used to implement custom proration logic, such as prorating by day instead
+        /// of by second, by providing the time that you wish to use for proration calculations.
         /// </summary>
         [JsonProperty("proration_date")]
         [JsonConverter(typeof(UnixDateTimeConverter))]

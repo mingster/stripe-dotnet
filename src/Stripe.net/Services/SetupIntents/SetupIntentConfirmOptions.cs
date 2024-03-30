@@ -8,6 +8,16 @@ namespace Stripe
         [JsonProperty("client_secret")]
         public string ClientSecret { get; set; }
 
+        /// <summary>
+        /// ID of the ConfirmationToken used to confirm this SetupIntent.
+        ///
+        /// If the provided ConfirmationToken contains properties that are also being provided in
+        /// this request, such as <c>payment_method</c>, then the values in this request will take
+        /// precedence.
+        /// </summary>
+        [JsonProperty("confirmation_token")]
+        public string ConfirmationToken { get; set; }
+
         [JsonProperty("mandate_data")]
         public SetupIntentMandateDataOptions MandateData { get; set; }
 
@@ -27,7 +37,7 @@ namespace Stripe
         public SetupIntentPaymentMethodDataOptions PaymentMethodData { get; set; }
 
         /// <summary>
-        /// Payment-method-specific configuration for this SetupIntent.
+        /// Payment method-specific configuration for this SetupIntent.
         /// </summary>
         [JsonProperty("payment_method_options")]
         public SetupIntentPaymentMethodOptionsOptions PaymentMethodOptions { get; set; }
@@ -40,5 +50,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("return_url")]
         public string ReturnUrl { get; set; }
+
+        /// <summary>
+        /// Set to <c>true</c> when confirming server-side and using Stripe.js, iOS, or Android
+        /// client-side SDKs to handle the next actions.
+        /// </summary>
+        [JsonProperty("use_stripe_sdk")]
+        public bool? UseStripeSdk { get; set; }
     }
 }

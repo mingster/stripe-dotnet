@@ -40,6 +40,19 @@ namespace Stripe
         public bool ExecutivesProvided { get; set; }
 
         /// <summary>
+        /// The export license ID number of the company, also referred as Import Export Code (India
+        /// only).
+        /// </summary>
+        [JsonProperty("export_license_id")]
+        public string ExportLicenseId { get; set; }
+
+        /// <summary>
+        /// The purpose code to use for export transactions (India only).
+        /// </summary>
+        [JsonProperty("export_purpose_code")]
+        public string ExportPurposeCode { get; set; }
+
+        /// <summary>
         /// The company's legal name.
         /// </summary>
         [JsonProperty("name")]
@@ -88,12 +101,14 @@ namespace Stripe
         /// structure</a> for more details.
         /// One of: <c>free_zone_establishment</c>, <c>free_zone_llc</c>,
         /// <c>government_instrumentality</c>, <c>governmental_unit</c>,
-        /// <c>incorporated_non_profit</c>, <c>limited_liability_partnership</c>, <c>llc</c>,
-        /// <c>multi_member_llc</c>, <c>private_company</c>, <c>private_corporation</c>,
-        /// <c>private_partnership</c>, <c>public_company</c>, <c>public_corporation</c>,
-        /// <c>public_partnership</c>, <c>single_member_llc</c>, <c>sole_establishment</c>,
+        /// <c>incorporated_non_profit</c>, <c>incorporated_partnership</c>,
+        /// <c>limited_liability_partnership</c>, <c>llc</c>, <c>multi_member_llc</c>,
+        /// <c>private_company</c>, <c>private_corporation</c>, <c>private_partnership</c>,
+        /// <c>public_company</c>, <c>public_corporation</c>, <c>public_partnership</c>,
+        /// <c>registered_charity</c>, <c>single_member_llc</c>, <c>sole_establishment</c>,
         /// <c>sole_proprietorship</c>, <c>tax_exempt_government_instrumentality</c>,
-        /// <c>unincorporated_association</c>, or <c>unincorporated_non_profit</c>.
+        /// <c>unincorporated_association</c>, <c>unincorporated_non_profit</c>, or
+        /// <c>unincorporated_partnership</c>.
         /// </summary>
         [JsonProperty("structure")]
         public string Structure { get; set; }

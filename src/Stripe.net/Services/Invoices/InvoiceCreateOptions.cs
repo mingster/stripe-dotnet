@@ -26,9 +26,9 @@ namespace Stripe
         public long? ApplicationFeeAmount { get; set; }
 
         /// <summary>
-        /// Controls whether Stripe will perform <a
-        /// href="https://stripe.com/docs/billing/invoices/workflow/#auto_advance">automatic
-        /// collection</a> of the invoice. When <c>false</c>, the invoice's state will not
+        /// Controls whether Stripe performs <a
+        /// href="https://stripe.com/docs/invoicing/integration/automatic-advancement-collection">automatic
+        /// collection</a> of the invoice. If <c>false</c>, the invoice's state doesn't
         /// automatically advance without an explicit action.
         /// </summary>
         [JsonProperty("auto_advance")]
@@ -122,6 +122,15 @@ namespace Stripe
         public DateTime? DueDate { get; set; }
 
         /// <summary>
+        /// The date when this invoice is in effect. Same as <c>finalized_at</c> unless overwritten.
+        /// When defined, this value replaces the system-generated 'Date of issue' printed on the
+        /// invoice PDF and receipt.
+        /// </summary>
+        [JsonProperty("effective_at")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? EffectiveAt { get; set; }
+
+        /// <summary>
         /// Footer to be displayed on the invoice.
         /// </summary>
         [JsonProperty("footer")]
@@ -136,6 +145,13 @@ namespace Stripe
         public InvoiceFromInvoiceOptions FromInvoice { get; set; }
 
         /// <summary>
+        /// The connected account that issues the invoice. The invoice is presented with the
+        /// branding and support information of the specified account.
+        /// </summary>
+        [JsonProperty("issuer")]
+        public InvoiceIssuerOptions Issuer { get; set; }
+
+        /// <summary>
         /// Set of <a href="https://stripe.com/docs/api/metadata">key-value pairs</a> that you can
         /// attach to an object. This can be useful for storing additional information about the
         /// object in a structured format. Individual keys can be unset by posting an empty value to
@@ -143,6 +159,17 @@ namespace Stripe
         /// </summary>
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; set; }
+
+        /// <summary>
+        /// Set the number for this invoice. If no number is present then a number will be assigned
+        /// automatically when the invoice is finalized. In many markets, regulations require
+        /// invoices to be unique, sequential and / or gapless. You are responsible for ensuring
+        /// this is true across all your different invoicing systems in the event that you edit the
+        /// invoice number using our API. If you use only Stripe for your invoices and do not change
+        /// invoice numbers, Stripe handles this aspect of compliance for you automatically.
+        /// </summary>
+        [JsonProperty("number")]
+        public string Number { get; set; }
 
         /// <summary>
         /// The account (if any) for which the funds of the invoice payment are intended. If set,
@@ -161,18 +188,24 @@ namespace Stripe
         public InvoicePaymentSettingsOptions PaymentSettings { get; set; }
 
         /// <summary>
-        /// How to handle pending invoice items on invoice creation. One of <c>include</c> or
-        /// <c>exclude</c>. <c>include</c> will include any pending invoice items, and will create
-        /// an empty draft invoice if no pending invoice items exist. <c>exclude</c> will always
-        /// create an empty invoice draft regardless if there are pending invoice items or not.
-        /// Defaults to <c>exclude</c> if the parameter is omitted.
+        /// How to handle pending invoice items on invoice creation. Defaults to <c>exclude</c> if
+        /// the parameter is omitted.
         /// One of: <c>exclude</c>, <c>include</c>, or <c>include_and_require</c>.
         /// </summary>
         [JsonProperty("pending_invoice_items_behavior")]
         public string PendingInvoiceItemsBehavior { get; set; }
 
         /// <summary>
-        /// Options for invoice PDF rendering.
+        /// The rendering-related settings that control how the invoice is displayed on
+        /// customer-facing surfaces such as PDF and Hosted Invoice Page.
+        /// </summary>
+        [JsonProperty("rendering")]
+        public InvoiceRenderingOptionsOptions Rendering { get; set; }
+
+        /// <summary>
+        /// This is a legacy field that will be removed soon. For details about
+        /// <c>rendering_options</c>, refer to <c>rendering</c> instead. Options for invoice PDF
+        /// rendering.
         /// </summary>
         [JsonProperty("rendering_options")]
         public InvoiceRenderingOptionsOptions RenderingOptions { get; set; }

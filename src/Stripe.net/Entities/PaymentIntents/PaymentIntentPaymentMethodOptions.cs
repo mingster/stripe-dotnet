@@ -38,6 +38,9 @@ namespace Stripe
         [JsonProperty("card_present")]
         public PaymentIntentPaymentMethodOptionsCardPresent CardPresent { get; set; }
 
+        [JsonProperty("cashapp")]
+        public PaymentIntentPaymentMethodOptionsCashapp Cashapp { get; set; }
+
         [JsonProperty("customer_balance")]
         public PaymentIntentPaymentMethodOptionsCustomerBalance CustomerBalance { get; set; }
 
@@ -68,6 +71,9 @@ namespace Stripe
         [JsonProperty("link")]
         public PaymentIntentPaymentMethodOptionsLink Link { get; set; }
 
+        [JsonProperty("mobilepay")]
+        public PaymentIntentPaymentMethodOptionsMobilepay Mobilepay { get; set; }
+
         [JsonProperty("oxxo")]
         public PaymentIntentPaymentMethodOptionsOxxo Oxxo { get; set; }
 
@@ -77,11 +83,17 @@ namespace Stripe
         [JsonProperty("paynow")]
         public PaymentIntentPaymentMethodOptionsPaynow Paynow { get; set; }
 
+        [JsonProperty("paypal")]
+        public PaymentIntentPaymentMethodOptionsPaypal Paypal { get; set; }
+
         [JsonProperty("pix")]
         public PaymentIntentPaymentMethodOptionsPix Pix { get; set; }
 
         [JsonProperty("promptpay")]
         public PaymentIntentPaymentMethodOptionsPromptpay Promptpay { get; set; }
+
+        [JsonProperty("revolut_pay")]
+        public PaymentIntentPaymentMethodOptionsRevolutPay RevolutPay { get; set; }
 
         [JsonProperty("sepa_debit")]
         public PaymentIntentPaymentMethodOptionsSepaDebit SepaDebit { get; set; }
@@ -89,10 +101,16 @@ namespace Stripe
         [JsonProperty("sofort")]
         public PaymentIntentPaymentMethodOptionsSofort Sofort { get; set; }
 
+        [JsonProperty("swish")]
+        public PaymentIntentPaymentMethodOptionsSwish Swish { get; set; }
+
         [JsonProperty("us_bank_account")]
         public PaymentIntentPaymentMethodOptionsUsBankAccount UsBankAccount { get; set; }
 
         [JsonProperty("wechat_pay")]
         public PaymentIntentPaymentMethodOptionsWechatPay WechatPay { get; set; }
+
+        [JsonProperty("zip")]
+        public PaymentIntentPaymentMethodOptionsZip Zip { get; set; }
     }
 }

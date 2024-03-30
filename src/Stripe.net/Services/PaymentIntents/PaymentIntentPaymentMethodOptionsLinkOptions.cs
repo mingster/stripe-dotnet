@@ -1,6 +1,7 @@
 // File generated from our OpenAPI spec
 namespace Stripe
 {
+    using System;
     using Newtonsoft.Json;
 
     public class PaymentIntentPaymentMethodOptionsLinkOptions : INestedOptions
@@ -8,8 +9,8 @@ namespace Stripe
         /// <summary>
         /// Controls when the funds will be captured from the customer's account.
         ///
-        /// If provided, this parameter will override the top-level <c>capture_method</c> when
-        /// finalizing the payment with this payment method type.
+        /// If provided, this parameter will override the top level behavior of
+        /// <c>capture_method</c> when finalizing the payment with this payment method type.
         ///
         /// If <c>capture_method</c> is already set on the PaymentIntent, providing an empty value
         /// for this parameter will unset the stored value for this payment method type.
@@ -18,8 +19,9 @@ namespace Stripe
         public string CaptureMethod { get; set; }
 
         /// <summary>
-        /// Token used for persistent Link logins.
+        /// [Deprecated] This is a legacy parameter that no longer has any function.
         /// </summary>
+        [Obsolete("This property is deprecated, please refer to the description for details.")]
         [JsonProperty("persistent_token")]
         public string PersistentToken { get; set; }
 
@@ -42,6 +44,7 @@ namespace Stripe
         /// If <c>setup_future_usage</c> is already set and you are performing a request using a
         /// publishable key, you may only update the value from <c>on_session</c> to
         /// <c>off_session</c>.
+        /// One of: <c>none</c>, or <c>off_session</c>.
         /// </summary>
         [JsonProperty("setup_future_usage")]
         public string SetupFutureUsage { get; set; }

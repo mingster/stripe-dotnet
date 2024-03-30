@@ -7,13 +7,11 @@ namespace Stripe
     using Stripe.Infrastructure;
 
     /// <summary>
-    /// To charge a credit or a debit card, you create a <c>Charge</c> object. You can retrieve
-    /// and refund individual charges as well as list all charges. Charges are identified by a
-    /// unique, random ID.
-    ///
-    /// Related guide: <a
-    /// href="https://stripe.com/docs/payments/accept-a-payment-charges">Accept a payment with
-    /// the Charges API</a>.
+    /// The <c>Charge</c> object represents a single attempt to move money into your Stripe
+    /// account. PaymentIntent confirmation is the most common way to create Charges, but
+    /// transferring money to a different Stripe account through Connect also creates Charges.
+    /// Some legacy payment flows create Charges directly, which is not recommended for new
+    /// integrations.
     /// </summary>
     public class Charge : StripeEntity<Charge>, IHasId, IHasMetadata, IHasObject, IBalanceTransactionSource
     {
@@ -42,15 +40,15 @@ namespace Stripe
         public long Amount { get; set; }
 
         /// <summary>
-        /// Amount in %s captured (can be less than the amount attribute on the charge if a partial
-        /// capture was made).
+        /// Amount in cents (or local equivalent) captured (can be less than the amount attribute on
+        /// the charge if a partial capture was made).
         /// </summary>
         [JsonProperty("amount_captured")]
         public long AmountCaptured { get; set; }
 
         /// <summary>
-        /// Amount in %s refunded (can be less than the amount attribute on the charge if a partial
-        /// refund was issued).
+        /// Amount in cents (or local equivalent) refunded (can be less than the amount attribute on
+        /// the charge if a partial refund was issued).
         /// </summary>
         [JsonProperty("amount_refunded")]
         public long AmountRefunded { get; set; }
@@ -238,70 +236,6 @@ namespace Stripe
         [JsonProperty("description")]
         public string Description { get; set; }
 
-        #region Expandable Destination
-
-        /// <summary>
-        /// (ID of the Account)
-        /// ID of an existing, connected Stripe account to transfer funds to if <c>transfer_data</c>
-        /// was specified in the charge request.
-        /// </summary>
-        [JsonIgnore]
-        public string DestinationId
-        {
-            get => this.InternalDestination?.Id;
-            set => this.InternalDestination = SetExpandableFieldId(value, this.InternalDestination);
-        }
-
-        /// <summary>
-        /// (Expanded)
-        /// ID of an existing, connected Stripe account to transfer funds to if <c>transfer_data</c>
-        /// was specified in the charge request.
-        ///
-        /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
-        /// </summary>
-        [JsonIgnore]
-        public Account Destination
-        {
-            get => this.InternalDestination?.ExpandedObject;
-            set => this.InternalDestination = SetExpandableFieldObject(value, this.InternalDestination);
-        }
-
-        [JsonProperty("destination")]
-        [JsonConverter(typeof(ExpandableFieldConverter<Account>))]
-        internal ExpandableField<Account> InternalDestination { get; set; }
-        #endregion
-
-        #region Expandable Dispute
-
-        /// <summary>
-        /// (ID of the Dispute)
-        /// Details about the dispute if the charge has been disputed.
-        /// </summary>
-        [JsonIgnore]
-        public string DisputeId
-        {
-            get => this.InternalDispute?.Id;
-            set => this.InternalDispute = SetExpandableFieldId(value, this.InternalDispute);
-        }
-
-        /// <summary>
-        /// (Expanded)
-        /// Details about the dispute if the charge has been disputed.
-        ///
-        /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
-        /// </summary>
-        [JsonIgnore]
-        public Dispute Dispute
-        {
-            get => this.InternalDispute?.ExpandedObject;
-            set => this.InternalDispute = SetExpandableFieldObject(value, this.InternalDispute);
-        }
-
-        [JsonProperty("dispute")]
-        [JsonConverter(typeof(ExpandableFieldConverter<Dispute>))]
-        internal ExpandableField<Dispute> InternalDispute { get; set; }
-        #endregion
-
         /// <summary>
         /// Whether the charge has been disputed.
         /// </summary>
@@ -414,7 +348,8 @@ namespace Stripe
         /// <summary>
         /// (ID of the Account)
         /// The account (if any) the charge was made on behalf of without triggering an automatic
-        /// transfer. See the <a href="https://stripe.com/docs/connect/charges-transfers">Connect
+        /// transfer. See the <a
+        /// href="https://stripe.com/docs/connect/separate-charges-and-transfers">Connect
         /// documentation</a> for details.
         /// </summary>
         [JsonIgnore]
@@ -427,7 +362,8 @@ namespace Stripe
         /// <summary>
         /// (Expanded)
         /// The account (if any) the charge was made on behalf of without triggering an automatic
-        /// transfer. See the <a href="https://stripe.com/docs/connect/charges-transfers">Connect
+        /// transfer. See the <a
+        /// href="https://stripe.com/docs/connect/separate-charges-and-transfers">Connect
         /// documentation</a> for details.
         ///
         /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
@@ -690,7 +626,7 @@ namespace Stripe
 
         /// <summary>
         /// A string that identifies this transaction as part of a group. See the <a
-        /// href="https://stripe.com/docs/connect/charges-transfers#transfer-options">Connect
+        /// href="https://stripe.com/docs/connect/separate-charges-and-transfers#transfer-options">Connect
         /// documentation</a> for details.
         /// </summary>
         [JsonProperty("transfer_group")]

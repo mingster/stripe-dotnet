@@ -10,7 +10,7 @@ namespace Stripe
     /// Issue a credit note to adjust an invoice's amount after the invoice is finalized.
     ///
     /// Related guide: <a href="https://stripe.com/docs/billing/invoices/credit-notes">Credit
-    /// Notes</a>.
+    /// notes</a>.
     /// </summary>
     public class CreditNote : StripeEntity<CreditNote>, IHasId, IHasMetadata, IHasObject
     {
@@ -27,8 +27,8 @@ namespace Stripe
         public string Object { get; set; }
 
         /// <summary>
-        /// The integer amount in %s representing the total amount of the credit note, including
-        /// tax.
+        /// The integer amount in cents (or local equivalent) representing the total amount of the
+        /// credit note, including tax.
         /// </summary>
         [JsonProperty("amount")]
         public long Amount { get; set; }
@@ -117,7 +117,8 @@ namespace Stripe
         #endregion
 
         /// <summary>
-        /// The integer amount in %s representing the total amount of discount that was credited.
+        /// The integer amount in cents (or local equivalent) representing the total amount of
+        /// discount that was credited.
         /// </summary>
         [JsonProperty("discount_amount")]
         public long DiscountAmount { get; set; }
@@ -127,6 +128,15 @@ namespace Stripe
         /// </summary>
         [JsonProperty("discount_amounts")]
         public List<CreditNoteDiscountAmount> DiscountAmounts { get; set; }
+
+        /// <summary>
+        /// The date when this credit note is in effect. Same as <c>created</c> unless overwritten.
+        /// When defined, this value replaces the system-generated 'Date of issue' printed on the
+        /// credit note PDF.
+        /// </summary>
+        [JsonProperty("effective_at")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? EffectiveAt { get; set; }
 
         #region Expandable Invoice
 
@@ -261,15 +271,15 @@ namespace Stripe
         public string Status { get; set; }
 
         /// <summary>
-        /// The integer amount in %s representing the amount of the credit note, excluding exclusive
-        /// tax and invoice level discounts.
+        /// The integer amount in cents (or local equivalent) representing the amount of the credit
+        /// note, excluding exclusive tax and invoice level discounts.
         /// </summary>
         [JsonProperty("subtotal")]
         public long Subtotal { get; set; }
 
         /// <summary>
-        /// The integer amount in %s representing the amount of the credit note, excluding all tax
-        /// and invoice level discounts.
+        /// The integer amount in cents (or local equivalent) representing the amount of the credit
+        /// note, excluding all tax and invoice level discounts.
         /// </summary>
         [JsonProperty("subtotal_excluding_tax")]
         public long? SubtotalExcludingTax { get; set; }
@@ -281,15 +291,15 @@ namespace Stripe
         public List<CreditNoteTaxAmount> TaxAmounts { get; set; }
 
         /// <summary>
-        /// The integer amount in %s representing the total amount of the credit note, including tax
-        /// and all discount.
+        /// The integer amount in cents (or local equivalent) representing the total amount of the
+        /// credit note, including tax and all discount.
         /// </summary>
         [JsonProperty("total")]
         public long Total { get; set; }
 
         /// <summary>
-        /// The integer amount in %s representing the total amount of the credit note, excluding
-        /// tax, but including discounts.
+        /// The integer amount in cents (or local equivalent) representing the total amount of the
+        /// credit note, excluding tax, but including discounts.
         /// </summary>
         [JsonProperty("total_excluding_tax")]
         public long? TotalExcludingTax { get; set; }

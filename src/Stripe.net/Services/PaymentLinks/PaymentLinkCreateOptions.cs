@@ -28,8 +28,8 @@ namespace Stripe
 
         /// <summary>
         /// A non-negative decimal between 0 and 100, with at most two decimal places. This
-        /// represents the percentage of the subscription invoice subtotal that will be transferred
-        /// to the application owner's Stripe account. There must be at least 1 line item with a
+        /// represents the percentage of the subscription invoice total that will be transferred to
+        /// the application owner's Stripe account. There must be at least 1 line item with a
         /// recurring price to use this field.
         /// </summary>
         [JsonProperty("application_fee_percent")]
@@ -42,7 +42,7 @@ namespace Stripe
         public PaymentLinkAutomaticTaxOptions AutomaticTax { get; set; }
 
         /// <summary>
-        /// Configuration for collecting the customer's billing address.
+        /// Configuration for collecting the customer's billing address. Defaults to <c>auto</c>.
         /// One of: <c>auto</c>, or <c>required</c>.
         /// </summary>
         [JsonProperty("billing_address_collection")]
@@ -63,7 +63,7 @@ namespace Stripe
         public string Currency { get; set; }
 
         /// <summary>
-        /// Collect additional information from your customer using custom fields. Up to 2 fields
+        /// Collect additional information from your customer using custom fields. Up to 3 fields
         /// are supported.
         /// </summary>
         [JsonProperty("custom_fields")]
@@ -83,6 +83,13 @@ namespace Stripe
         /// </summary>
         [JsonProperty("customer_creation")]
         public string CustomerCreation { get; set; }
+
+        /// <summary>
+        /// The custom message to be displayed to a customer when a payment link is no longer
+        /// active.
+        /// </summary>
+        [JsonProperty("inactive_message")]
+        public string InactiveMessage { get; set; }
 
         /// <summary>
         /// Generate a post-purchase Invoice for one-time payments.
@@ -128,7 +135,7 @@ namespace Stripe
         /// the session is 0.This may occur if the Checkout Session includes a free trial or a
         /// discount.
         ///
-        /// Can only be set in <c>subscription</c> mode.
+        /// Can only be set in <c>subscription</c> mode. Defaults to <c>always</c>.
         ///
         /// If you'd like information on how to collect a payment method outside of Checkout, read
         /// the guide on <a href="https://stripe.com/docs/payments/checkout/free-trials">configuring
@@ -144,6 +151,12 @@ namespace Stripe
         /// href="https://dashboard.stripe.com/settings/payment_methods">payment method settings</a>
         /// (20+ payment methods <a
         /// href="https://stripe.com/docs/payments/payment-methods/integration-options#payment-method-product-support">supported</a>).
+        /// One of: <c>affirm</c>, <c>afterpay_clearpay</c>, <c>alipay</c>, <c>au_becs_debit</c>,
+        /// <c>bacs_debit</c>, <c>bancontact</c>, <c>blik</c>, <c>boleto</c>, <c>card</c>,
+        /// <c>cashapp</c>, <c>eps</c>, <c>fpx</c>, <c>giropay</c>, <c>grabpay</c>, <c>ideal</c>,
+        /// <c>klarna</c>, <c>konbini</c>, <c>link</c>, <c>oxxo</c>, <c>p24</c>, <c>paynow</c>,
+        /// <c>paypal</c>, <c>pix</c>, <c>promptpay</c>, <c>sepa_debit</c>, <c>sofort</c>,
+        /// <c>swish</c>, <c>us_bank_account</c>, or <c>wechat_pay</c>.
         /// </summary>
         [JsonProperty("payment_method_types")]
         public List<string> PaymentMethodTypes { get; set; }
@@ -155,6 +168,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("phone_number_collection")]
         public PaymentLinkPhoneNumberCollectionOptions PhoneNumberCollection { get; set; }
+
+        /// <summary>
+        /// Settings that restrict the usage of a payment link.
+        /// </summary>
+        [JsonProperty("restrictions")]
+        public PaymentLinkRestrictionsOptions Restrictions { get; set; }
 
         /// <summary>
         /// Configuration for collecting the customer's shipping address.

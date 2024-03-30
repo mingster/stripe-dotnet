@@ -13,13 +13,6 @@ namespace Stripe
         public SetupIntentPaymentMethodOptionsAcssDebitOptions AcssDebit { get; set; }
 
         /// <summary>
-        /// If this is a <c>blik</c> PaymentMethod, this hash contains details about the BLIK
-        /// payment method.
-        /// </summary>
-        [JsonProperty("blik")]
-        public SetupIntentPaymentMethodOptionsBlikOptions Blik { get; set; }
-
-        /// <summary>
         /// Configuration for any card setup attempted on this SetupIntent.
         /// </summary>
         [JsonProperty("card")]
@@ -31,6 +24,13 @@ namespace Stripe
         /// </summary>
         [JsonProperty("link")]
         public SetupIntentPaymentMethodOptionsLinkOptions Link { get; set; }
+
+        /// <summary>
+        /// If this is a <c>paypal</c> PaymentMethod, this sub-hash contains details about the
+        /// PayPal payment method options.
+        /// </summary>
+        [JsonProperty("paypal")]
+        public SetupIntentPaymentMethodOptionsPaypalOptions Paypal { get; set; }
 
         /// <summary>
         /// If this is a <c>sepa_debit</c> SetupIntent, this sub-hash contains details about the

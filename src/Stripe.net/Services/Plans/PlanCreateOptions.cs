@@ -78,8 +78,8 @@ namespace Stripe
 
         /// <summary>
         /// The number of intervals between subscription billings. For example,
-        /// <c>interval=month</c> and <c>interval_count=3</c> bills every 3 months. Maximum of one
-        /// year interval allowed (1 year, 12 months, or 52 weeks).
+        /// <c>interval=month</c> and <c>interval_count=3</c> bills every 3 months. Maximum of three
+        /// years interval allowed (3 years, 36 months, or 156 weeks).
         /// </summary>
         [JsonProperty("interval_count")]
         public long? IntervalCount { get; set; }
@@ -92,6 +92,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; set; }
+
+        /// <summary>
+        /// The meter tracking the usage of a metered price.
+        /// </summary>
+        [JsonProperty("meter")]
+        public string Meter { get; set; }
 
         /// <summary>
         /// A brief description of the plan, hidden from customers.

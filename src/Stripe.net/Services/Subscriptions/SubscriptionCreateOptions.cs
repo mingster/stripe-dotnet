@@ -17,9 +17,9 @@ namespace Stripe
 
         /// <summary>
         /// A non-negative decimal between 0 and 100, with at most two decimal places. This
-        /// represents the percentage of the subscription invoice subtotal that will be transferred
-        /// to the application owner's Stripe account. The request must be made by a platform
-        /// account on a connected account in order to set an application fee percentage. For more
+        /// represents the percentage of the subscription invoice total that will be transferred to
+        /// the application owner's Stripe account. The request must be made by a platform account
+        /// on a connected account in order to set an application fee percentage. For more
         /// information, see the application fees <a
         /// href="https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions">documentation</a>.
         /// </summary>
@@ -43,15 +43,23 @@ namespace Stripe
         public DateTime? BackdateStartDate { get; set; }
 
         /// <summary>
-        /// A future timestamp to anchor the subscription's <a
-        /// href="https://stripe.com/docs/subscriptions/billing-cycle">billing cycle</a>. This is
-        /// used to determine the date of the first full invoice, and, for plans with <c>month</c>
-        /// or <c>year</c> intervals, the day of the month for subsequent invoices. The timestamp is
-        /// in UTC format.
+        /// A future timestamp in UTC format to anchor the subscription's <a
+        /// href="https://stripe.com/docs/subscriptions/billing-cycle">billing cycle</a>. The anchor
+        /// is the reference point that aligns future billing cycle dates. It sets the day of week
+        /// for <c>week</c> intervals, the day of month for <c>month</c> and <c>year</c> intervals,
+        /// and the month of year for <c>year</c> intervals.
         /// </summary>
         [JsonProperty("billing_cycle_anchor")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime? BillingCycleAnchor { get; set; }
+
+        /// <summary>
+        /// Mutually exclusive with billing_cycle_anchor and only valid with monthly and yearly
+        /// price intervals. When provided, the billing_cycle_anchor is set to the next occurence of
+        /// the day_of_month at the hour, minute, and second UTC.
+        /// </summary>
+        [JsonProperty("billing_cycle_anchor_config")]
+        public SubscriptionBillingCycleAnchorConfigOptions BillingCycleAnchorConfig { get; set; }
 
         /// <summary>
         /// Define thresholds at which an invoice will be sent, and the subscription advanced to a
@@ -149,10 +157,17 @@ namespace Stripe
 
         /// <summary>
         /// The subscription's description, meant to be displayable to the customer. Use this field
-        /// to optionally store an explanation of the subscription for rendering in Stripe surfaces.
+        /// to optionally store an explanation of the subscription for rendering in Stripe surfaces
+        /// and certain local payment methods UIs.
         /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
+
+        /// <summary>
+        /// All invoices will be billed using the specified settings.
+        /// </summary>
+        [JsonProperty("invoice_settings")]
+        public SubscriptionInvoiceSettingsOptions InvoiceSettings { get; set; }
 
         /// <summary>
         /// A list of up to 20 subscription items, each with an attached price.
@@ -184,9 +199,9 @@ namespace Stripe
         /// <summary>
         /// Only applies to subscriptions with <c>collection_method=charge_automatically</c>.
         ///
-        /// Use <c>allow_incomplete</c> to create subscriptions with <c>status=incomplete</c> if the
-        /// first invoice cannot be paid. Creating subscriptions with this status allows you to
-        /// manage scenarios where additional user actions are needed to pay a subscription's
+        /// Use <c>allow_incomplete</c> to create Subscriptions with <c>status=incomplete</c> if the
+        /// first invoice can't be paid. Creating Subscriptions with this status allows you to
+        /// manage scenarios where additional customer actions are needed to pay a subscription's
         /// invoice. For example, SCA regulation may require 3DS authentication to complete payment.
         /// See the <a
         /// href="https://stripe.com/docs/billing/migration/strong-customer-authentication">SCA
@@ -194,26 +209,26 @@ namespace Stripe
         ///
         /// Use <c>default_incomplete</c> to create Subscriptions with <c>status=incomplete</c> when
         /// the first invoice requires payment, otherwise start as active. Subscriptions transition
-        /// to <c>status=active</c> when successfully confirming the payment intent on the first
-        /// invoice. This allows simpler management of scenarios where additional user actions are
-        /// needed to pay a subscription’s invoice. Such as failed payments, <a
+        /// to <c>status=active</c> when successfully confirming the PaymentIntent on the first
+        /// invoice. This allows simpler management of scenarios where additional customer actions
+        /// are needed to pay a subscription’s invoice, such as failed payments, <a
         /// href="https://stripe.com/docs/billing/migration/strong-customer-authentication">SCA
-        /// regulation</a>, or collecting a mandate for a bank debit payment method. If the payment
-        /// intent is not confirmed within 23 hours subscriptions transition to
+        /// regulation</a>, or collecting a mandate for a bank debit payment method. If the
+        /// PaymentIntent is not confirmed within 23 hours Subscriptions transition to
         /// <c>status=incomplete_expired</c>, which is a terminal state.
         ///
         /// Use <c>error_if_incomplete</c> if you want Stripe to return an HTTP 402 status code if a
-        /// subscription's first invoice cannot be paid. For example, if a payment method requires
-        /// 3DS authentication due to SCA regulation and further user action is needed, this
-        /// parameter does not create a subscription and returns an error instead. This was the
+        /// subscription's first invoice can't be paid. For example, if a payment method requires
+        /// 3DS authentication due to SCA regulation and further customer action is needed, this
+        /// parameter doesn't create a Subscription and returns an error instead. This was the
         /// default behavior for API versions prior to 2019-03-14. See the <a
         /// href="https://stripe.com/docs/upgrades#2019-03-14">changelog</a> to learn more.
         ///
         /// <c>pending_if_incomplete</c> is only used with updates and cannot be passed when
-        /// creating a subscription.
+        /// creating a Subscription.
         ///
         /// Subscriptions with <c>collection_method=send_invoice</c> are automatically activated
-        /// regardless of the first invoice status.
+        /// regardless of the first Invoice status.
         /// One of: <c>allow_incomplete</c>, <c>default_incomplete</c>, <c>error_if_incomplete</c>,
         /// or <c>pending_if_incomplete</c>.
         /// </summary>
@@ -243,8 +258,8 @@ namespace Stripe
 
         /// <summary>
         /// Determines how to handle <a
-        /// href="https://stripe.com/docs/subscriptions/billing-cycle#prorations">prorations</a>
-        /// resulting from the <c>billing_cycle_anchor</c>. If no value is passed, the default is
+        /// href="https://stripe.com/docs/billing/subscriptions/prorations">prorations</a> resulting
+        /// from the <c>billing_cycle_anchor</c>. If no value is passed, the default is
         /// <c>create_prorations</c>.
         /// One of: <c>always_invoice</c>, <c>create_prorations</c>, or <c>none</c>.
         /// </summary>

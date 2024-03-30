@@ -77,6 +77,13 @@ namespace Stripe
         public SetupIntentPaymentMethodDataBoletoOptions Boleto { get; set; }
 
         /// <summary>
+        /// If this is a <c>cashapp</c> PaymentMethod, this hash contains details about the Cash App
+        /// Pay payment method.
+        /// </summary>
+        [JsonProperty("cashapp")]
+        public SetupIntentPaymentMethodDataCashappOptions Cashapp { get; set; }
+
+        /// <summary>
         /// If this is a <c>customer_balance</c> PaymentMethod, this hash contains details about the
         /// CustomerBalance payment method.
         /// </summary>
@@ -156,6 +163,13 @@ namespace Stripe
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
+        /// If this is a <c>mobilepay</c> PaymentMethod, this hash contains details about the
+        /// MobilePay payment method.
+        /// </summary>
+        [JsonProperty("mobilepay")]
+        public SetupIntentPaymentMethodDataMobilepayOptions Mobilepay { get; set; }
+
+        /// <summary>
         /// If this is an <c>oxxo</c> PaymentMethod, this hash contains details about the OXXO
         /// payment method.
         /// </summary>
@@ -175,6 +189,13 @@ namespace Stripe
         /// </summary>
         [JsonProperty("paynow")]
         public SetupIntentPaymentMethodDataPaynowOptions Paynow { get; set; }
+
+        /// <summary>
+        /// If this is a <c>paypal</c> PaymentMethod, this hash contains details about the PayPal
+        /// payment method.
+        /// </summary>
+        [JsonProperty("paypal")]
+        public SetupIntentPaymentMethodDataPaypalOptions Paypal { get; set; }
 
         /// <summary>
         /// If this is a <c>pix</c> PaymentMethod, this hash contains details about the Pix payment
@@ -199,6 +220,13 @@ namespace Stripe
         public SetupIntentPaymentMethodDataRadarOptionsOptions RadarOptions { get; set; }
 
         /// <summary>
+        /// If this is a <c>Revolut Pay</c> PaymentMethod, this hash contains details about the
+        /// Revolut Pay payment method.
+        /// </summary>
+        [JsonProperty("revolut_pay")]
+        public SetupIntentPaymentMethodDataRevolutPayOptions RevolutPay { get; set; }
+
+        /// <summary>
         /// If this is a <c>sepa_debit</c> PaymentMethod, this hash contains details about the SEPA
         /// debit bank account.
         /// </summary>
@@ -213,15 +241,23 @@ namespace Stripe
         public SetupIntentPaymentMethodDataSofortOptions Sofort { get; set; }
 
         /// <summary>
+        /// If this is a <c>swish</c> PaymentMethod, this hash contains details about the Swish
+        /// payment method.
+        /// </summary>
+        [JsonProperty("swish")]
+        public SetupIntentPaymentMethodDataSwishOptions Swish { get; set; }
+
+        /// <summary>
         /// The type of the PaymentMethod. An additional hash is included on the PaymentMethod with
         /// a name matching this value. It contains additional information specific to the
         /// PaymentMethod type.
         /// One of: <c>acss_debit</c>, <c>affirm</c>, <c>afterpay_clearpay</c>, <c>alipay</c>,
         /// <c>au_becs_debit</c>, <c>bacs_debit</c>, <c>bancontact</c>, <c>blik</c>, <c>boleto</c>,
-        /// <c>customer_balance</c>, <c>eps</c>, <c>fpx</c>, <c>giropay</c>, <c>grabpay</c>,
-        /// <c>ideal</c>, <c>klarna</c>, <c>konbini</c>, <c>link</c>, <c>oxxo</c>, <c>p24</c>,
-        /// <c>paynow</c>, <c>pix</c>, <c>promptpay</c>, <c>sepa_debit</c>, <c>sofort</c>,
-        /// <c>us_bank_account</c>, or <c>wechat_pay</c>.
+        /// <c>cashapp</c>, <c>customer_balance</c>, <c>eps</c>, <c>fpx</c>, <c>giropay</c>,
+        /// <c>grabpay</c>, <c>ideal</c>, <c>klarna</c>, <c>konbini</c>, <c>link</c>,
+        /// <c>mobilepay</c>, <c>oxxo</c>, <c>p24</c>, <c>paynow</c>, <c>paypal</c>, <c>pix</c>,
+        /// <c>promptpay</c>, <c>revolut_pay</c>, <c>sepa_debit</c>, <c>sofort</c>, <c>swish</c>,
+        /// <c>us_bank_account</c>, <c>wechat_pay</c>, or <c>zip</c>.
         /// </summary>
         [JsonProperty("type")]
         public string Type { get; set; }
@@ -239,5 +275,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("wechat_pay")]
         public SetupIntentPaymentMethodDataWechatPayOptions WechatPay { get; set; }
+
+        /// <summary>
+        /// If this is a <c>zip</c> PaymentMethod, this hash contains details about the Zip payment
+        /// method.
+        /// </summary>
+        [JsonProperty("zip")]
+        public SetupIntentPaymentMethodDataZipOptions Zip { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace Stripe.Checkout
     /// Checkout.
     ///
     /// Related guide: <a href="https://stripe.com/docs/checkout/quickstart">Checkout
-    /// Quickstart</a>.
+    /// quickstart</a>.
     /// </summary>
     public class Session : StripeEntity<Session>, IHasId, IHasMetadata, IHasObject
     {
@@ -66,7 +66,8 @@ namespace Stripe.Checkout
         public SessionAutomaticTax AutomaticTax { get; set; }
 
         /// <summary>
-        /// Describes whether Checkout should collect the customer's billing address.
+        /// Describes whether Checkout should collect the customer's billing address. Defaults to
+        /// <c>auto</c>.
         /// One of: <c>auto</c>, or <c>required</c>.
         /// </summary>
         [JsonProperty("billing_address_collection")]
@@ -85,6 +86,12 @@ namespace Stripe.Checkout
         /// </summary>
         [JsonProperty("client_reference_id")]
         public string ClientReferenceId { get; set; }
+
+        /// <summary>
+        /// Client secret to be used when initializing Stripe.js embedded checkout.
+        /// </summary>
+        [JsonProperty("client_secret")]
+        public string ClientSecret { get; set; }
 
         /// <summary>
         /// Results of <c>consent_collection</c> for this session.
@@ -115,7 +122,13 @@ namespace Stripe.Checkout
         public string Currency { get; set; }
 
         /// <summary>
-        /// Collect additional information from your customer using custom fields. Up to 2 fields
+        /// Currency conversion details for automatic currency conversion sessions.
+        /// </summary>
+        [JsonProperty("currency_conversion")]
+        public SessionCurrencyConversion CurrencyConversion { get; set; }
+
+        /// <summary>
+        /// Collect additional information from your customer using custom fields. Up to 3 fields
         /// are supported.
         /// </summary>
         [JsonProperty("custom_fields")]
@@ -128,10 +141,11 @@ namespace Stripe.Checkout
 
         /// <summary>
         /// (ID of the Customer)
-        /// The ID of the customer for this Session. For Checkout Sessions in <c>payment</c> or
-        /// <c>subscription</c> mode, Checkout will create a new customer object based on
-        /// information provided during the payment flow unless an existing customer was provided
-        /// when the Session was created.
+        /// The ID of the customer for this Session. For Checkout Sessions in <c>subscription</c>
+        /// mode or Checkout Sessions with <c>customer_creation</c> set as <c>always</c> in
+        /// <c>payment</c> mode, Checkout will create a new customer object based on information
+        /// provided during the payment flow unless an existing customer was provided when the
+        /// Session was created.
         /// </summary>
         [JsonIgnore]
         public string CustomerId
@@ -142,10 +156,11 @@ namespace Stripe.Checkout
 
         /// <summary>
         /// (Expanded)
-        /// The ID of the customer for this Session. For Checkout Sessions in <c>payment</c> or
-        /// <c>subscription</c> mode, Checkout will create a new customer object based on
-        /// information provided during the payment flow unless an existing customer was provided
-        /// when the Session was created.
+        /// The ID of the customer for this Session. For Checkout Sessions in <c>subscription</c>
+        /// mode or Checkout Sessions with <c>customer_creation</c> set as <c>always</c> in
+        /// <c>payment</c> mode, Checkout will create a new customer object based on information
+        /// provided during the payment flow unless an existing customer was provided when the
+        /// Session was created.
         ///
         /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
         /// </summary>
@@ -171,7 +186,7 @@ namespace Stripe.Checkout
 
         /// <summary>
         /// The customer details including the customer's tax exempt status and the customer's tax
-        /// IDs. Only the customer's email is present on Sessions in <c>setup</c> mode.
+        /// IDs. Customer's address details are not present on Sessions in <c>setup</c> mode.
         /// </summary>
         [JsonProperty("customer_details")]
         public SessionCustomerDetails CustomerDetails { get; set; }
@@ -333,11 +348,19 @@ namespace Stripe.Checkout
         #endregion
 
         /// <summary>
-        /// Configure whether a Checkout Session should collect a payment method.
+        /// Configure whether a Checkout Session should collect a payment method. Defaults to
+        /// <c>always</c>.
         /// One of: <c>always</c>, or <c>if_required</c>.
         /// </summary>
         [JsonProperty("payment_method_collection")]
         public string PaymentMethodCollection { get; set; }
+
+        /// <summary>
+        /// Information about the payment method configuration used for this Checkout session if
+        /// using dynamic payment methods.
+        /// </summary>
+        [JsonProperty("payment_method_configuration_details")]
+        public SessionPaymentMethodConfigurationDetails PaymentMethodConfigurationDetails { get; set; }
 
         /// <summary>
         /// Payment-method-specific configuration for the PaymentIntent or SetupIntent of this
@@ -370,6 +393,23 @@ namespace Stripe.Checkout
         /// </summary>
         [JsonProperty("recovered_from")]
         public string RecoveredFrom { get; set; }
+
+        /// <summary>
+        /// This parameter applies to <c>ui_mode: embedded</c>. Learn more about the <a
+        /// href="https://stripe.com/docs/payments/checkout/custom-redirect-behavior">redirect
+        /// behavior</a> of embedded sessions. Defaults to <c>always</c>.
+        /// One of: <c>always</c>, <c>if_required</c>, or <c>never</c>.
+        /// </summary>
+        [JsonProperty("redirect_on_completion")]
+        public string RedirectOnCompletion { get; set; }
+
+        /// <summary>
+        /// Applies to Checkout Sessions with <c>ui_mode: embedded</c>. The URL to redirect your
+        /// customer back to after they authenticate or cancel their payment on the payment method's
+        /// app or site.
+        /// </summary>
+        [JsonProperty("return_url")]
+        public string ReturnUrl { get; set; }
 
         #region Expandable SetupIntent
 
@@ -439,8 +479,8 @@ namespace Stripe.Checkout
         /// <summary>
         /// Describes the type of transaction being performed by Checkout in order to customize
         /// relevant text on the page, such as the submit button. <c>submit_type</c> can only be
-        /// specified on Checkout Sessions in <c>payment</c> mode, but not Checkout Sessions in
-        /// <c>subscription</c> or <c>setup</c> mode.
+        /// specified on Checkout Sessions in <c>payment</c> mode. If blank or <c>auto</c>,
+        /// <c>pay</c> is used.
         /// One of: <c>auto</c>, <c>book</c>, <c>donate</c>, or <c>pay</c>.
         /// </summary>
         [JsonProperty("submit_type")]
@@ -492,6 +532,13 @@ namespace Stripe.Checkout
         /// </summary>
         [JsonProperty("total_details")]
         public SessionTotalDetails TotalDetails { get; set; }
+
+        /// <summary>
+        /// The UI mode of the Session. Defaults to <c>hosted</c>.
+        /// One of: <c>embedded</c>, or <c>hosted</c>.
+        /// </summary>
+        [JsonProperty("ui_mode")]
+        public string UiMode { get; set; }
 
         /// <summary>
         /// The URL to the Checkout Session. Redirect customers to this URL to take them to

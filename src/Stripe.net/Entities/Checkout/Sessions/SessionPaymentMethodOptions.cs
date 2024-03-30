@@ -32,6 +32,9 @@ namespace Stripe.Checkout
         [JsonProperty("card")]
         public SessionPaymentMethodOptionsCard Card { get; set; }
 
+        [JsonProperty("cashapp")]
+        public SessionPaymentMethodOptionsCashapp Cashapp { get; set; }
+
         [JsonProperty("customer_balance")]
         public SessionPaymentMethodOptionsCustomerBalance CustomerBalance { get; set; }
 
@@ -56,6 +59,9 @@ namespace Stripe.Checkout
         [JsonProperty("konbini")]
         public SessionPaymentMethodOptionsKonbini Konbini { get; set; }
 
+        [JsonProperty("link")]
+        public SessionPaymentMethodOptionsLink Link { get; set; }
+
         [JsonProperty("oxxo")]
         public SessionPaymentMethodOptionsOxxo Oxxo { get; set; }
 
@@ -65,14 +71,23 @@ namespace Stripe.Checkout
         [JsonProperty("paynow")]
         public SessionPaymentMethodOptionsPaynow Paynow { get; set; }
 
+        [JsonProperty("paypal")]
+        public SessionPaymentMethodOptionsPaypal Paypal { get; set; }
+
         [JsonProperty("pix")]
         public SessionPaymentMethodOptionsPix Pix { get; set; }
+
+        [JsonProperty("revolut_pay")]
+        public SessionPaymentMethodOptionsRevolutPay RevolutPay { get; set; }
 
         [JsonProperty("sepa_debit")]
         public SessionPaymentMethodOptionsSepaDebit SepaDebit { get; set; }
 
         [JsonProperty("sofort")]
         public SessionPaymentMethodOptionsSofort Sofort { get; set; }
+
+        [JsonProperty("swish")]
+        public SessionPaymentMethodOptionsSwish Swish { get; set; }
 
         [JsonProperty("us_bank_account")]
         public SessionPaymentMethodOptionsUsBankAccount UsBankAccount { get; set; }

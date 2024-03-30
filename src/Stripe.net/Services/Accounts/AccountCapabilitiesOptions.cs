@@ -24,6 +24,12 @@ namespace Stripe
         public AccountCapabilitiesAfterpayClearpayPaymentsOptions AfterpayClearpayPayments { get; set; }
 
         /// <summary>
+        /// The amazon_pay_payments capability.
+        /// </summary>
+        [JsonProperty("amazon_pay_payments")]
+        public AccountCapabilitiesAmazonPayPaymentsOptions AmazonPayPayments { get; set; }
+
+        /// <summary>
         /// The au_becs_debit_payments capability.
         /// </summary>
         [JsonProperty("au_becs_debit_payments")]
@@ -76,6 +82,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("cartes_bancaires_payments")]
         public AccountCapabilitiesCartesBancairesPaymentsOptions CartesBancairesPayments { get; set; }
+
+        /// <summary>
+        /// The cashapp_payments capability.
+        /// </summary>
+        [JsonProperty("cashapp_payments")]
+        public AccountCapabilitiesCashappPaymentsOptions CashappPayments { get; set; }
 
         /// <summary>
         /// The eps_payments capability.
@@ -144,6 +156,12 @@ namespace Stripe
         public AccountCapabilitiesLinkPaymentsOptions LinkPayments { get; set; }
 
         /// <summary>
+        /// The mobilepay_payments capability.
+        /// </summary>
+        [JsonProperty("mobilepay_payments")]
+        public AccountCapabilitiesMobilepayPaymentsOptions MobilepayPayments { get; set; }
+
+        /// <summary>
         /// The oxxo_payments capability.
         /// </summary>
         [JsonProperty("oxxo_payments")]
@@ -168,6 +186,12 @@ namespace Stripe
         public AccountCapabilitiesPromptpayPaymentsOptions PromptpayPayments { get; set; }
 
         /// <summary>
+        /// The revolut_pay_payments capability.
+        /// </summary>
+        [JsonProperty("revolut_pay_payments")]
+        public AccountCapabilitiesRevolutPayPaymentsOptions RevolutPayPayments { get; set; }
+
+        /// <summary>
         /// The sepa_debit_payments capability.
         /// </summary>
         [JsonProperty("sepa_debit_payments")]
@@ -178,6 +202,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("sofort_payments")]
         public AccountCapabilitiesSofortPaymentsOptions SofortPayments { get; set; }
+
+        /// <summary>
+        /// The swish_payments capability.
+        /// </summary>
+        [JsonProperty("swish_payments")]
+        public AccountCapabilitiesSwishPaymentsOptions SwishPayments { get; set; }
 
         /// <summary>
         /// The tax_reporting_us_1099_k capability.
@@ -208,5 +238,11 @@ namespace Stripe
         /// </summary>
         [JsonProperty("us_bank_account_ach_payments")]
         public AccountCapabilitiesUsBankAccountAchPaymentsOptions UsBankAccountAchPayments { get; set; }
+
+        /// <summary>
+        /// The zip_payments capability.
+        /// </summary>
+        [JsonProperty("zip_payments")]
+        public AccountCapabilitiesZipPaymentsOptions ZipPayments { get; set; }
     }
 }

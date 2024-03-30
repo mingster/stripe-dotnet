@@ -10,7 +10,7 @@ namespace Stripe
     /// can also store multiple debit cards on a recipient in order to transfer to those cards
     /// later.
     ///
-    /// Related guide: <a href="https://stripe.com/docs/sources/cards">Card Payments with
+    /// Related guide: <a href="https://stripe.com/docs/sources/cards">Card payments with
     /// Sources</a>.
     /// </summary>
     public class Card : StripeEntity<Card>, IHasId, IHasMetadata, IHasObject, IExternalAccount, IPaymentSource
@@ -113,13 +113,15 @@ namespace Stripe
         /// <summary>
         /// A set of available payout methods for this card. Only values from this set should be
         /// passed as the <c>method</c> when creating a payout.
+        /// One of: <c>instant</c>, or <c>standard</c>.
         /// </summary>
         [JsonProperty("available_payout_methods")]
         public List<string> AvailablePayoutMethods { get; set; }
 
         /// <summary>
         /// Card brand. Can be <c>American Express</c>, <c>Diners Club</c>, <c>Discover</c>,
-        /// <c>JCB</c>, <c>MasterCard</c>, <c>UnionPay</c>, <c>Visa</c>, or <c>Unknown</c>.
+        /// <c>Eftpos Australia</c>, <c>JCB</c>, <c>MasterCard</c>, <c>UnionPay</c>, <c>Visa</c>, or
+        /// <c>Unknown</c>.
         /// </summary>
         [JsonProperty("brand")]
         public string Brand { get; set; }
@@ -226,8 +228,8 @@ namespace Stripe
         /// example. For payment methods that tokenize card information (Apple Pay, Google Pay), the
         /// tokenized number might be provided instead of the underlying card number.
         ///
-        /// <em>Starting May 1, 2021, card fingerprint in India for Connect will change to allow two
-        /// fingerprints for the same card --- one for India and one for the rest of the world.</em>.
+        /// <em>As of May 1, 2021, card fingerprint in India for Connect changed to allow two
+        /// fingerprints for the same card---one for India and one for the rest of the world.</em>.
         /// </summary>
         [JsonProperty("fingerprint")]
         public string Fingerprint { get; set; }
@@ -273,10 +275,14 @@ namespace Stripe
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("networks")]
+        public CardNetworks Networks { get; set; }
+
         /// <summary>
-        /// For external accounts, possible values are <c>new</c> and <c>errored</c>. If a transfer
-        /// fails, the status is set to <c>errored</c> and transfers are stopped until account
-        /// details are updated.
+        /// For external accounts that are cards, possible values are <c>new</c> and <c>errored</c>.
+        /// If a payout fails, the status is set to <c>errored</c> and <a
+        /// href="https://stripe.com/docs/payouts#payout-schedule">scheduled payouts</a> are stopped
+        /// until account details are updated.
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }

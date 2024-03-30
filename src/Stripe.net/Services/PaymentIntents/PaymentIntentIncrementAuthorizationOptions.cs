@@ -7,8 +7,8 @@ namespace Stripe
     public class PaymentIntentIncrementAuthorizationOptions : BaseOptions, IHasMetadata
     {
         /// <summary>
-        /// The updated total amount you intend to collect from the cardholder. This amount must be
-        /// greater than the currently authorized amount.
+        /// The updated total amount that you intend to collect from the cardholder. This amount
+        /// must be greater than the currently authorized amount.
         /// </summary>
         [JsonProperty("amount")]
         public long? Amount { get; set; }
@@ -40,17 +40,18 @@ namespace Stripe
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
-        /// For non-card charges, you can use this value as the complete description that appears on
-        /// your customers’ statements. Must contain at least one letter, maximum 22 characters.
+        /// For card charges, use <a
+        /// href="https://stripe.com/docs/payments/account/statement-descriptors#dynamic">statement_descriptor_suffix</a>.
+        /// Otherwise, you can use this value as the complete description of a charge on your
+        /// customers' statements. It must contain at least one letter and be 1–22 characters long.
         /// </summary>
         [JsonProperty("statement_descriptor")]
         public string StatementDescriptor { get; set; }
 
         /// <summary>
-        /// The parameters used to automatically create a Transfer when the payment is captured. For
-        /// more information, see the PaymentIntents <a
-        /// href="https://stripe.com/docs/payments/connected-accounts">use case for connected
-        /// accounts</a>.
+        /// The parameters used to automatically create a transfer after the payment is captured.
+        /// Learn more about the <a href="https://stripe.com/docs/payments/connected-accounts">use
+        /// case for connected accounts</a>.
         /// </summary>
         [JsonProperty("transfer_data")]
         public PaymentIntentTransferDataOptions TransferData { get; set; }

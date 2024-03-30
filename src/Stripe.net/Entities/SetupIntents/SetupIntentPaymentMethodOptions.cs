@@ -8,14 +8,14 @@ namespace Stripe
         [JsonProperty("acss_debit")]
         public SetupIntentPaymentMethodOptionsAcssDebit AcssDebit { get; set; }
 
-        [JsonProperty("blik")]
-        public SetupIntentPaymentMethodOptionsBlik Blik { get; set; }
-
         [JsonProperty("card")]
         public SetupIntentPaymentMethodOptionsCard Card { get; set; }
 
         [JsonProperty("link")]
         public SetupIntentPaymentMethodOptionsLink Link { get; set; }
+
+        [JsonProperty("paypal")]
+        public SetupIntentPaymentMethodOptionsPaypal Paypal { get; set; }
 
         [JsonProperty("sepa_debit")]
         public SetupIntentPaymentMethodOptionsSepaDebit SepaDebit { get; set; }

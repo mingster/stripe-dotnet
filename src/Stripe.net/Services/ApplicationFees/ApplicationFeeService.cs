@@ -1,7 +1,9 @@
 // File generated from our OpenAPI spec
 namespace Stripe
 {
+    using System;
     using System.Collections.Generic;
+    using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -10,7 +12,6 @@ namespace Stripe
         IRetrievable<ApplicationFee, ApplicationFeeGetOptions>
     {
         public ApplicationFeeService()
-            : base(null)
         {
         }
 
@@ -19,36 +20,61 @@ namespace Stripe
         {
         }
 
+        [Obsolete("This member is deprecated and will be removed in a future release")]
         public override string BasePath => "/v1/application_fees";
 
+        /// <summary>
+        /// <p>Retrieves the details of an application fee that your account has collected. The same
+        /// information is returned when refunding the application fee.</p>.
+        /// </summary>
         public virtual ApplicationFee Get(string id, ApplicationFeeGetOptions options = null, RequestOptions requestOptions = null)
         {
-            return this.GetEntity(id, options, requestOptions);
+            return this.Request<ApplicationFee>(HttpMethod.Get, $"/v1/application_fees/{id}", options, requestOptions);
         }
 
+        /// <summary>
+        /// <p>Retrieves the details of an application fee that your account has collected. The same
+        /// information is returned when refunding the application fee.</p>.
+        /// </summary>
         public virtual Task<ApplicationFee> GetAsync(string id, ApplicationFeeGetOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.GetEntityAsync(id, options, requestOptions, cancellationToken);
+            return this.RequestAsync<ApplicationFee>(HttpMethod.Get, $"/v1/application_fees/{id}", options, requestOptions, cancellationToken);
         }
 
+        /// <summary>
+        /// <p>Returns a list of application fees you’ve previously collected. The application fees
+        /// are returned in sorted order, with the most recent fees appearing first.</p>.
+        /// </summary>
         public virtual StripeList<ApplicationFee> List(ApplicationFeeListOptions options = null, RequestOptions requestOptions = null)
         {
-            return this.ListEntities(options, requestOptions);
+            return this.Request<StripeList<ApplicationFee>>(HttpMethod.Get, $"/v1/application_fees", options, requestOptions);
         }
 
+        /// <summary>
+        /// <p>Returns a list of application fees you’ve previously collected. The application fees
+        /// are returned in sorted order, with the most recent fees appearing first.</p>.
+        /// </summary>
         public virtual Task<StripeList<ApplicationFee>> ListAsync(ApplicationFeeListOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListEntitiesAsync(options, requestOptions, cancellationToken);
+            return this.RequestAsync<StripeList<ApplicationFee>>(HttpMethod.Get, $"/v1/application_fees", options, requestOptions, cancellationToken);
         }
 
+        /// <summary>
+        /// <p>Returns a list of application fees you’ve previously collected. The application fees
+        /// are returned in sorted order, with the most recent fees appearing first.</p>.
+        /// </summary>
         public virtual IEnumerable<ApplicationFee> ListAutoPaging(ApplicationFeeListOptions options = null, RequestOptions requestOptions = null)
         {
-            return this.ListEntitiesAutoPaging(options, requestOptions);
+            return this.ListRequestAutoPaging<ApplicationFee>($"/v1/application_fees", options, requestOptions);
         }
 
+        /// <summary>
+        /// <p>Returns a list of application fees you’ve previously collected. The application fees
+        /// are returned in sorted order, with the most recent fees appearing first.</p>.
+        /// </summary>
         public virtual IAsyncEnumerable<ApplicationFee> ListAutoPagingAsync(ApplicationFeeListOptions options = null, RequestOptions requestOptions = null, CancellationToken cancellationToken = default)
         {
-            return this.ListEntitiesAutoPagingAsync(options, requestOptions, cancellationToken);
+            return this.ListRequestAutoPagingAsync<ApplicationFee>($"/v1/application_fees", options, requestOptions, cancellationToken);
         }
     }
 }

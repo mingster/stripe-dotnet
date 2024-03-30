@@ -12,10 +12,23 @@ namespace Stripe
         public PaymentIntentPaymentMethodOptionsUsBankAccountFinancialConnectionsOptions FinancialConnections { get; set; }
 
         /// <summary>
+        /// Additional fields for Mandate creation.
+        /// </summary>
+        [JsonProperty("mandate_options")]
+        public PaymentIntentPaymentMethodOptionsUsBankAccountMandateOptionsOptions MandateOptions { get; set; }
+
+        /// <summary>
         /// Additional fields for network related functions.
         /// </summary>
         [JsonProperty("networks")]
         public PaymentIntentPaymentMethodOptionsUsBankAccountNetworksOptions Networks { get; set; }
+
+        /// <summary>
+        /// Preferred transaction settlement speed.
+        /// One of: <c>fastest</c>, or <c>standard</c>.
+        /// </summary>
+        [JsonProperty("preferred_settlement_speed")]
+        public string PreferredSettlementSpeed { get; set; }
 
         /// <summary>
         /// Indicates that you intend to make future payments with this PaymentIntent's payment
@@ -36,12 +49,13 @@ namespace Stripe
         /// If <c>setup_future_usage</c> is already set and you are performing a request using a
         /// publishable key, you may only update the value from <c>on_session</c> to
         /// <c>off_session</c>.
+        /// One of: <c>none</c>, <c>off_session</c>, or <c>on_session</c>.
         /// </summary>
         [JsonProperty("setup_future_usage")]
         public string SetupFutureUsage { get; set; }
 
         /// <summary>
-        /// Verification method for the intent.
+        /// Bank account verification method.
         /// One of: <c>automatic</c>, <c>instant</c>, or <c>microdeposits</c>.
         /// </summary>
         [JsonProperty("verification_method")]

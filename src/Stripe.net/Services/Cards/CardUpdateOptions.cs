@@ -50,9 +50,21 @@ namespace Stripe
         [JsonProperty("address_zip")]
         public string AddressZip { get; set; }
 
+        /// <summary>
+        /// Documents that may be submitted to satisfy various informational requests.
+        /// </summary>
+        [JsonProperty("documents")]
+        public CardDocumentsOptions Documents { get; set; }
+
+        /// <summary>
+        /// Two digit number representing the card’s expiration month.
+        /// </summary>
         [JsonProperty("exp_month")]
         public long? ExpMonth { get; set; }
 
+        /// <summary>
+        /// Four digit number representing the card’s expiration year.
+        /// </summary>
         [JsonProperty("exp_year")]
         public long? ExpYear { get; set; }
 

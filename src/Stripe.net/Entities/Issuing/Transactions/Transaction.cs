@@ -12,7 +12,7 @@ namespace Stripe.Issuing
     /// is represented by an Issuing <c>Transaction</c> object.
     ///
     /// Related guide: <a href="https://stripe.com/docs/issuing/purchases/transactions">Issued
-    /// Card Transactions</a>.
+    /// card transactions</a>.
     /// </summary>
     public class Transaction : StripeEntity<Transaction>, IHasId, IHasMetadata, IHasObject, IBalanceTransactionSource
     {
@@ -250,10 +250,51 @@ namespace Stripe.Issuing
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
+        /// Details about the transaction, such as processing dates, set by the card network.
+        /// </summary>
+        [JsonProperty("network_data")]
+        public TransactionNetworkData NetworkData { get; set; }
+
+        /// <summary>
         /// Additional purchase information that is optionally provided by the merchant.
         /// </summary>
         [JsonProperty("purchase_details")]
         public TransactionPurchaseDetails PurchaseDetails { get; set; }
+
+        #region Expandable Token
+
+        /// <summary>
+        /// (ID of the Token)
+        /// <a href="https://stripe.com/docs/api/issuing/tokens/object">Token</a> object used for
+        /// this transaction. If a network token was not used for this transaction, this field will
+        /// be null.
+        /// </summary>
+        [JsonIgnore]
+        public string TokenId
+        {
+            get => this.InternalToken?.Id;
+            set => this.InternalToken = SetExpandableFieldId(value, this.InternalToken);
+        }
+
+        /// <summary>
+        /// (Expanded)
+        /// <a href="https://stripe.com/docs/api/issuing/tokens/object">Token</a> object used for
+        /// this transaction. If a network token was not used for this transaction, this field will
+        /// be null.
+        ///
+        /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
+        /// </summary>
+        [JsonIgnore]
+        public Token Token
+        {
+            get => this.InternalToken?.ExpandedObject;
+            set => this.InternalToken = SetExpandableFieldObject(value, this.InternalToken);
+        }
+
+        [JsonProperty("token")]
+        [JsonConverter(typeof(ExpandableFieldConverter<Token>))]
+        internal ExpandableField<Token> InternalToken { get; set; }
+        #endregion
 
         /// <summary>
         /// <a href="https://stripe.com/docs/api/treasury">Treasury</a> details related to this

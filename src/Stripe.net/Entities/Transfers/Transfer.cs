@@ -16,8 +16,9 @@ namespace Stripe
     /// payout endpoints. For more information, read about the <a
     /// href="https://stripe.com/docs/transfer-payout-split">transfer/payout split</a>.
     ///
-    /// Related guide: <a href="https://stripe.com/docs/connect/charges-transfers">Creating
-    /// Separate Charges and Transfers</a>.
+    /// Related guide: <a
+    /// href="https://stripe.com/docs/connect/separate-charges-and-transfers">Creating separate
+    /// charges and transfers</a>.
     /// </summary>
     public class Transfer : StripeEntity<Transfer>, IHasId, IHasMetadata, IHasObject, IBalanceTransactionSource
     {
@@ -34,14 +35,14 @@ namespace Stripe
         public string Object { get; set; }
 
         /// <summary>
-        /// Amount in %s to be transferred.
+        /// Amount in cents (or local equivalent) to be transferred.
         /// </summary>
         [JsonProperty("amount")]
         public long Amount { get; set; }
 
         /// <summary>
-        /// Amount in %s reversed (can be less than the amount attribute on the transfer if a
-        /// partial reversal was issued).
+        /// Amount in cents (or local equivalent) reversed (can be less than the amount attribute on
+        /// the transfer if a partial reversal was issued).
         /// </summary>
         [JsonProperty("amount_reversed")]
         public long AmountReversed { get; set; }
@@ -232,7 +233,7 @@ namespace Stripe
 
         /// <summary>
         /// A string that identifies this transaction as part of a group. See the <a
-        /// href="https://stripe.com/docs/connect/charges-transfers#transfer-options">Connect
+        /// href="https://stripe.com/docs/connect/separate-charges-and-transfers#transfer-options">Connect
         /// documentation</a> for details.
         /// </summary>
         [JsonProperty("transfer_group")]

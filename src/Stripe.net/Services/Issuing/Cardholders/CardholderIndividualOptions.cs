@@ -6,7 +6,13 @@ namespace Stripe.Issuing
     public class CardholderIndividualOptions : INestedOptions
     {
         /// <summary>
-        /// The date of birth of this cardholder.
+        /// Information related to the card_issuing program for this cardholder.
+        /// </summary>
+        [JsonProperty("card_issuing")]
+        public CardholderIndividualCardIssuingOptions CardIssuing { get; set; }
+
+        /// <summary>
+        /// The date of birth of this cardholder. Cardholders must be older than 13 years old.
         /// </summary>
         [JsonProperty("dob")]
         public CardholderIndividualDobOptions Dob { get; set; }

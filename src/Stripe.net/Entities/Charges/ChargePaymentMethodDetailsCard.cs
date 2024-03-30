@@ -1,16 +1,32 @@
 // File generated from our OpenAPI spec
 namespace Stripe
 {
+    using System;
     using Newtonsoft.Json;
+    using Stripe.Infrastructure;
 
     public class ChargePaymentMethodDetailsCard : StripeEntity<ChargePaymentMethodDetailsCard>
     {
         /// <summary>
-        /// Card brand. Can be <c>amex</c>, <c>diners</c>, <c>discover</c>, <c>jcb</c>,
-        /// <c>mastercard</c>, <c>unionpay</c>, <c>visa</c>, or <c>unknown</c>.
+        /// The authorized amount.
+        /// </summary>
+        [JsonProperty("amount_authorized")]
+        public long? AmountAuthorized { get; set; }
+
+        /// <summary>
+        /// Card brand. Can be <c>amex</c>, <c>diners</c>, <c>discover</c>, <c>eftpos_au</c>,
+        /// <c>jcb</c>, <c>mastercard</c>, <c>unionpay</c>, <c>visa</c>, or <c>unknown</c>.
         /// </summary>
         [JsonProperty("brand")]
         public string Brand { get; set; }
+
+        /// <summary>
+        /// When using manual capture, a future timestamp at which the charge will be automatically
+        /// refunded if uncaptured.
+        /// </summary>
+        [JsonProperty("capture_before")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime CaptureBefore { get; set; } = Stripe.Infrastructure.DateTimeUtils.UnixEpoch;
 
         /// <summary>
         /// Check results by Card networks on Card address and CVC at time of payment.
@@ -44,14 +60,17 @@ namespace Stripe
         [JsonProperty("exp_year")]
         public long ExpYear { get; set; }
 
+        [JsonProperty("extended_authorization")]
+        public ChargePaymentMethodDetailsCardExtendedAuthorization ExtendedAuthorization { get; set; }
+
         /// <summary>
         /// Uniquely identifies this particular card number. You can use this attribute to check
         /// whether two customers who’ve signed up with you are using the same card number, for
         /// example. For payment methods that tokenize card information (Apple Pay, Google Pay), the
         /// tokenized number might be provided instead of the underlying card number.
         ///
-        /// <em>Starting May 1, 2021, card fingerprint in India for Connect will change to allow two
-        /// fingerprints for the same card --- one for India and one for the rest of the world.</em>.
+        /// <em>As of May 1, 2021, card fingerprint in India for Connect changed to allow two
+        /// fingerprints for the same card---one for India and one for the rest of the world.</em>.
         /// </summary>
         [JsonProperty("fingerprint")]
         public string Fingerprint { get; set; }
@@ -69,6 +88,9 @@ namespace Stripe
         /// </summary>
         [JsonProperty("iin")]
         public string Iin { get; set; }
+
+        [JsonProperty("incremental_authorization")]
+        public ChargePaymentMethodDetailsCardIncrementalAuthorization IncrementalAuthorization { get; set; }
 
         /// <summary>
         /// Installment details for this payment (Mexico only).
@@ -104,13 +126,27 @@ namespace Stripe
         [JsonProperty("moto")]
         public bool? Moto { get; set; }
 
+        [JsonProperty("multicapture")]
+        public ChargePaymentMethodDetailsCardMulticapture Multicapture { get; set; }
+
         /// <summary>
         /// Identifies which network this charge was processed on. Can be <c>amex</c>,
-        /// <c>cartes_bancaires</c>, <c>diners</c>, <c>discover</c>, <c>interac</c>, <c>jcb</c>,
-        /// <c>mastercard</c>, <c>unionpay</c>, <c>visa</c>, or <c>unknown</c>.
+        /// <c>cartes_bancaires</c>, <c>diners</c>, <c>discover</c>, <c>eftpos_au</c>,
+        /// <c>interac</c>, <c>jcb</c>, <c>mastercard</c>, <c>unionpay</c>, <c>visa</c>, or
+        /// <c>unknown</c>.
         /// </summary>
         [JsonProperty("network")]
         public string Network { get; set; }
+
+        /// <summary>
+        /// If this card has network token credentials, this contains the details of the network
+        /// token credentials.
+        /// </summary>
+        [JsonProperty("network_token")]
+        public ChargePaymentMethodDetailsCardNetworkToken NetworkToken { get; set; }
+
+        [JsonProperty("overcapture")]
+        public ChargePaymentMethodDetailsCardOvercapture Overcapture { get; set; }
 
         /// <summary>
         /// Populated if this transaction used 3D Secure authentication.

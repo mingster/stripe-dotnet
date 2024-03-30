@@ -60,6 +60,12 @@ namespace Stripe.Checkout
         public SessionPaymentMethodOptionsCardOptions Card { get; set; }
 
         /// <summary>
+        /// contains details about the Cashapp Pay payment method options.
+        /// </summary>
+        [JsonProperty("cashapp")]
+        public SessionPaymentMethodOptionsCashappOptions Cashapp { get; set; }
+
+        /// <summary>
         /// contains details about the Customer Balance payment method options.
         /// </summary>
         [JsonProperty("customer_balance")]
@@ -108,6 +114,12 @@ namespace Stripe.Checkout
         public SessionPaymentMethodOptionsKonbiniOptions Konbini { get; set; }
 
         /// <summary>
+        /// contains details about the Link payment method options.
+        /// </summary>
+        [JsonProperty("link")]
+        public SessionPaymentMethodOptionsLinkOptions Link { get; set; }
+
+        /// <summary>
         /// contains details about the OXXO payment method options.
         /// </summary>
         [JsonProperty("oxxo")]
@@ -126,10 +138,22 @@ namespace Stripe.Checkout
         public SessionPaymentMethodOptionsPaynowOptions Paynow { get; set; }
 
         /// <summary>
+        /// contains details about the PayPal payment method options.
+        /// </summary>
+        [JsonProperty("paypal")]
+        public SessionPaymentMethodOptionsPaypalOptions Paypal { get; set; }
+
+        /// <summary>
         /// contains details about the Pix payment method options.
         /// </summary>
         [JsonProperty("pix")]
         public SessionPaymentMethodOptionsPixOptions Pix { get; set; }
+
+        /// <summary>
+        /// contains details about the RevolutPay payment method options.
+        /// </summary>
+        [JsonProperty("revolut_pay")]
+        public SessionPaymentMethodOptionsRevolutPayOptions RevolutPay { get; set; }
 
         /// <summary>
         /// contains details about the Sepa Debit payment method options.
@@ -142,6 +166,12 @@ namespace Stripe.Checkout
         /// </summary>
         [JsonProperty("sofort")]
         public SessionPaymentMethodOptionsSofortOptions Sofort { get; set; }
+
+        /// <summary>
+        /// contains details about the Swish payment method options.
+        /// </summary>
+        [JsonProperty("swish")]
+        public SessionPaymentMethodOptionsSwishOptions Swish { get; set; }
 
         /// <summary>
         /// contains details about the Us Bank Account payment method options.

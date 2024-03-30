@@ -10,8 +10,8 @@ namespace Stripe
     /// To top up your Stripe balance, you create a top-up object. You can retrieve individual
     /// top-ups, as well as list all top-ups. Top-ups are identified by a unique, random ID.
     ///
-    /// Related guide: <a href="https://stripe.com/docs/connect/top-ups">Topping Up your
-    /// Platform Account</a>.
+    /// Related guide: <a href="https://stripe.com/docs/connect/top-ups">Topping up your
+    /// platform account</a>.
     /// </summary>
     public class Topup : StripeEntity<Topup>, IHasId, IHasMetadata, IHasObject, IBalanceTransactionSource
     {
@@ -125,9 +125,7 @@ namespace Stripe
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
-        /// For most Stripe users, the source of every top-up is a bank account. This hash is then
-        /// the <a href="https://stripe.com/docs/api#source_object">source object</a> describing
-        /// that bank account.
+        /// The source field is deprecated. It might not always be present in the API response.
         /// </summary>
         [JsonProperty("source")]
         public Source Source { get; set; }

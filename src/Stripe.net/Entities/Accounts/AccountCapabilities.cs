@@ -30,6 +30,14 @@ namespace Stripe
         public string AfterpayClearpayPayments { get; set; }
 
         /// <summary>
+        /// The status of the AmazonPay capability of the account, or whether the account can
+        /// directly process AmazonPay payments.
+        /// One of: <c>active</c>, <c>inactive</c>, or <c>pending</c>.
+        /// </summary>
+        [JsonProperty("amazon_pay_payments")]
+        public string AmazonPayPayments { get; set; }
+
+        /// <summary>
         /// The status of the BECS Direct Debit (AU) payments capability of the account, or whether
         /// the account can directly process BECS Direct Debit (AU) charges.
         /// One of: <c>active</c>, <c>inactive</c>, or <c>pending</c>.
@@ -100,6 +108,14 @@ namespace Stripe
         /// </summary>
         [JsonProperty("cartes_bancaires_payments")]
         public string CartesBancairesPayments { get; set; }
+
+        /// <summary>
+        /// The status of the Cash App Pay capability of the account, or whether the account can
+        /// directly process Cash App Pay payments.
+        /// One of: <c>active</c>, <c>inactive</c>, or <c>pending</c>.
+        /// </summary>
+        [JsonProperty("cashapp_payments")]
+        public string CashappPayments { get; set; }
 
         /// <summary>
         /// The status of the EPS payments capability of the account, or whether the account can
@@ -189,6 +205,14 @@ namespace Stripe
         public string LinkPayments { get; set; }
 
         /// <summary>
+        /// The status of the MobilepPay capability of the account, or whether the account can
+        /// directly process MobilePay charges.
+        /// One of: <c>active</c>, <c>inactive</c>, or <c>pending</c>.
+        /// </summary>
+        [JsonProperty("mobilepay_payments")]
+        public string MobilepayPayments { get; set; }
+
+        /// <summary>
         /// The status of the OXXO payments capability of the account, or whether the account can
         /// directly process OXXO charges.
         /// One of: <c>active</c>, <c>inactive</c>, or <c>pending</c>.
@@ -221,6 +245,14 @@ namespace Stripe
         public string PromptpayPayments { get; set; }
 
         /// <summary>
+        /// The status of the RevolutPay capability of the account, or whether the account can
+        /// directly process RevolutPay payments.
+        /// One of: <c>active</c>, <c>inactive</c>, or <c>pending</c>.
+        /// </summary>
+        [JsonProperty("revolut_pay_payments")]
+        public string RevolutPayPayments { get; set; }
+
+        /// <summary>
         /// The status of the SEPA Direct Debits payments capability of the account, or whether the
         /// account can directly process SEPA Direct Debits charges.
         /// One of: <c>active</c>, <c>inactive</c>, or <c>pending</c>.
@@ -235,6 +267,14 @@ namespace Stripe
         /// </summary>
         [JsonProperty("sofort_payments")]
         public string SofortPayments { get; set; }
+
+        /// <summary>
+        /// The status of the Swish capability of the account, or whether the account can directly
+        /// process Swish payments.
+        /// One of: <c>active</c>, <c>inactive</c>, or <c>pending</c>.
+        /// </summary>
+        [JsonProperty("swish_payments")]
+        public string SwishPayments { get; set; }
 
         /// <summary>
         /// The status of the tax reporting 1099-K (US) capability of the account.
@@ -272,5 +312,13 @@ namespace Stripe
         /// </summary>
         [JsonProperty("us_bank_account_ach_payments")]
         public string UsBankAccountAchPayments { get; set; }
+
+        /// <summary>
+        /// The status of the Zip capability of the account, or whether the account can directly
+        /// process Zip charges.
+        /// One of: <c>active</c>, <c>inactive</c>, or <c>pending</c>.
+        /// </summary>
+        [JsonProperty("zip_payments")]
+        public string ZipPayments { get; set; }
     }
 }

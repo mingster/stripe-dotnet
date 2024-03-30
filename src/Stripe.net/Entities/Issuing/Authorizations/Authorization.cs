@@ -13,7 +13,7 @@ namespace Stripe.Issuing
     /// be approved for the purchase to be completed successfully.
     ///
     /// Related guide: <a href="https://stripe.com/docs/issuing/purchases/authorizations">Issued
-    /// Card Authorizations</a>.
+    /// card authorizations</a>.
     /// </summary>
     public class Authorization : StripeEntity<Authorization>, IHasId, IHasMetadata, IHasObject, IBalanceTransactionSource
     {
@@ -30,9 +30,10 @@ namespace Stripe.Issuing
         public string Object { get; set; }
 
         /// <summary>
-        /// The total amount that was authorized or rejected. This amount is in the card's currency
-        /// and in the <a href="https://stripe.com/docs/currencies#zero-decimal">smallest currency
-        /// unit</a>.
+        /// The total amount that was authorized or rejected. This amount is in <c>currency</c> and
+        /// in the <a href="https://stripe.com/docs/currencies#zero-decimal">smallest currency
+        /// unit</a>. <c>amount</c> should be the same as <c>merchant_amount</c>, unless
+        /// <c>currency</c> and <c>merchant_currency</c> are different.
         /// </summary>
         [JsonProperty("amount")]
         public long Amount { get; set; }
@@ -111,6 +112,8 @@ namespace Stripe.Issuing
         public DateTime Created { get; set; } = Stripe.Infrastructure.DateTimeUtils.UnixEpoch;
 
         /// <summary>
+        /// The currency of the cardholder. This currency can be different from the currency
+        /// presented at authorization and the <c>merchant_currency</c> field on this authorization.
         /// Three-letter <a href="https://www.iso.org/iso-4217-currency-codes.html">ISO currency
         /// code</a>, in lowercase. Must be a <a href="https://stripe.com/docs/currencies">supported
         /// currency</a>.
@@ -129,12 +132,16 @@ namespace Stripe.Issuing
         /// The total amount that was authorized or rejected. This amount is in the
         /// <c>merchant_currency</c> and in the <a
         /// href="https://stripe.com/docs/currencies#zero-decimal">smallest currency unit</a>.
+        /// <c>merchant_amount</c> should be the same as <c>amount</c>, unless
+        /// <c>merchant_currency</c> and <c>currency</c> are different.
         /// </summary>
         [JsonProperty("merchant_amount")]
         public long MerchantAmount { get; set; }
 
         /// <summary>
-        /// The currency that was presented to the cardholder for the authorization. Three-letter <a
+        /// The local currency that was presented to the cardholder for the authorization. This
+        /// currency can be different from the cardholder currency and the <c>currency</c> field on
+        /// this authorization. Three-letter <a
         /// href="https://www.iso.org/iso-4217-currency-codes.html">ISO currency code</a>, in
         /// lowercase. Must be a <a href="https://stripe.com/docs/currencies">supported
         /// currency</a>.
@@ -182,6 +189,41 @@ namespace Stripe.Issuing
         /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }
+
+        #region Expandable Token
+
+        /// <summary>
+        /// (ID of the Token)
+        /// <a href="https://stripe.com/docs/api/issuing/tokens/object">Token</a> object used for
+        /// this authorization. If a network token was not used for this authorization, this field
+        /// will be null.
+        /// </summary>
+        [JsonIgnore]
+        public string TokenId
+        {
+            get => this.InternalToken?.Id;
+            set => this.InternalToken = SetExpandableFieldId(value, this.InternalToken);
+        }
+
+        /// <summary>
+        /// (Expanded)
+        /// <a href="https://stripe.com/docs/api/issuing/tokens/object">Token</a> object used for
+        /// this authorization. If a network token was not used for this authorization, this field
+        /// will be null.
+        ///
+        /// For more information, see the <a href="https://stripe.com/docs/expand">expand documentation</a>.
+        /// </summary>
+        [JsonIgnore]
+        public Token Token
+        {
+            get => this.InternalToken?.ExpandedObject;
+            set => this.InternalToken = SetExpandableFieldObject(value, this.InternalToken);
+        }
+
+        [JsonProperty("token")]
+        [JsonConverter(typeof(ExpandableFieldConverter<Token>))]
+        internal ExpandableField<Token> InternalToken { get; set; }
+        #endregion
 
         /// <summary>
         /// List of <a href="https://stripe.com/docs/api/issuing/transactions">transactions</a>

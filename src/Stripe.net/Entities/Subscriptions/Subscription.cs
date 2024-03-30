@@ -10,7 +10,7 @@ namespace Stripe
     /// Subscriptions allow you to charge a customer on a recurring basis.
     ///
     /// Related guide: <a href="https://stripe.com/docs/billing/subscriptions/creating">Creating
-    /// Subscriptions</a>.
+    /// subscriptions</a>.
     /// </summary>
     public class Subscription : StripeEntity<Subscription>, IHasId, IHasMetadata, IHasObject
     {
@@ -59,8 +59,8 @@ namespace Stripe
 
         /// <summary>
         /// A non-negative decimal between 0 and 100, with at most two decimal places. This
-        /// represents the percentage of the subscription invoice subtotal that will be transferred
-        /// to the application owner's Stripe account.
+        /// represents the percentage of the subscription invoice total that will be transferred to
+        /// the application owner's Stripe account.
         /// </summary>
         [JsonProperty("application_fee_percent")]
         public decimal? ApplicationFeePercent { get; set; }
@@ -69,13 +69,21 @@ namespace Stripe
         public SubscriptionAutomaticTax AutomaticTax { get; set; }
 
         /// <summary>
-        /// Determines the date of the first full invoice, and, for plans with <c>month</c> or
-        /// <c>year</c> intervals, the day of the month for subsequent invoices. The timestamp is in
-        /// UTC format.
+        /// The reference point that aligns future <a
+        /// href="https://stripe.com/docs/subscriptions/billing-cycle">billing cycle</a> dates. It
+        /// sets the day of week for <c>week</c> intervals, the day of month for <c>month</c> and
+        /// <c>year</c> intervals, and the month of year for <c>year</c> intervals. The timestamp is
+        /// in UTC format.
         /// </summary>
         [JsonProperty("billing_cycle_anchor")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime BillingCycleAnchor { get; set; } = Stripe.Infrastructure.DateTimeUtils.UnixEpoch;
+
+        /// <summary>
+        /// The fixed values used to calculate the <c>billing_cycle_anchor</c>.
+        /// </summary>
+        [JsonProperty("billing_cycle_anchor_config")]
+        public SubscriptionBillingCycleAnchorConfig BillingCycleAnchorConfig { get; set; }
 
         /// <summary>
         /// Define thresholds at which an invoice will be sent, and the subscription advanced to a
@@ -109,6 +117,12 @@ namespace Stripe
         [JsonProperty("canceled_at")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime? CanceledAt { get; set; }
+
+        /// <summary>
+        /// Details about why this subscription was cancelled.
+        /// </summary>
+        [JsonProperty("cancellation_details")]
+        public SubscriptionCancellationDetails CancellationDetails { get; set; }
 
         /// <summary>
         /// Either <c>charge_automatically</c>, or <c>send_invoice</c>. When charging automatically,
@@ -284,7 +298,8 @@ namespace Stripe
 
         /// <summary>
         /// The subscription's description, meant to be displayable to the customer. Use this field
-        /// to optionally store an explanation of the subscription for rendering in Stripe surfaces.
+        /// to optionally store an explanation of the subscription for rendering in Stripe surfaces
+        /// and certain local payment methods UIs.
         /// </summary>
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -398,7 +413,10 @@ namespace Stripe
         #endregion
 
         /// <summary>
-        /// If specified, payment collection for this subscription will be paused.
+        /// If specified, payment collection for this subscription will be paused. Note that the
+        /// subscription status will be unchanged and will not be updated to <c>paused</c>. Learn
+        /// more about <a href="https://stripe.com/billing/subscriptions/pause-payment">pausing
+        /// collection</a>.
         /// </summary>
         [JsonProperty("pause_collection")]
         public SubscriptionPauseCollection PauseCollection { get; set; }
@@ -507,21 +525,31 @@ namespace Stripe
 
         /// <summary>
         /// Possible values are <c>incomplete</c>, <c>incomplete_expired</c>, <c>trialing</c>,
-        /// <c>active</c>, <c>past_due</c>, <c>canceled</c>, or <c>unpaid</c>.
+        /// <c>active</c>, <c>past_due</c>, <c>canceled</c>, <c>unpaid</c>, or <c>paused</c>.
         ///
         /// For <c>collection_method=charge_automatically</c> a subscription moves into
-        /// <c>incomplete</c> if the initial payment attempt fails. A subscription in this state can
-        /// only have metadata and default_source updated. Once the first invoice is paid, the
-        /// subscription moves into an <c>active</c> state. If the first invoice is not paid within
+        /// <c>incomplete</c> if the initial payment attempt fails. A subscription in this status
+        /// can only have metadata and default_source updated. Once the first invoice is paid, the
+        /// subscription moves into an <c>active</c> status. If the first invoice is not paid within
         /// 23 hours, the subscription transitions to <c>incomplete_expired</c>. This is a terminal
-        /// state, the open invoice will be voided and no further invoices will be generated.
+        /// status, the open invoice will be voided and no further invoices will be generated.
         ///
         /// A subscription that is currently in a trial period is <c>trialing</c> and moves to
         /// <c>active</c> when the trial period is over.
         ///
-        /// If subscription <c>collection_method=charge_automatically</c> it becomes <c>past_due</c>
-        /// when payment to renew it fails and <c>canceled</c> or <c>unpaid</c> (depending on your
-        /// subscriptions settings) when Stripe has exhausted all payment retry attempts.
+        /// A subscription can only enter a <c>paused</c> status <a
+        /// href="https://stripe.com/billing/subscriptions/trials#create-free-trials-without-payment">when
+        /// a trial ends without a payment method</a>. A <c>paused</c> subscription doesn't generate
+        /// invoices and can be resumed after your customer adds their payment method. The
+        /// <c>paused</c> status is different from <a
+        /// href="https://stripe.com/billing/subscriptions/pause-payment">pausing collection</a>,
+        /// which still generates invoices and leaves the subscription's status unchanged.
+        ///
+        /// If subscription <c>collection_method=charge_automatically</c>, it becomes
+        /// <c>past_due</c> when payment is required but cannot be paid (due to failed payment or
+        /// awaiting additional user actions). Once Stripe has exhausted all payment retry attempts,
+        /// the subscription will become <c>canceled</c> or <c>unpaid</c> (depending on your
+        /// subscriptions settings).
         ///
         /// If subscription <c>collection_method=send_invoice</c> it becomes <c>past_due</c> when
         /// its invoice is not paid by the due date, and <c>canceled</c> or <c>unpaid</c> if it is

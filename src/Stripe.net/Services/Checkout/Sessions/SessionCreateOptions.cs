@@ -28,7 +28,8 @@ namespace Stripe.Checkout
         public SessionAutomaticTaxOptions AutomaticTax { get; set; }
 
         /// <summary>
-        /// Specify whether Checkout should collect the customer's billing address.
+        /// Specify whether Checkout should collect the customer's billing address. Defaults to
+        /// <c>auto</c>.
         /// One of: <c>auto</c>, or <c>required</c>.
         /// </summary>
         [JsonProperty("billing_address_collection")]
@@ -57,13 +58,13 @@ namespace Stripe.Checkout
         /// <summary>
         /// Three-letter <a href="https://www.iso.org/iso-4217-currency-codes.html">ISO currency
         /// code</a>, in lowercase. Must be a <a href="https://stripe.com/docs/currencies">supported
-        /// currency</a>.
+        /// currency</a>. Required in <c>setup</c> mode when <c>payment_method_types</c> is not set.
         /// </summary>
         [JsonProperty("currency")]
         public string Currency { get; set; }
 
         /// <summary>
-        /// Collect additional information from your customer using custom fields. Up to 2 fields
+        /// Collect additional information from your customer using custom fields. Up to 3 fields
         /// are supported.
         /// </summary>
         [JsonProperty("custom_fields")]
@@ -77,12 +78,13 @@ namespace Stripe.Checkout
 
         /// <summary>
         /// ID of an existing Customer, if one exists. In <c>payment</c> mode, the customer’s most
-        /// recent card payment method will be used to prefill the email, name, card details, and
-        /// billing address on the Checkout page. In <c>subscription</c> mode, the customer’s <a
+        /// recently saved card payment method will be used to prefill the email, name, card
+        /// details, and billing address on the Checkout page. In <c>subscription</c> mode, the
+        /// customer’s <a
         /// href="https://stripe.com/docs/api/customers/update#update_customer-invoice_settings-default_payment_method">default
-        /// payment method</a> will be used if it’s a card, and otherwise the most recent card will
-        /// be used. A valid billing address, billing name and billing email are required on the
-        /// payment method for Checkout to prefill the customer's card details.
+        /// payment method</a> will be used if it’s a card, otherwise the most recently saved card
+        /// will be used. A valid billing address, billing name and billing email are required on
+        /// the payment method for Checkout to prefill the customer's card details.
         ///
         /// If the Customer already has a valid <a
         /// href="https://stripe.com/docs/api/customers/object#customer_object-email">email</a> set,
@@ -90,8 +92,9 @@ namespace Stripe.Checkout
         /// a valid <c>email</c>, Checkout will set the email entered during the session on the
         /// Customer.
         ///
-        /// If blank for Checkout Sessions in <c>payment</c> or <c>subscription</c> mode, Checkout
-        /// will create a new Customer object based on information provided during the payment flow.
+        /// If blank for Checkout Sessions in <c>subscription</c> mode or with
+        /// <c>customer_creation</c> set as <c>always</c> in <c>payment</c> mode, Checkout will
+        /// create a new Customer object based on information provided during the payment flow.
         ///
         /// You can set <a
         /// href="https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-payment_intent_data-setup_future_usage"><c>payment_intent_data.setup_future_usage</c></a>
@@ -215,7 +218,7 @@ namespace Stripe.Checkout
         /// the session is 0. This may occur if the Checkout Session includes a free trial or a
         /// discount.
         ///
-        /// Can only be set in <c>subscription</c> mode.
+        /// Can only be set in <c>subscription</c> mode. Defaults to <c>always</c>.
         ///
         /// If you'd like information on how to collect a payment method outside of Checkout, read
         /// the guide on configuring <a
@@ -227,6 +230,12 @@ namespace Stripe.Checkout
         public string PaymentMethodCollection { get; set; }
 
         /// <summary>
+        /// The ID of the payment method configuration to use with this Checkout session.
+        /// </summary>
+        [JsonProperty("payment_method_configuration")]
+        public string PaymentMethodConfiguration { get; set; }
+
+        /// <summary>
         /// Payment-method-specific configuration.
         /// </summary>
         [JsonProperty("payment_method_options")]
@@ -236,10 +245,11 @@ namespace Stripe.Checkout
         /// A list of the types of payment methods (e.g., <c>card</c>) this Checkout Session can
         /// accept.
         ///
-        /// In <c>payment</c> and <c>subscription</c> mode, you can omit this attribute to manage
-        /// your payment methods from the <a
-        /// href="https://dashboard.stripe.com/settings/payment_methods">Stripe Dashboard</a>. It is
-        /// required in <c>setup</c> mode.
+        /// You can omit this attribute to manage your payment methods from the <a
+        /// href="https://dashboard.stripe.com/settings/payment_methods">Stripe Dashboard</a>. See
+        /// <a
+        /// href="https://stripe.com/docs/payments/payment-methods/integration-options#using-dynamic-payment-methods">Dynamic
+        /// Payment Methods</a> for more details.
         ///
         /// Read more about the supported payment methods and their requirements in our <a
         /// href="https://stripe.com/docs/payments/checkout/payment-methods">payment method details
@@ -248,6 +258,13 @@ namespace Stripe.Checkout
         /// If multiple payment methods are passed, Checkout will dynamically reorder them to
         /// prioritize the most relevant payment methods based on the customer's location and other
         /// characteristics.
+        /// One of: <c>acss_debit</c>, <c>affirm</c>, <c>afterpay_clearpay</c>, <c>alipay</c>,
+        /// <c>au_becs_debit</c>, <c>bacs_debit</c>, <c>bancontact</c>, <c>blik</c>, <c>boleto</c>,
+        /// <c>card</c>, <c>cashapp</c>, <c>customer_balance</c>, <c>eps</c>, <c>fpx</c>,
+        /// <c>giropay</c>, <c>grabpay</c>, <c>ideal</c>, <c>klarna</c>, <c>konbini</c>,
+        /// <c>link</c>, <c>oxxo</c>, <c>p24</c>, <c>paynow</c>, <c>paypal</c>, <c>pix</c>,
+        /// <c>promptpay</c>, <c>revolut_pay</c>, <c>sepa_debit</c>, <c>sofort</c>, <c>swish</c>,
+        /// <c>us_bank_account</c>, <c>wechat_pay</c>, or <c>zip</c>.
         /// </summary>
         [JsonProperty("payment_method_types")]
         public List<string> PaymentMethodTypes { get; set; }
@@ -264,6 +281,23 @@ namespace Stripe.Checkout
         public SessionPhoneNumberCollectionOptions PhoneNumberCollection { get; set; }
 
         /// <summary>
+        /// This parameter applies to <c>ui_mode: embedded</c>. Learn more about the <a
+        /// href="https://stripe.com/docs/payments/checkout/custom-redirect-behavior">redirect
+        /// behavior</a> of embedded sessions. Defaults to <c>always</c>.
+        /// One of: <c>always</c>, <c>if_required</c>, or <c>never</c>.
+        /// </summary>
+        [JsonProperty("redirect_on_completion")]
+        public string RedirectOnCompletion { get; set; }
+
+        /// <summary>
+        /// The URL to redirect your customer back to after they authenticate or cancel their
+        /// payment on the payment method's app or site. This parameter is required if ui_mode is
+        /// <c>embedded</c> and redirect-based payment methods are enabled on the session.
+        /// </summary>
+        [JsonProperty("return_url")]
+        public string ReturnUrl { get; set; }
+
+        /// <summary>
         /// A subset of parameters to be passed to SetupIntent creation for Checkout Sessions in
         /// <c>setup</c> mode.
         /// </summary>
@@ -278,23 +312,16 @@ namespace Stripe.Checkout
         public SessionShippingAddressCollectionOptions ShippingAddressCollection { get; set; }
 
         /// <summary>
-        /// The shipping rate options to apply to this Session.
+        /// The shipping rate options to apply to this Session. Up to a maximum of 5.
         /// </summary>
         [JsonProperty("shipping_options")]
         public List<SessionShippingOptionOptions> ShippingOptions { get; set; }
 
         /// <summary>
-        /// [Deprecated] The shipping rate to apply to this Session. Only up to one may be
-        /// specified.
-        /// </summary>
-        [JsonProperty("shipping_rates")]
-        public List<string> ShippingRates { get; set; }
-
-        /// <summary>
         /// Describes the type of transaction being performed by Checkout in order to customize
         /// relevant text on the page, such as the submit button. <c>submit_type</c> can only be
-        /// specified on Checkout Sessions in <c>payment</c> mode, but not Checkout Sessions in
-        /// <c>subscription</c> or <c>setup</c> mode.
+        /// specified on Checkout Sessions in <c>payment</c> mode. If blank or <c>auto</c>,
+        /// <c>pay</c> is used.
         /// One of: <c>auto</c>, <c>book</c>, <c>donate</c>, or <c>pay</c>.
         /// </summary>
         [JsonProperty("submit_type")]
@@ -308,9 +335,9 @@ namespace Stripe.Checkout
         public SessionSubscriptionDataOptions SubscriptionData { get; set; }
 
         /// <summary>
-        /// The URL to which Stripe should send customers when payment or setup is complete. If
-        /// you’d like to use information from the successful Checkout Session on your page, read
-        /// the guide on <a
+        /// The URL to which Stripe should send customers when payment or setup is complete. This
+        /// parameter is not allowed if ui_mode is <c>embedded</c>. If you’d like to use information
+        /// from the successful Checkout Session on your page, read the guide on <a
         /// href="https://stripe.com/docs/payments/checkout/custom-success-page">customizing your
         /// success page</a>.
         /// </summary>
@@ -322,5 +349,12 @@ namespace Stripe.Checkout
         /// </summary>
         [JsonProperty("tax_id_collection")]
         public SessionTaxIdCollectionOptions TaxIdCollection { get; set; }
+
+        /// <summary>
+        /// The UI mode of the Session. Defaults to <c>hosted</c>.
+        /// One of: <c>embedded</c>, or <c>hosted</c>.
+        /// </summary>
+        [JsonProperty("ui_mode")]
+        public string UiMode { get; set; }
     }
 }

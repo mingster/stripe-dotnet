@@ -13,12 +13,12 @@ namespace Stripe
     /// starts onboarding, such as after generating an account link for the account. See the <a
     /// href="https://stripe.com/docs/connect/standard-accounts">Standard onboarding</a> or <a
     /// href="https://stripe.com/docs/connect/express-accounts">Express onboarding
-    /// documentation</a> for information about platform pre-filling and account onboarding
+    /// documentation</a> for information about platform prefilling and account onboarding
     /// steps.
     ///
     /// Related guide: <a
-    /// href="https://stripe.com/docs/connect/identity-verification-api#person-information">Handling
-    /// Identity Verification with the API</a>.
+    /// href="https://stripe.com/docs/connect/handling-api-verification#person-information">Handling
+    /// identity verification with the API</a>.
     /// </summary>
     public class Person : StripeEntity<Person>, IHasId, IHasMetadata, IHasObject
     {
@@ -39,6 +39,9 @@ namespace Stripe
         /// </summary>
         [JsonProperty("account")]
         public string Account { get; set; }
+
+        [JsonProperty("additional_tos_acceptances")]
+        public PersonAdditionalTosAcceptances AdditionalTosAcceptances { get; set; }
 
         [JsonProperty("address")]
         public Address Address { get; set; }
@@ -102,8 +105,10 @@ namespace Stripe
         public List<string> FullNameAliases { get; set; }
 
         /// <summary>
-        /// Information about the upcoming new requirements for this person, including what
-        /// information needs to be collected, and by when.
+        /// Information about the <a
+        /// href="https://stripe.com/docs/connect/custom-accounts/future-requirements">upcoming new
+        /// requirements for this person</a>, including what information needs to be collected, and
+        /// by when.
         /// </summary>
         [JsonProperty("future_requirements")]
         public PersonFutureRequirements FutureRequirements { get; set; }
@@ -115,7 +120,9 @@ namespace Stripe
         public string Gender { get; set; }
 
         /// <summary>
-        /// Whether the person's <c>id_number</c> was provided.
+        /// Whether the person's <c>id_number</c> was provided. True if either the full ID number
+        /// was provided or if only the required part of the ID number was provided (ex. last four
+        /// of an individual's SSN for the US indicated by <c>ssn_last_4_provided</c>).
         /// </summary>
         [JsonProperty("id_number_provided")]
         public bool IdNumberProvided { get; set; }

@@ -19,7 +19,7 @@ namespace Stripe.Checkout
 
         /// <summary>
         /// Controls when the funds will be captured from the customer's account.
-        /// One of: <c>automatic</c>, or <c>manual</c>.
+        /// One of: <c>automatic</c>, <c>automatic_async</c>, or <c>manual</c>.
         /// </summary>
         [JsonProperty("capture_method")]
         public string CaptureMethod { get; set; }
@@ -115,8 +115,9 @@ namespace Stripe.Checkout
 
         /// <summary>
         /// A string that identifies the resulting payment as part of a group. See the
-        /// PaymentIntents <a href="https://stripe.com/docs/payments/connected-accounts">use case
-        /// for connected accounts</a> for details.
+        /// PaymentIntents <a
+        /// href="https://stripe.com/docs/connect/separate-charges-and-transfers">use case for
+        /// connected accounts</a> for details.
         /// </summary>
         [JsonProperty("transfer_group")]
         public string TransferGroup { get; set; }

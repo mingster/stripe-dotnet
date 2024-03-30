@@ -82,6 +82,13 @@ namespace Stripe
         public PaymentIntentPaymentMethodOptionsCardPresentOptions CardPresent { get; set; }
 
         /// <summary>
+        /// If this is a <c>cashapp</c> PaymentMethod, this sub-hash contains details about the Cash
+        /// App Pay payment method options.
+        /// </summary>
+        [JsonProperty("cashapp")]
+        public PaymentIntentPaymentMethodOptionsCashappOptions Cashapp { get; set; }
+
+        /// <summary>
         /// If this is a <c>customer balance</c> PaymentMethod, this sub-hash contains details about
         /// the customer balance payment method options.
         /// </summary>
@@ -152,6 +159,13 @@ namespace Stripe
         public PaymentIntentPaymentMethodOptionsLinkOptions Link { get; set; }
 
         /// <summary>
+        /// If this is a <c>MobilePay</c> PaymentMethod, this sub-hash contains details about the
+        /// MobilePay payment method options.
+        /// </summary>
+        [JsonProperty("mobilepay")]
+        public PaymentIntentPaymentMethodOptionsMobilepayOptions Mobilepay { get; set; }
+
+        /// <summary>
         /// If this is a <c>oxxo</c> PaymentMethod, this sub-hash contains details about the OXXO
         /// payment method options.
         /// </summary>
@@ -173,6 +187,13 @@ namespace Stripe
         public PaymentIntentPaymentMethodOptionsPaynowOptions Paynow { get; set; }
 
         /// <summary>
+        /// If this is a <c>paypal</c> PaymentMethod, this sub-hash contains details about the
+        /// PayPal payment method options.
+        /// </summary>
+        [JsonProperty("paypal")]
+        public PaymentIntentPaymentMethodOptionsPaypalOptions Paypal { get; set; }
+
+        /// <summary>
         /// If this is a <c>pix</c> PaymentMethod, this sub-hash contains details about the Pix
         /// payment method options.
         /// </summary>
@@ -185,6 +206,13 @@ namespace Stripe
         /// </summary>
         [JsonProperty("promptpay")]
         public PaymentIntentPaymentMethodOptionsPromptpayOptions Promptpay { get; set; }
+
+        /// <summary>
+        /// If this is a <c>revolut_pay</c> PaymentMethod, this sub-hash contains details about the
+        /// Revolut Pay payment method options.
+        /// </summary>
+        [JsonProperty("revolut_pay")]
+        public PaymentIntentPaymentMethodOptionsRevolutPayOptions RevolutPay { get; set; }
 
         /// <summary>
         /// If this is a <c>sepa_debit</c> PaymentIntent, this sub-hash contains details about the
@@ -201,6 +229,13 @@ namespace Stripe
         public PaymentIntentPaymentMethodOptionsSofortOptions Sofort { get; set; }
 
         /// <summary>
+        /// If this is a <c>Swish</c> PaymentMethod, this sub-hash contains details about the Swish
+        /// payment method options.
+        /// </summary>
+        [JsonProperty("swish")]
+        public PaymentIntentPaymentMethodOptionsSwishOptions Swish { get; set; }
+
+        /// <summary>
         /// If this is a <c>us_bank_account</c> PaymentMethod, this sub-hash contains details about
         /// the US bank account payment method options.
         /// </summary>
@@ -213,5 +248,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("wechat_pay")]
         public PaymentIntentPaymentMethodOptionsWechatPayOptions WechatPay { get; set; }
+
+        /// <summary>
+        /// If this is a <c>zip</c> PaymentMethod, this sub-hash contains details about the Zip
+        /// payment method options.
+        /// </summary>
+        [JsonProperty("zip")]
+        public PaymentIntentPaymentMethodOptionsZipOptions Zip { get; set; }
     }
 }

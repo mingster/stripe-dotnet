@@ -32,7 +32,7 @@ namespace Stripe
 
         /// <summary>
         /// Controls when the funds will be captured from the customer's account.
-        /// One of: <c>automatic</c>, or <c>manual</c>.
+        /// One of: <c>automatic</c>, <c>automatic_async</c>, or <c>manual</c>.
         /// </summary>
         [JsonProperty("capture_method")]
         public string CaptureMethod { get; set; }
@@ -82,6 +82,12 @@ namespace Stripe
         public string PaymentMethod { get; set; }
 
         /// <summary>
+        /// The ID of the payment method configuration to use with this PaymentIntent.
+        /// </summary>
+        [JsonProperty("payment_method_configuration")]
+        public string PaymentMethodConfiguration { get; set; }
+
+        /// <summary>
         /// If provided, this hash will be used to create a PaymentMethod. The new PaymentMethod
         /// will appear in the <a
         /// href="https://stripe.com/docs/api/payment_intents/object#payment_intent_object-payment_method">payment_method</a>
@@ -97,8 +103,8 @@ namespace Stripe
         public PaymentIntentPaymentMethodOptionsOptions PaymentMethodOptions { get; set; }
 
         /// <summary>
-        /// The list of payment method types (e.g. card) that this PaymentIntent is allowed to use.
-        /// Use automatic_payment_methods to manage payment methods from the <a
+        /// The list of payment method types (for example, card) that this PaymentIntent can use.
+        /// Use <c>automatic_payment_methods</c> to manage payment methods from the <a
         /// href="https://dashboard.stripe.com/settings/payment_methods">Stripe Dashboard</a>.
         /// </summary>
         [JsonProperty("payment_method_types")]
@@ -132,6 +138,7 @@ namespace Stripe
         /// If <c>setup_future_usage</c> is already set and you are performing a request using a
         /// publishable key, you may only update the value from <c>on_session</c> to
         /// <c>off_session</c>.
+        /// One of: <c>off_session</c>, or <c>on_session</c>.
         /// </summary>
         [JsonProperty("setup_future_usage")]
         public string SetupFutureUsage { get; set; }
@@ -143,8 +150,10 @@ namespace Stripe
         public ChargeShippingOptions Shipping { get; set; }
 
         /// <summary>
-        /// For non-card charges, you can use this value as the complete description that appears on
-        /// your customers’ statements. Must contain at least one letter, maximum 22 characters.
+        /// For card charges, use <a
+        /// href="https://stripe.com/docs/payments/account/statement-descriptors#dynamic">statement_descriptor_suffix</a>.
+        /// Otherwise, you can use this value as the complete description of a charge on your
+        /// customers' statements. It must contain at least one letter and be 1–22 characters long.
         /// </summary>
         [JsonProperty("statement_descriptor")]
         public string StatementDescriptor { get; set; }
@@ -159,19 +168,18 @@ namespace Stripe
         public string StatementDescriptorSuffix { get; set; }
 
         /// <summary>
-        /// The parameters used to automatically create a Transfer when the payment succeeds. For
-        /// more information, see the PaymentIntents <a
-        /// href="https://stripe.com/docs/payments/connected-accounts">use case for connected
-        /// accounts</a>.
+        /// Use this parameter to automatically create a Transfer when the payment succeeds. Learn
+        /// more about the <a href="https://stripe.com/docs/payments/connected-accounts">use case
+        /// for connected accounts</a>.
         /// </summary>
         [JsonProperty("transfer_data")]
         public PaymentIntentTransferDataOptions TransferData { get; set; }
 
         /// <summary>
-        /// A string that identifies the resulting payment as part of a group. <c>transfer_group</c>
-        /// may only be provided if it has not been set. See the PaymentIntents <a
+        /// A string that identifies the resulting payment as part of a group. You can only provide
+        /// <c>transfer_group</c> if it hasn't been set. Learn more about the <a
         /// href="https://stripe.com/docs/payments/connected-accounts">use case for connected
-        /// accounts</a> for details.
+        /// accounts</a>.
         /// </summary>
         [JsonProperty("transfer_group")]
         public string TransferGroup { get; set; }

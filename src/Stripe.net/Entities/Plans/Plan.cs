@@ -59,15 +59,15 @@ namespace Stripe
         public string AggregateUsage { get; set; }
 
         /// <summary>
-        /// The unit amount in %s to be charged, represented as a whole integer if possible. Only
-        /// set if <c>billing_scheme=per_unit</c>.
+        /// The unit amount in cents (or local equivalent) to be charged, represented as a whole
+        /// integer if possible. Only set if <c>billing_scheme=per_unit</c>.
         /// </summary>
         [JsonProperty("amount")]
         public long? Amount { get; set; }
 
         /// <summary>
-        /// The unit amount in %s to be charged, represented as a decimal string with at most 12
-        /// decimal places. Only set if <c>billing_scheme=per_unit</c>.
+        /// The unit amount in cents (or local equivalent) to be charged, represented as a decimal
+        /// string with at most 12 decimal places. Only set if <c>billing_scheme=per_unit</c>.
         /// </summary>
         [JsonProperty("amount_decimal")]
         public decimal? AmountDecimal { get; set; }
@@ -135,6 +135,12 @@ namespace Stripe
         /// </summary>
         [JsonProperty("metadata")]
         public Dictionary<string, string> Metadata { get; set; }
+
+        /// <summary>
+        /// The meter tracking the usage of a metered price.
+        /// </summary>
+        [JsonProperty("meter")]
+        public string Meter { get; set; }
 
         /// <summary>
         /// A brief description of the plan, hidden from customers.
